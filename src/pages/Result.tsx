@@ -13,38 +13,35 @@ const Card = styled.div<{ isTouched: boolean }>`
   transform: ${({ isTouched }) => (isTouched ? 'rotateY(180deg)' : 'rotateY(0deg)')};
 `;
 
-const CardFace = styled.div`
+const DefaultCardStyle = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
   border-radius: 10px;
-`;
-
-const CardFront = styled(CardFace)`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const CardBack = styled(CardFace)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const CardFront = styled(DefaultCardStyle)``;
+
+const CardBack = styled(DefaultCardStyle)`
   transform: rotateY(180deg);
 `;
 
 const Result = () => {
   const [isTouched, setIsTouched] = useState(false);
 
-  const handleTouch = () => {
-    setIsTouched(!isTouched);
-  };
-
   return (
     <>
       <div>초대장 생성 완료!</div>
-      <Card onClick={handleTouch} isTouched={isTouched}>
+      <Card
+        onClick={() => {
+          setIsTouched((prev) => !prev);
+        }}
+        isTouched={isTouched}
+      >
         <CardFront>
           <InvitationFront />
         </CardFront>
