@@ -1,7 +1,15 @@
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './pages/login/Login';
 
 function App() {
-  return <>우리 만날래? Yes!</>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
