@@ -12,7 +12,9 @@ const StyledButton = styled.button`
   background-color: #ffe479;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
   cursor: pointer;
   transition: transform 0.3s;
 
