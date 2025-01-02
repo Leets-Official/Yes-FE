@@ -7,28 +7,29 @@ const KakaoRedirectHandler = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    /* 인가코드 추출*/
+    // 인가코드 추출출
     const code: string = new URL(window.location.href).searchParams.get('code') ?? '';
     const SERVER_URL = '임시서버URL';
 
-    /** 서버로 인가코드 전달*/
+    /** 서버로 인가코드 전달(req) > 토큰 쿠키 저장 (res)
+     * accessToken(액세스토큰) : 1시간 만료기한 (임시)
+     * refreshToken(리프레쉬토큰) : 7일 만료기한 (임시시)
+     */
     axios
       .post(SERVER_URL, { code })
       .then((res) => {
         const { accessToken, refreshToken } = res.data;
 
-        // 액세스 토큰 쿠키 저장 (사용자 인증)
         setCookie('accessToken', accessToken, {
           path: '/',
-          maxAge: 60 * 60, // 1시간 (초)(임시)
+          maxAge: 60 * 60, // 1시간
         });
-        // 리프레쉬 토큰 쿠키 저장 (액세스토큰 재발급)
         setCookie('refreshToken', refreshToken, {
           path: '/',
-          maxAge: 7 * 24 * 60 * 60, // 7일 (임시)
+          maxAge: 7 * 24 * 60 * 60, // 7일
         });
 
-        /** 로그인 성공 > 랜딩페이지 이동 */
+        // 로그인 성공 후, 랜딩페이지 이동
         navigate('/home', { replace: true });
       })
       .catch((err) => {
