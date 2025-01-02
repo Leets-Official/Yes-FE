@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import LOGO from '../../assets/image/yes.svg'; // 로고 SVG 파일을 import
 import Button from '../../components/common/Button';
+import { HomeHeader } from '../../components/layout/HomeHeader';
 
 export const Login = () => {
   // oauth 요청 URL
@@ -12,6 +13,7 @@ export const Login = () => {
 
   return (
     <Container>
+      <HomeHeader />
       <Logo src={LOGO} />
       <KakaoLoginButton color="#ffe479" onClick={handleLogin}>
         카카오로 로그인하기
@@ -32,7 +34,6 @@ const Container = styled.div`
 `;
 
 const Logo = styled.img`
-  margin-top: 90%;
   width: 100%;
   max-width: 200px;
   height: auto;
