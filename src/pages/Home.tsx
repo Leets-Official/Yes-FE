@@ -3,6 +3,7 @@ import LOGO from '../assets/image/yes.svg';
 import { useNavigate } from 'react-router-dom';
 import { HomeHeader } from '../components/layout/HomeHeader';
 import Button from '../components/common/Button';
+import theme from '../style/theme';
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -15,7 +16,9 @@ export const Home = () => {
     <Container>
       <HomeHeader />
       <Logo src={LOGO} />
-      <HomeButton onClick={handleMakeInvitation}>초대장 만들기</HomeButton>
+      <HomeButton color={theme.color.main} textColor="white" onClick={handleMakeInvitation}>
+        초대장 만들기
+      </HomeButton>
     </Container>
   );
 };
