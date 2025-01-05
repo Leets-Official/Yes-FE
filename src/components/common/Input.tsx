@@ -8,6 +8,11 @@ const StyledInput = styled.input<{
   border-radius: 8px;
   width: ${(props) => props.width || '18.125rem'};
   height: ${(props) => props.height || '2.3125rem'};
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
 `;
 
 const Input = ({ width, height }: { width: string; height: string }) => {

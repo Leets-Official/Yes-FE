@@ -9,6 +9,11 @@ const StyledTextArea = styled.textarea<{
   resize: none;
   width: ${(props) => props.width || '18.125rem'};
   height: ${(props) => props.height || '7rem'};
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
 `;
 
 const TextArea = ({ width, height }: { width: string; height: string }) => {
