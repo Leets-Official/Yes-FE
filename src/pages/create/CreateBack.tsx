@@ -1,7 +1,64 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Input from '../../components/common/Input';
 import TextArea from '../../components/common/TextArea';
 import InvitationBack from '../../components/result/InvitationBack';
+
+const CreateBack = () => {
+  const [title, setTitle] = useState('');
+  const [location, setLocation] = useState('');
+  const [message, setMessage] = useState('');
+
+  return (
+    <InputContainer>
+      {/* TODO: 헤더 */}
+      <div>헤더</div>
+      <b>
+        초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
+      </b>
+      <AlignCenter>
+        <InvitationBack title={title} location={location} message={message} />
+        <Gap>
+          <InputField>
+            <div>제목</div>
+            <Input
+              width={'18.125rem'}
+              height={'2.3125rem'}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </InputField>
+          <InputField>
+            <div>일정</div>
+            <DateInputWrapper>
+              <DateInput />년 <DateInput />월 <DateInput />일 <DateInput />시 <DateInput />분
+            </DateInputWrapper>
+          </InputField>
+          <InputField>
+            <div>장소</div>
+            <Input
+              width={'18.125rem'}
+              height={'2.3125rem'}
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </InputField>
+          <InputField>
+            <div>문구</div>
+            <TextArea
+              width={'18.125rem'}
+              height={'7rem'}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+          </InputField>
+        </Gap>
+      </AlignCenter>
+    </InputContainer>
+  );
+};
+
+export default CreateBack;
 
 const InputContainer = styled.div`
   display: flex;
@@ -29,37 +86,25 @@ const InputField = styled.div`
   gap: 1.69rem;
 `;
 
-const CreateBack = () => {
-  return (
-    <InputContainer>
-      {/* TODO: 헤더 */}
-      <div>헤더</div>
-      <b>
-        초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
-      </b>
-      <AlignCenter>
-        <InvitationBack />
-        <Gap>
-          <InputField>
-            <div>제목</div>
-            <Input width={'18.125rem'} height={'2.3125rem'} />
-          </InputField>
-          <InputField>
-            <div>일정</div>
-            <Input width={'18.125rem'} height={'2.3125rem'} />
-          </InputField>
-          <InputField>
-            <div>장소</div>
-            <Input width={'18.125rem'} height={'2.3125rem'} />
-          </InputField>
-          <InputField>
-            <div>문구</div>
-            <TextArea width={'18.125rem'} height={'7rem'} />
-          </InputField>
-        </Gap>
-      </AlignCenter>
-    </InputContainer>
-  );
-};
+const DateInput = styled.input`
+  width: 2rem;
+  border: none;
+  text-align: right;
 
-export default CreateBack;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+`;
+
+const DateInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cfcdcd;
+  border-radius: 8px;
+  width: 18.125rem;
+  height: 2.3125rem;
+  padding: 1px 2px;
+  gap: 0.2rem;
+`;

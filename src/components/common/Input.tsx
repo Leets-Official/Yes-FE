@@ -15,8 +15,18 @@ const StyledInput = styled.input<{
   }
 `;
 
-const Input = ({ width, height }: { width: string; height: string }) => {
-  return <StyledInput width={width} height={height} />;
+const Input = ({
+  width,
+  height,
+  value,
+  onChange,
+}: {
+  width: string;
+  height: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  return <StyledInput width={width} height={height} value={value} onChange={onChange} />;
 };
 
 export default Input;

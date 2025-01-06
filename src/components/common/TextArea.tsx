@@ -16,8 +16,18 @@ const StyledTextArea = styled.textarea<{
   }
 `;
 
-const TextArea = ({ width, height }: { width: string; height: string }) => {
-  return <StyledTextArea width={width} height={height} />;
+const TextArea = ({
+  width,
+  height,
+  value,
+  onChange,
+}: {
+  width: string;
+  height: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+}) => {
+  return <StyledTextArea width={width} height={height} value={value} onChange={onChange} />;
 };
 
 export default TextArea;
