@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Input from '../../components/common/Input';
 import TextArea from '../../components/common/TextArea';
 import InvitationBack from '../../components/result/InvitationBack';
+import Button from '../../components/common/Button';
+import theme from '../../style/theme';
 
 const CreateBack = () => {
   const [title, setTitle] = useState('');
@@ -16,6 +18,11 @@ const CreateBack = () => {
       <b>
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
       </b>
+      <ButtonWrapper>
+        <Button color={theme.color.main} textColor="#fff" fullWidth>
+          다음
+        </Button>
+      </ButtonWrapper>
       <AlignCenter>
         <InvitationBack title={title} location={location} message={message} />
         <Gap>
@@ -70,9 +77,19 @@ const InputContainer = styled.div`
   }
 `;
 
+const ButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 21.375rem;
+`;
+
 const AlignCenter = styled(InputContainer)`
   align-items: center;
   gap: 1.81rem;
+  z-index: 0;
 `;
 
 const Gap = styled.div`

@@ -17,7 +17,6 @@ const StyledButton = styled.button<ButtonProps>`
   border: none;
   border-radius: 8px;
   padding: 1rem 0;
-  font-family: 'Pretendard';
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
