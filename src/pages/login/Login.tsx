@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import LOGO from '../../assets/image/yes.svg'; // 로고 SVG 파일을 import
+import LOGO from '/image/yes.svg'; // 로고 SVG 파일을 import
 import Button from '../../components/common/Button';
 import { HomeHeader } from '../../components/layout/HomeHeader';
 import theme from '../../style/theme';

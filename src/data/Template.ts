@@ -1,7 +1,7 @@
 export const template = {
   EXAMPLE: {
     // 1. 템플릿 데이터 src
-    template_src: '../assets/image/template_example.png',
+    template_src: '/image/template_example.png',
     // 2. 텍스트 개수
     text_cnt: 2,
     // 3. 각 텍스트 위치 (top,left)

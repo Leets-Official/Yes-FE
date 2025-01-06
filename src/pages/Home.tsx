@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import LOGO from '../assets/image/yes.svg';
+import LOGO from '/image/yes.svg';
 import { useNavigate } from 'react-router-dom';
 import { HomeHeader } from '../components/layout/HomeHeader';
 import Button from '../components/common/Button';
