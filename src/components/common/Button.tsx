@@ -7,6 +7,7 @@ interface ButtonProps {
   textColor?: string;
   border?: string;
   fullWidth?: boolean;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -69,6 +70,7 @@ const Button: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElemen
   border,
   fullWidth,
   children,
+  onClick,
   ...props
 }) => {
   return (
@@ -78,6 +80,7 @@ const Button: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElemen
       textColor={textColor}
       border={border}
       fullWidth={fullWidth}
+      onClick={onClick}
       {...props}
     >
       {children}
