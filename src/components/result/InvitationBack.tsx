@@ -2,10 +2,12 @@ import styled from 'styled-components';
 
 const InvitationBack = ({
   title,
+  date,
   location,
   message,
 }: {
   title: string;
+  date: string;
   location: string;
   message: string;
 }) => {
@@ -15,7 +17,7 @@ const InvitationBack = ({
         <Title>{title}</Title>
         <Feild>
           <div>일정</div>
-          <Info>2025. 03. 12 오후 5시</Info>
+          <Info>{date}</Info>
         </Feild>
         <Feild>
           <div>장소</div>

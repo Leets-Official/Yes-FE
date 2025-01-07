@@ -10,6 +10,20 @@ const CreateBack = () => {
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [message, setMessage] = useState('');
+  const [date, setDate] = useState({
+    year: '',
+    month: '',
+    day: '',
+    hour: '',
+    minute: '',
+  });
+
+  const handleDateChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDate((prev) => ({
+      ...prev,
+      [field]: e.target.value,
+    }));
+  };
 
   return (
     <Container>
@@ -25,7 +39,12 @@ const CreateBack = () => {
       </ButtonWrapper>
 
       <AlignCenter>
-        <InvitationBack title={title} location={location} message={message} />
+        <InvitationBack
+          title={title}
+          location={location}
+          message={message}
+          date={`${date.year}년 ${date.month}월 ${date.day}일 ${date.hour}시 ${date.minute}분`}
+        />
         <Gap>
           <Field>
             <label>제목</label>
@@ -35,7 +54,16 @@ const CreateBack = () => {
           <Field>
             <label>일정</label>
             <DateInputWrapper>
-              <DateInput />년 <DateInput />월 <DateInput />일 <DateInput />시 <DateInput />분
+              <DateInput type="number" value={date.year} onChange={handleDateChange('year')} /> 년
+              <DateInput type="number" value={date.month} onChange={handleDateChange('month')} /> 월
+              <DateInput type="number" value={date.day} onChange={handleDateChange('day')} /> 일
+              <DateInput type="number" value={date.hour} onChange={handleDateChange('hour')} /> 시
+              <DateInput
+                type="number"
+                value={date.minute}
+                onChange={handleDateChange('minute')}
+              />{' '}
+              분
             </DateInputWrapper>
           </Field>
 
