@@ -51,6 +51,7 @@ const CreateTemplate = () => {
           templateKey: selectedTemplate,
           imageFile: undefined,
           imageUrl: '',
+          step: 2,
         };
         return updatedState;
       });
@@ -63,6 +64,7 @@ const CreateTemplate = () => {
           templateKey: '',
           imageFile: imageFile!,
           imageUrl: imageUrl!,
+          step: 3,
         };
         return updatedState;
       });

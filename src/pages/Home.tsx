@@ -9,7 +9,7 @@ export const Home = () => {
   const navigate = useNavigate();
 
   const handleMakeInvitation = () => {
-    navigate('/invite'); // 임시 url
+    navigate('/invitation/create');
   };
 
   return (

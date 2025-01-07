@@ -52,7 +52,10 @@ const CreateFront = () => {
   // 다음 단계로
   const handleNextButtonClick = () => {
     console.log('현재 저장 : ' + invitation);
-    // recoil 템플릿 정보 저장
+    setInvitation((prev) => ({
+      ...prev,
+      step: 3,
+    }));
   };
 
   return (

@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
 
 const CreateNickName = () => {
-  const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo); // 닉네임
+  const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nickname = e.target.value;
@@ -16,7 +16,7 @@ const CreateNickName = () => {
 
   // 다음단계
   const handleNextButtonClick = () => {
-    console.log(invitation.nickname);
+    setInvitation((prev) => ({ ...prev, step: 1 }));
   };
 
   return (
