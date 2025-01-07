@@ -1,22 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { InvitationHeader } from '../../components/layout/InvitationHeader';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
 import { template } from '../../data/Template';
 import TextArea from '../../components/common/TextArea';
+import { InvitationState, InvitationInfo } from '../../atom/InvitationInfo';
+import { useRecoilState } from 'recoil';
 
 const CreateFront = () => {
-  // 텍스트 영역의 값들을 저장할 상태 (배열로 관리)
+  const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
+
+  // 텍스트 영역의 값 (배열로 관리)
   const [textValues, setTextValues] = useState<string[]>(
-    new Array(template.EXAMPLE2.text_cnt).fill(''),
+    invitation.contents ||
+      new Array(template[invitation?.templateKey! as keyof typeof template].text_cnt).fill(''),
   );
+
+  // (새로고침 후 이전에 입력된 텍스트가 있는 경우우)
+  useEffect(() => {
+    if (invitation.contents && invitation.contents.length > 0) {
+      setTextValues(invitation.contents);
+    }
+    console.log(invitation.templateKey);
+  }, [invitation.contents]);
 
   // 텍스트 입력을 처리하는 함수
   const handleTextChange = (index: number, value: string) => {
     const updatedValues = [...textValues];
     updatedValues[index] = value;
     setTextValues(updatedValues);
+
+    setInvitation((prev) => ({
+      ...prev,
+      contents: updatedValues,
+    }));
   };
 
   // 텍스트 영역의 크기에 맞는 maxLength 계산
@@ -33,7 +51,7 @@ const CreateFront = () => {
 
   // 다음 단계로
   const handleNextButtonClick = () => {
-    console.log('다음');
+    console.log('현재 저장 : ' + invitation);
     // recoil 템플릿 정보 저장
   };
 
@@ -42,23 +60,27 @@ const CreateFront = () => {
       <InvitationHeader />
       <MainContent>
         <MainTitle>초대장 앞면을 꾸며주세요!</MainTitle>
-        <InvitationFront src={template.EXAMPLE2.template_src}>
-          {template.EXAMPLE2.text_position_size.map((el, index) => {
-            const length = calculateMaxLength(el[2], el[3], 16);
-            return (
-              <InvitationText key={index} top={el[0]} left={el[1]}>
-                <TextArea
-                  width={`${el[2]}px`}
-                  height={`${el[3]}px`}
-                  value={textValues[index]}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    handleTextChange(index, e.target.value)
-                  }
-                  maxLength={length}
-                />
-              </InvitationText>
-            );
-          })}
+        <InvitationFront
+          src={template[invitation.templateKey as keyof typeof template].template_src}
+        >
+          {template[invitation.templateKey as keyof typeof template].text_position_size.map(
+            (el, index) => {
+              const length = calculateMaxLength(el[2], el[3], 16);
+              return (
+                <InvitationText key={index} top={el[0]} left={el[1]}>
+                  <TextArea
+                    width={`${el[2]}px`}
+                    height={`${el[3]}px`}
+                    value={textValues[index]}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                      handleTextChange(index, e.target.value)
+                    }
+                    maxLength={length}
+                  />
+                </InvitationText>
+              );
+            },
+          )}
         </InvitationFront>
       </MainContent>
       <NextButton

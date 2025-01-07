@@ -1,21 +1,22 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { InvitationHeader } from '../../components/layout/InvitationHeader';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
 import Input from '../../components/common/Input';
+import { useRecoilState } from 'recoil';
+import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
 
 const CreateNickName = () => {
-  const [nickname, setNickname] = useState(''); // 닉네임
+  const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo); // 닉네임
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setNickname(value);
+    const nickname = e.target.value;
+    setInvitation((prev) => ({ ...prev, nickname: nickname }));
   };
 
   // 다음단계
   const handleNextButtonClick = () => {
-    console.log(nickname);
+    console.log(invitation.nickname);
   };
 
   return (
@@ -29,7 +30,7 @@ const CreateNickName = () => {
             <NicknameInput
               width={'95%'}
               height={'3rem'}
-              value={nickname}
+              value={invitation.nickname}
               onChange={handleInputChange}
               placeholder="10자 내로 작성해주세요."
               maxLength={10}

@@ -5,25 +5,25 @@ import Button from '../../components/common/Button';
 import theme from '../../style/theme';
 import { TbPhotoPlus } from 'react-icons/tb';
 import { template } from './../../data/Template';
+import { useRecoilState } from 'recoil';
+import { InvitationState, InvitationInfo } from './../../atom/InvitationInfo';
 
 const CreateTemplate = () => {
+  const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
+
   const [isTemplate, setIsTemplate] = useState(true); // 제공 템플릿 사용 여부
-
-  // isTemplate = true (제공된 템플릿 사용중)
-  const [selectedTemplate, setSelectedTemplate] = useState<Template>(); // 현재 선택된 템플릿
-
-  // isTemplate = false (1. 사용자 이미지 URL 2. 파일)을 저장
+  const [selectedTemplate, setSelectedTemplate] = useState<string>(invitation?.templateKey || ''); // 현재 선택된 템플릿
   const [imageUrl, setImageUrl] = useState<string | null>(null); // 이미지 URL
   const [imageFile, setImageFile] = useState<File | null>(null); // 이미지 파일
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 템플릿 선택 핸들러 함수
-  const handleTemplateClick = (template: Template) => {
-    setSelectedTemplate(template);
+  const handleTemplateClick = (templateKey: string) => {
+    setSelectedTemplate(templateKey);
     setIsTemplate(true); // 템플릿 선택 상태
   };
 
-  // 사용자 이미지 입력 핸들러 함수수
+  // 사용자 이미지 입력 핸들러 함수
   const handleInputClick = () => {
     fileInputRef.current?.click();
   };
@@ -32,20 +32,44 @@ const CreateTemplate = () => {
     if (file) {
       // 1. 이미지 파일 저장
       setImageFile(file);
-
       // 2. 이미지 url 저장
       const url = URL.createObjectURL(file);
       setImageUrl(url);
-
       // 3. 선택된 템플릿 > 사용자 이미지
       setIsTemplate(false);
     }
   };
 
-  // 다음 단계로로
+  // 다음 단계로
   const handleNextButtonClick = () => {
-    console.log('다음');
-    // recoil 템플릿 정보 저장
+    if (isTemplate) {
+      // 템플릿 사용 상태 업데이트
+      setInvitation((prev) => {
+        const updatedState: InvitationState = {
+          ...prev,
+          isTemplate: true,
+          templateKey: selectedTemplate,
+          imageFile: undefined,
+          imageUrl: '',
+        };
+        return updatedState;
+      });
+    } else if (!isTemplate && (imageFile || imageUrl)) {
+      // 사용자 이미지 사용 상태 업데이트
+      setInvitation((prev) => {
+        const updatedState: InvitationState = {
+          ...prev,
+          isTemplate: false,
+          templateKey: '',
+          imageFile: imageFile!,
+          imageUrl: imageUrl!,
+        };
+        return updatedState;
+      });
+    } else {
+      console.error('유효한 템플릿 또는 이미지를 선택해주세요.');
+    }
+    console.log('Updated Invitation State:', invitation); // 확인용
   };
 
   return (
@@ -59,7 +83,8 @@ const CreateTemplate = () => {
               <PreviewFront
                 src={
                   isTemplate
-                    ? selectedTemplate?.template_src || template.EXAMPLE.template_src
+                    ? template[selectedTemplate as keyof typeof template]?.template_src ||
+                      template.EXAMPLE.template_src
                     : imageUrl || ''
                 }
                 alt="템플릿이미지"
@@ -70,7 +95,10 @@ const CreateTemplate = () => {
               <PreviewBack
                 isTemplate={isTemplate}
                 bgColor={
-                  isTemplate ? selectedTemplate?.bg_color || template.EXAMPLE.bg_color : 'white'
+                  isTemplate
+                    ? template[selectedTemplate as keyof typeof template]?.bg_color ||
+                      template.EXAMPLE.bg_color
+                    : 'white'
                 }
               />
               <p>뒷면</p>
@@ -89,11 +117,10 @@ const CreateTemplate = () => {
                   onChange={handleImageFileChange}
                 />
               </ImageItemBox>
-              {Object.keys(template).map((key) => {
-                const temp = template[key as keyof typeof template] as Template;
+              {Object.keys(template).map((key, index) => {
                 return (
-                  <ImageItemBox key={key} onClick={() => handleTemplateClick(temp)}>
-                    <ImageItem src={temp.template_src} />
+                  <ImageItemBox key={index} onClick={() => handleTemplateClick(key)}>
+                    <ImageItem src={template[key as keyof typeof template].template_src} />
                   </ImageItemBox>
                 );
               })}
