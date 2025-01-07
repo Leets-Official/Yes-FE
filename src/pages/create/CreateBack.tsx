@@ -12,7 +12,7 @@ const CreateBack = () => {
   const [message, setMessage] = useState('');
 
   return (
-    <InputContainer>
+    <Container>
       {/* TODO: 헤더 */}
       <div>헤더</div>
       <b>
@@ -20,57 +20,53 @@ const CreateBack = () => {
       </b>
       <ButtonWrapper>
         <Button color={theme.color.main} textColor="#fff" fullWidth>
-          다음
+          초대장 생성하기
         </Button>
       </ButtonWrapper>
+
       <AlignCenter>
         <InvitationBack title={title} location={location} message={message} />
         <Gap>
-          <InputField>
-            <div>제목</div>
-            <Input
-              width={'18.125rem'}
-              height={'2.3125rem'}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </InputField>
-          <InputField>
-            <div>일정</div>
+          <Field>
+            <label>제목</label>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          </Field>
+
+          <Field>
+            <label>일정</label>
             <DateInputWrapper>
               <DateInput />년 <DateInput />월 <DateInput />일 <DateInput />시 <DateInput />분
             </DateInputWrapper>
-          </InputField>
-          <InputField>
-            <div>장소</div>
-            <Input
-              width={'18.125rem'}
-              height={'2.3125rem'}
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-          </InputField>
-          <InputField>
-            <div>문구</div>
-            <TextArea
-              width={'18.125rem'}
-              height={'7rem'}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-          </InputField>
+          </Field>
+
+          <Field>
+            <label>장소</label>
+            <Input value={location} onChange={(e) => setLocation(e.target.value)} />
+          </Field>
+
+          <MessageField>
+            <label>문구</label>
+            <TextArea value={message} onChange={(e) => setMessage(e.target.value)} />
+          </MessageField>
         </Gap>
       </AlignCenter>
-    </InputContainer>
+    </Container>
   );
 };
 
 export default CreateBack;
 
-const InputContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.25rem;
+  margin-bottom: 6.12rem;
+  font-weight: 500;
+
+  input,
+  textarea {
+    font-weight: 500;
+  }
 
   b {
     text-align: left;
@@ -86,7 +82,7 @@ const ButtonWrapper = styled.div`
   width: 21.375rem;
 `;
 
-const AlignCenter = styled(InputContainer)`
+const AlignCenter = styled(Container)`
   align-items: center;
   gap: 1.81rem;
   z-index: 0;
@@ -98,9 +94,22 @@ const Gap = styled.div`
   gap: 1.06rem;
 `;
 
-const InputField = styled.div`
+const Field = styled.div`
   display: flex;
   gap: 1.69rem;
+  align-items: center;
+  font-size: 0.875rem;
+
+  label {
+    color: #3e3e3e;
+  }
+`;
+
+const MessageField = styled(Field)`
+  align-items: flex-start;
+  div {
+    margin-top: 1.06rem;
+  }
 `;
 
 const DateInput = styled.input`
@@ -120,8 +129,8 @@ const DateInputWrapper = styled.div`
   justify-content: center;
   border: 1px solid #cfcdcd;
   border-radius: 8px;
-  width: 18.125rem;
+  width: 15.125rem;
   height: 2.3125rem;
-  padding: 1px 2px;
-  gap: 0.2rem;
+  padding: 1px 1.5rem;
+  font-size: 0.875rem;
 `;

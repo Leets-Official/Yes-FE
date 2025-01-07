@@ -7,8 +7,9 @@ const StyledTextArea = styled.textarea<{
   border: 1px solid #cfcdcd;
   border-radius: 8px;
   resize: none;
-  width: ${(props) => props.width || '18.125rem'};
-  height: ${(props) => props.height || '7rem'};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  padding: 0.75rem 1.5rem;
 
   &:focus {
     outline: none;
@@ -22,12 +23,19 @@ const TextArea = ({
   value,
   onChange,
 }: {
-  width: string;
-  height: string;
+  width?: string;
+  height?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }) => {
-  return <StyledTextArea width={width} height={height} value={value} onChange={onChange} />;
+  return (
+    <StyledTextArea
+      width={width || '15.125rem'}
+      height={height || '7rem'}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 export default TextArea;

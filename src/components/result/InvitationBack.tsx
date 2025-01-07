@@ -13,14 +13,14 @@ const InvitationBack = ({
     <Container>
       <Content>
         <Title>{title}</Title>
-        <InfoFeild>
-          <b>일정</b>
-          <DateTime>2025. 03. 12 오후 5시</DateTime>
-        </InfoFeild>
-        <InfoFeild>
-          <b>장소</b>
-          <Location>{location}</Location>
-        </InfoFeild>
+        <Feild>
+          <div>일정</div>
+          <Info>2025. 03. 12 오후 5시</Info>
+        </Feild>
+        <Feild>
+          <div>장소</div>
+          <Info>{location}</Info>
+        </Feild>
         <Message>{message}</Message>
       </Content>
     </Container>
@@ -37,6 +37,8 @@ const Container = styled.div`
   // TODO: 템플릿 값을 참조하도록 설정
   background-color: #ff8383;
   color: #fff;
+  font-weight: 500;
+  font-size: 0.625rem;
 `;
 
 const Content = styled.div`
@@ -47,26 +49,26 @@ const Content = styled.div`
   font-size: 12px;
 `;
 
-const InfoFeild = styled.div`
+const Feild = styled.div`
   display: flex;
+  align-items: center;
   gap: 0.25rem;
   margin-left: 1.63rem;
 `;
 
-const DateTime = styled.div`
+const Info = styled.div`
   max-width: 12rem;
-`;
-
-const Location = styled.div`
-  max-width: 12rem;
+  font-weight: 500;
+  font-size: 0.8125rem;
 `;
 
 const Title = styled.div`
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1rem;
 `;
 
-const Message = styled.div`
-  display: flex;
-  margin-left: 1.63rem;
+const Message = styled(Info)`
+  width: 12rem;
+  word-break: break-all;
+  margin: 0 auto;
 `;
