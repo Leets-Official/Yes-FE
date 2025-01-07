@@ -11,19 +11,26 @@ import { useRecoilState } from 'recoil';
 const CreateFront = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
 
-  // 텍스트 영역의 값 (배열로 관리)
+  // 텍스트 초기화 함수
+  const initializeTextValues = () => {
+    return new Array(template[invitation.templateKey! as keyof typeof template].text_cnt).fill('');
+  };
+
+  // 텍스트 영역의 값 관리
   const [textValues, setTextValues] = useState<string[]>(
-    invitation.contents ||
-      new Array(template[invitation?.templateKey! as keyof typeof template].text_cnt).fill(''),
+    invitation.contents || initializeTextValues(),
   );
 
-  // (새로고침 후 이전에 입력된 텍스트가 있는 경우우)
+  // (뒤로가기 후 되돌아기) 템플릿 변경 시 텍스트 초기화
   useEffect(() => {
-    if (invitation.contents && invitation.contents.length > 0) {
-      setTextValues(invitation.contents);
-    }
-    console.log(invitation.templateKey);
-  }, [invitation.contents]);
+    const newTextValues = initializeTextValues();
+    setTextValues(newTextValues);
+
+    setInvitation((prev) => ({
+      ...prev,
+      contents: newTextValues,
+    }));
+  }, [invitation.templateKey]);
 
   // 텍스트 입력을 처리하는 함수
   const handleTextChange = (index: number, value: string) => {

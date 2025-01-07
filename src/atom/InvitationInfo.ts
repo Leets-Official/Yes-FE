@@ -31,20 +31,23 @@ export interface InvitationState {
   description: string;
 }
 
+// 초대장 초기값
+export const initialInvitation = {
+  step: 0,
+  nickname: '',
+  isTemplate: true,
+  templateKey: 'EXAMPLE',
+  imageFile: undefined,
+  imageUrl: '',
+  contents: [],
+  title: '',
+  date: '',
+  location: '',
+  description: '',
+};
+
 export const InvitationInfo = atom<InvitationState>({
   key: 'invitationInfo', // atom 고유 키 (local key)
-  default: {
-    step: 0,
-    nickname: '',
-    isTemplate: true,
-    templateKey: 'EXAMPLE',
-    imageFile: undefined,
-    imageUrl: '',
-    contents: [],
-    title: '',
-    date: '',
-    location: '',
-    description: '',
-  },
+  default: initialInvitation,
   effects_UNSTABLE: [persistAtom], // persistAtom을 통해 상태 지속화
 });
