@@ -71,6 +71,7 @@ const Title = styled.div`
 
 const Message = styled(Info)`
   width: 12rem;
+  white-space: pre-wrap;
   word-break: break-all;
   margin: 0 auto;
 `;
