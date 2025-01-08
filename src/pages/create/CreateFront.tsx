@@ -21,7 +21,7 @@ const CreateFront = () => {
     invitation.contents || initializeTextValues(),
   );
 
-  // (뒤로가기 후 되돌아기) 템플릿 변경 시 텍스트 초기화
+  // (뒤로가기 후 현 단계로 되돌아올 때) 템플릿 변경 시 텍스트 초기화
   useEffect(() => {
     const newTextValues = initializeTextValues();
     setTextValues(newTextValues);
@@ -111,7 +111,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   height: 100vh;
   width: 100vw;
   max-width: 480px;

@@ -41,7 +41,6 @@ const Logo = styled.img`
 `;
 
 const KakaoLoginButton = styled(Button)`
-  width: 80%;
-  margin: 2rem;
-  font-weight: 500;
+  width: 90%;
+  margin-bottom: 2.625rem;
 `;

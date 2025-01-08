@@ -10,6 +10,8 @@ const StyledTextArea = styled.textarea<{
   width: ${(props) => props.width || '18.125rem'};
   height: ${(props) => props.height || '7rem'};
 
+  padding: 0.75rem 1.5rem;
+
   &:focus {
     outline: none;
     box-shadow: none;

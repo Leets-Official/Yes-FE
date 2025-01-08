@@ -41,6 +41,6 @@ const Logo = styled.img`
 `;
 
 const HomeButton = styled(Button)`
-  width: 80%;
-  margin: 2rem;
+  width: 90%;
+  margin-bottom: 2.625rem;
 `;
