@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import LOGO from '../../assets/image/yes.svg'; // 로고 SVG 파일을 import
+import LOGO from '/image/yes.svg'; // 로고 SVG 파일을 import
 import Button from '../../components/common/Button';
 import { HomeHeader } from '../../components/layout/HomeHeader';
+import theme from '../../style/theme';
 
 export const Login = () => {
   // oauth 요청 URL
@@ -15,7 +16,7 @@ export const Login = () => {
     <Container>
       <HomeHeader />
       <Logo src={LOGO} />
-      <KakaoLoginButton color="#ffe479" onClick={handleLogin}>
+      <KakaoLoginButton color={theme.color.kakao} onClick={handleLogin}>
         카카오로 로그인하기
       </KakaoLoginButton>
     </Container>
@@ -40,7 +41,6 @@ const Logo = styled.img`
 `;
 
 const KakaoLoginButton = styled(Button)`
-  width: 80%;
-  margin: 2rem;
-  font-weight: 400;
+  width: 90%;
+  margin-bottom: 2.625rem;
 `;

@@ -9,6 +9,7 @@ const StyledInput = styled.input<{
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   padding: 0 1.5rem;
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
@@ -21,11 +22,15 @@ const Input = ({
   height,
   value,
   onChange,
+  placeholder,
+  maxLength,
 }: {
   width?: string;
   height?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  maxLength?: number;
 }) => {
   return (
     <StyledInput
@@ -33,6 +38,8 @@ const Input = ({
       height={height || '2.3125rem'}
       value={value}
       onChange={onChange}
+      placeholder={placeholder}
+      maxLength={maxLength}
     />
   );
 };

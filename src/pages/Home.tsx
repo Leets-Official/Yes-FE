@@ -1,21 +1,24 @@
 import styled from 'styled-components';
-import LOGO from '../assets/image/yes.svg';
+import LOGO from '/image/yes.svg';
 import { useNavigate } from 'react-router-dom';
 import { HomeHeader } from '../components/layout/HomeHeader';
 import Button from '../components/common/Button';
+import theme from '../style/theme';
 
 export const Home = () => {
   const navigate = useNavigate();
 
   const handleMakeInvitation = () => {
-    navigate('/invite'); // 임시 url
+    navigate('/invitation/create');
   };
 
   return (
     <Container>
       <HomeHeader />
       <Logo src={LOGO} />
-      <HomeButton onClick={handleMakeInvitation}>초대장 만들기</HomeButton>
+      <HomeButton color={theme.color.main} textColor="white" onClick={handleMakeInvitation}>
+        초대장 만들기
+      </HomeButton>
     </Container>
   );
 };
@@ -38,6 +41,6 @@ const Logo = styled.img`
 `;
 
 const HomeButton = styled(Button)`
-  width: 80%;
-  margin: 2rem;
+  width: 90%;
+  margin-bottom: 2.625rem;
 `;
