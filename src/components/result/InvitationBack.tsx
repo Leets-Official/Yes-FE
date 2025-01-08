@@ -15,14 +15,14 @@ const InvitationBack = ({
     <Container>
       <Content>
         <Title>{title}</Title>
-        <Feild>
+        <Field>
           <div>일정</div>
           <Info>{date}</Info>
-        </Feild>
-        <Feild>
+        </Field>
+        <Field>
           <div>장소</div>
           <Info>{location}</Info>
-        </Feild>
+        </Field>
         <Message>{message}</Message>
       </Content>
     </Container>
@@ -51,7 +51,7 @@ const Content = styled.div`
   font-size: 12px;
 `;
 
-const Feild = styled.div`
+const Field = styled.div`
   display: flex;
   align-items: center;
   gap: 0.25rem;

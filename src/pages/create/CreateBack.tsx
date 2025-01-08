@@ -6,6 +6,8 @@ import InvitationBack from '../../components/result/InvitationBack';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
 
+type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
+
 const CreateBack = () => {
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
@@ -18,7 +20,7 @@ const CreateBack = () => {
     minute: '',
   });
 
-  const handleDateChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = (field: DateField) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate((prev) => ({
       ...prev,
       [field]: e.target.value,
