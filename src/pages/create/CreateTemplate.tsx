@@ -112,7 +112,7 @@ const Container = styled.div`
   height: 100vh;
   width: 100vw;
   max-width: 480px;
-  padding: 0 1rem 1.6rem 1rem;
+  padding: 0 5%;
   box-sizing: border-box;
 `;
 
@@ -145,7 +145,7 @@ const SelectForm = styled.div`
 `;
 
 const NextButton = styled(Button)`
-  width: calc(100% - 1.5rem);
   max-width: 440px;
   margin: 0 auto;
+  margin-bottom: 2.625rem;
 `;
