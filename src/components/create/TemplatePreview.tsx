@@ -7,6 +7,7 @@ import { template } from './../../data/Template';
 interface TemplatePreviewProps {
   isTemplate: boolean;
   selectedTemplate?: string;
+  inputRef: React.RefObject<HTMLInputElement>;
   imageUrl?: string | null;
   handleTemplateClick: (key: string) => void;
   handleInputClick: () => void;
@@ -16,6 +17,7 @@ interface TemplatePreviewProps {
 const TemplatePreview: React.FC<TemplatePreviewProps> = ({
   isTemplate,
   selectedTemplate,
+  inputRef,
   imageUrl,
   handleTemplateClick,
   handleInputClick,
@@ -55,6 +57,7 @@ const TemplatePreview: React.FC<TemplatePreviewProps> = ({
             <TbPhotoPlus color="white" strokeWidth={1.5} size={17} />
             <input
               type="file"
+              ref={inputRef}
               style={{ display: 'none' }}
               accept="image/*"
               onChange={handleImageFileChange}

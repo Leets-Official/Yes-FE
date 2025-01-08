@@ -82,6 +82,7 @@ const CreateTemplate = () => {
           <TemplatePreview
             isTemplate={isTemplate}
             selectedTemplate={selectedTemplate}
+            inputRef={fileInputRef}
             imageUrl={imageUrl}
             handleTemplateClick={handleTemplateClick}
             handleInputClick={handleInputClick}
