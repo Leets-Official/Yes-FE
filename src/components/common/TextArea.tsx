@@ -7,9 +7,8 @@ const StyledTextArea = styled.textarea<{
   border: 1px solid #cfcdcd;
   border-radius: 8px;
   resize: none;
-  width: ${(props) => props.width || '18.125rem'};
-  height: ${(props) => props.height || '7rem'};
-
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   padding: 0.75rem 1.5rem;
 
   &:focus {
@@ -25,16 +24,16 @@ const TextArea = ({
   onChange,
   maxLength,
 }: {
-  width: string;
-  height: string;
+  width?: string;
+  height?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   maxLength?: number;
 }) => {
   return (
     <StyledTextArea
-      width={width}
-      height={height}
+      width={width || '15.125rem'}
+      height={height || '7rem'}
       value={value}
       onChange={onChange}
       maxLength={maxLength}
