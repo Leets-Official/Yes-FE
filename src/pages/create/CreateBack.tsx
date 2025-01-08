@@ -11,7 +11,7 @@ type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 const CreateBack = () => {
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
-  const [message, setMessage] = useState('');
+  const [description, setDescription] = useState('');
   const [date, setDate] = useState({
     year: '',
     month: '',
@@ -44,7 +44,7 @@ const CreateBack = () => {
         <InvitationBack
           title={title}
           location={location}
-          message={message}
+          description={description}
           date={`${date.year}년 ${date.month}월 ${date.day}일 ${date.hour}시 ${date.minute}분`}
         />
         <Gap>
@@ -74,10 +74,10 @@ const CreateBack = () => {
             <Input value={location} onChange={(e) => setLocation(e.target.value)} />
           </Field>
 
-          <MessageField>
+          <DescriptionField>
             <label>문구</label>
-            <TextArea value={message} onChange={(e) => setMessage(e.target.value)} />
-          </MessageField>
+            <TextArea value={description} onChange={(e) => setDescription(e.target.value)} />
+          </DescriptionField>
         </Gap>
       </AlignCenter>
     </Container>
@@ -135,7 +135,7 @@ const Field = styled.div`
   }
 `;
 
-const MessageField = styled(Field)`
+const DescriptionField = styled(Field)`
   align-items: flex-start;
   div {
     margin-top: 1.06rem;

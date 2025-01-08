@@ -4,12 +4,12 @@ const InvitationBack = ({
   title,
   date,
   location,
-  message,
+  description,
 }: {
   title: string;
   date: string;
   location: string;
-  message: string;
+  description: string;
 }) => {
   return (
     <Container>
@@ -23,7 +23,7 @@ const InvitationBack = ({
           <div>장소</div>
           <Info>{location}</Info>
         </Field>
-        <Message>{message}</Message>
+        <Description>{description}</Description>
       </Content>
     </Container>
   );
@@ -69,7 +69,7 @@ const Title = styled.div`
   font-size: 1rem;
 `;
 
-const Message = styled(Info)`
+const Description = styled(Info)`
   width: 12rem;
   white-space: pre-wrap;
   word-break: break-all;
