@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import { InvitationHeader } from '../../components/layout/InvitationHeader';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
-import { TbPhotoPlus } from 'react-icons/tb';
-import { template } from './../../data/Template';
 import { useRecoilState } from 'recoil';
 import { InvitationState, InvitationInfo } from './../../atom/InvitationInfo';
+import TemplatePreview from '../../components/create/TemplatePreview';
 
 const CreateTemplate = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
@@ -80,54 +79,14 @@ const CreateTemplate = () => {
       <MainContent>
         <MainTitle>원하는 템플릿을 선택해주세요.</MainTitle>
         <SelectForm>
-          <PreviewContainer>
-            <Preview>
-              <PreviewFront
-                src={
-                  isTemplate
-                    ? template[selectedTemplate as keyof typeof template]?.template_src ||
-                      template.EXAMPLE.template_src
-                    : imageUrl || ''
-                }
-                alt="템플릿이미지"
-              />
-              <p>앞면</p>
-            </Preview>
-            <Preview>
-              <PreviewBack
-                isTemplate={isTemplate}
-                bgColor={
-                  isTemplate
-                    ? template[selectedTemplate as keyof typeof template]?.bg_color ||
-                      template.EXAMPLE.bg_color
-                    : 'white'
-                }
-              />
-              <p>뒷면</p>
-            </Preview>
-          </PreviewContainer>
-          <SelectContainer>
-            <ImageList>
-              <ImageItemBox onClick={handleInputClick}>
-                <TbPhotoPlus color="white" strokeWidth={1.5} size={17} />
-                {/* 파일 input 요소 (숨겨짐) */}
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: 'none' }}
-                  accept="image/*"
-                  onChange={handleImageFileChange}
-                />
-              </ImageItemBox>
-              {Object.keys(template).map((key, index) => {
-                return (
-                  <ImageItemBox key={index} onClick={() => handleTemplateClick(key)}>
-                    <ImageItem src={template[key as keyof typeof template].template_src} />
-                  </ImageItemBox>
-                );
-              })}
-            </ImageList>
-          </SelectContainer>
+          <TemplatePreview
+            isTemplate={isTemplate}
+            selectedTemplate={selectedTemplate}
+            imageUrl={imageUrl}
+            handleTemplateClick={handleTemplateClick}
+            handleInputClick={handleInputClick}
+            handleImageFileChange={handleImageFileChange}
+          />
         </SelectForm>
       </MainContent>
       <NextButton
@@ -182,81 +141,6 @@ const SelectForm = styled.div`
   align-items: flex-start;
   width: 100%;
   gap: 2.1rem;
-`;
-
-const PreviewContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-  gap: 0.75rem;
-`;
-
-const Preview = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-`;
-
-const PreviewFront = styled.img`
-  width: 166px;
-  height: 207px;
-  border-radius: 8px;
-`;
-
-const PreviewBack = styled.div<{ isTemplate: boolean; bgColor: string }>`
-  width: 166px;
-  height: 207px;
-
-  border-radius: 8px;
-  border: ${(props) => (props.isTemplate ? 'none' : '1px solid #cfcdcd')};
-  background-color: ${(props) => props.bgColor};
-`;
-
-const SelectContainer = styled.div`
-  max-width: 90%;
-  height: 4rem;
-  padding: 0.5rem;
-  margin-left: 1rem;
-  overflow-x: scroll;
-  &::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${theme.color.main};
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #ffffff; // 스크롤바 트랙(배경) 색상
-  }
-`;
-
-const ImageList = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const ImageItemBox = styled.div<{ onClick: React.MouseEventHandler<HTMLDivElement> }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 49px;
-  height: 38px;
-  border-radius: 8px;
-  background-color: #787878;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
-const ImageItem = styled.img`
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  object-fit: cover;
 `;
 
 const NextButton = styled(Button)`
