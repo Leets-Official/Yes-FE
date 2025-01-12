@@ -1,6 +1,15 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const AttendeeList = ({ attendees }: { attendees: string[] }) => {
+  const [colors, setColors] = useState<string[]>([]);
+
+  useEffect(() => {
+    const generateColors = attendees.map(() => randomColor());
+    setColors(generateColors);
+  }, [attendees]); // attendees가 변경될 때만 색상 계산
+
+  // 랜덤 색상 생성 함수
   const randomColor = () => {
     const r = Math.floor(Math.random() * 56) + 200; // 200 ~ 255
     const g = Math.floor(Math.random() * 56) + 200; // 200 ~ 255
@@ -14,7 +23,7 @@ const AttendeeList = ({ attendees }: { attendees: string[] }) => {
     <Container>
       <Title>참석자 목록</Title>
       {attendees.map((attendee, index) => (
-        <AttendeeName key={index} color={randomColor()}>
+        <AttendeeName key={index} color={colors[index]}>
           {attendee}
         </AttendeeName>
       ))}
