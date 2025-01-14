@@ -50,8 +50,8 @@ const CreateFront = () => {
     const heightInPixels = height;
 
     // 한 글자의 평균 너비와 한 줄의 높이를 fontSize를 기준으로 계산
-    const charsPerLine = Math.floor(widthInPixels / (fontSize * 1.1)); // 글자당 1배의 공간을 가정
-    const linesPerArea = Math.floor(heightInPixels / (fontSize * 1.55)); // 줄 높이 1.2배로 가정
+    const charsPerLine = Math.floor(widthInPixels / (fontSize * 1)); // 글자당 1배의 공간을 가정
+    const linesPerArea = Math.floor(heightInPixels / (fontSize * 1.2)); // 줄 높이 1.2배로 가정
 
     return charsPerLine * linesPerArea;
   };
@@ -86,6 +86,7 @@ const CreateFront = () => {
                       handleTextChange(index, e.target.value)
                     }
                     maxLength={length}
+                    font={template[invitation.templateKey as keyof typeof template].font}
                   />
                 </InvitationText>
               );
@@ -155,13 +156,15 @@ const InvitationText = styled.div<{ top: number; left: number }>`
   left: ${(props) => `${props.left}px`};
 `;
 
-const InvitationTextArea = styled(TextArea)`
+const InvitationTextArea = styled(TextArea)<{ font: string }>`
   overflow: hidden;
-  padding: 0.1rem 0.25rem;
+  padding: 0.2rem 0.25rem;
   box-sizing: border-box;
+  text-align: center;
   font-size: 11px;
   border-radius: 4px;
   border: 1px solid #787878;
+  font-family: ${(props) => props.font};
 `;
 
 const NextButton = styled(Button)`

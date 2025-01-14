@@ -2,6 +2,7 @@ export const template = {
   ALIEN: {
     template_src: '/image/Invi_Alien.png', // 1. 템플릿 이미지 파일 (텍스트 X)
     template_pre_src: '/image/Pre_Invi_Alien.png', // 2. 템플릿 미리보기 이미지 파일 (텍스트 O)
+    font: 'BMHANNAPro',
     text_cnt: 4, // 3. 포함되는 텍스트창 개수
     text_position_size: [
       [78, 83, 167, 25],
@@ -15,6 +16,7 @@ export const template = {
   RABBIT: {
     template_src: '/image/Invi_Rabbit.png',
     template_pre_src: '/image/Pre_Invi_Rabbit.png',
+    font: 'CookieRun-Regular',
     text_cnt: 5,
     text_position_size: [
       [83, 98, 111, 34],
@@ -29,6 +31,7 @@ export const template = {
   CYBER: {
     template_src: '/image/Invi_Cyber.png',
     template_pre_src: '/image/Pre_Invi_Cyber.png',
+    font: 'DOSIyagiMedium',
     text_cnt: 4,
     text_position_size: [
       [109, 81, 166, 28],
@@ -42,6 +45,7 @@ export const template = {
   CHIRASHI: {
     template_src: '/image/Invi_Chirashi.png',
     template_pre_src: '/image/Pre_Invi_Chirashi.png',
+    font: 'Pretendard-Regular',
     text_cnt: 3,
     text_position_size: [
       [43, 82, 221, 59],
@@ -54,6 +58,7 @@ export const template = {
   PRINCESS: {
     template_src: '/image/Invi_Princess.png',
     template_pre_src: '/image/Pre_Invi_Princess.png',
+    font: 'Ownglyph_ParkDaHyun',
     text_cnt: 1,
     text_position_size: [[203, 43, 235, 65]],
     bg_color: '#FF5596',
@@ -62,6 +67,7 @@ export const template = {
   RECEIPT: {
     template_src: '/image/Invi_Receipt.png',
     template_pre_src: '/image/Pre_Invi_Receipt.png',
+    font: 'Pretendard',
     text_cnt: 4,
     text_position_size: [
       [151, 98, 124, 25],
