@@ -59,7 +59,7 @@ const Container = styled.div`
   width: 100vw;
   max-width: 480px;
   box-sizing: border-box;
-  padding: 0 1.188rem;
+  padding: 0 5%;
 `;
 
 const Title = styled.div`

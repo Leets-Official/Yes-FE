@@ -5,6 +5,7 @@ import TextArea from '../../components/common/TextArea';
 import InvitationBack from '../../components/result/InvitationBack';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
+import { InvitationHeader } from '../../components/layout/InvitationHeader';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
@@ -29,8 +30,7 @@ const CreateBack = () => {
 
   return (
     <Container>
-      {/* TODO: 헤더 */}
-      <div>헤더</div>
+      <InvitationHeader />
       <b>
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
       </b>
@@ -94,6 +94,11 @@ const Container = styled.div`
   gap: 2.25rem;
   margin-bottom: 6.12rem;
   font-weight: 500;
+  height: 100vh;
+  width: 100vw;
+  max-width: 480px;
+  box-sizing: border-box;
+  padding: 0 5%;
 
   input,
   textarea {
@@ -107,16 +112,20 @@ const Container = styled.div`
 
 const ButtonWrapper = styled.div`
   position: fixed;
-  bottom: 2rem;
+  bottom: 2.7rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  width: 21.375rem;
+  width: 90%;
 `;
 
-const AlignCenter = styled(Container)`
+const AlignCenter = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6.12rem;
+  font-weight: 500;
   align-items: center;
-  gap: 1.81rem;
+  gap: 2.25rem;
   z-index: 0;
 `;
 
