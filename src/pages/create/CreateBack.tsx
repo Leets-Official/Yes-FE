@@ -35,13 +35,15 @@ const CreateBack = () => {
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
       </b>
       <ButtonWrapper>
-        <Button color={theme.color.main} textColor="#fff" fullWidth>
+        {/* TODO: onClick 함수 수정 */}
+        <Button color={theme.color.main} textColor="#fff" fullWidth onClick={() => {}}>
           초대장 생성하기
         </Button>
       </ButtonWrapper>
 
       <AlignCenter>
         <InvitationBack
+          size="small"
           title={title}
           location={location}
           description={description}
