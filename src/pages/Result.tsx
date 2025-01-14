@@ -55,12 +55,18 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
+  width: 100vw;
+  max-width: 480px;
+  box-sizing: border-box;
+  padding: 0 1.188rem;
 `;
 
 const Title = styled.div`
   color: #3e3e3e;
   font-size: 1.25rem;
   font-weight: 600;
+  margin-top: 0.75rem;
 `;
 
 const Card = styled.div<{ isTouched: boolean }>`

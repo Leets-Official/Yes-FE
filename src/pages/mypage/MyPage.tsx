@@ -19,6 +19,7 @@ const Container = styled.div`
   align-items: center;
   height: 100vh;
   width: 100vw;
+  gap: 2.625rem;
   max-width: 480px;
   overflow-y: scroll;
   -ms-overflow-style: none;

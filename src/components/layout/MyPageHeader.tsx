@@ -17,11 +17,9 @@ export const MyPageHeader = () => {
 
   return (
     <Section>
-      <FiChevronLeft
+      <LeftButton
         className={
-          currentUrl === '/mypage/received' || currentUrl === '/mypage/send'
-            ? 'back'
-            : 'back hidden'
+          currentUrl === '/mypage/received' || currentUrl === '/mypage/send' ? 'visible' : 'hidden'
         }
         strokeWidth={2}
         size={24}
@@ -40,9 +38,7 @@ export const MyPageHeader = () => {
       </HeaderTitle>
       <CloseIcon
         className={
-          currentUrl === '/mypage/received' || currentUrl === '/mypage/send'
-            ? 'back hidden'
-            : 'back'
+          currentUrl === '/mypage/received' || currentUrl === '/mypage/send' ? 'hidden' : 'visible'
         }
         strokeWidth={1}
         size={28}
@@ -58,11 +54,13 @@ const Section = styled.section`
   justify-content: space-between;
   padding: 1rem 0;
   width: 100%;
-  margin-bottom: 2.625rem;
+`;
 
-  > svg.back.hidden {
-    visibility: hidden;
-  }
+const LeftButton = styled(FiChevronLeft)`
+  width: 1.75rem;
+  opacity: ${(props) => (props.className === 'hidden' ? 0 : 1)};
+  pointer-events: ${(props) => (props.className === 'hidden' ? 'none' : 'auto')};
+  visibility: visible;
 `;
 
 const HeaderTitle = styled.div`
@@ -76,6 +74,5 @@ const HeaderTitle = styled.div`
 `;
 
 const CloseIcon = styled(IoIosClose)`
-  margin-right: 1.19rem;
   cursor: pointer;
 `;
