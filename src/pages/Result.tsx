@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import InvitationFront from '../components/result/InvitationFront';
 import InvitationBack from '../components/result/InvitationBack';
 import ShareList from '../components/result/ShareList';
+import { MyPageHeader } from '../components/layout/MyPageHeader';
 
 // 임시 데이터
 const data = {
@@ -20,6 +21,7 @@ const Result = () => {
 
   return (
     <>
+      <MyPageHeader />
       <div>초대장 생성 완료!</div>
       <Card
         onClick={() => {

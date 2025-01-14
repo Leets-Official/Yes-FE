@@ -38,7 +38,7 @@ export const MyPageHeader = () => {
           <img src="/image/small_yes.svg" />
         )}
       </HeaderTitle>
-      <IoIosClose
+      <CloseIcon
         className={
           currentUrl === '/mypage/received' || currentUrl === '/mypage/send'
             ? 'back hidden'
@@ -66,9 +66,16 @@ const Section = styled.section`
 `;
 
 const HeaderTitle = styled.div`
+  display: flex;
+  align-items: center;
   color: #3e3e3e;
   font-family: 'Pretendard';
   font-size: 16px;
   font-weight: 500;
   margin: 0 auto;
+`;
+
+const CloseIcon = styled(IoIosClose)`
+  margin-right: 1.19rem;
+  cursor: pointer;
 `;
