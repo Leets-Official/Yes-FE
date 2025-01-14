@@ -20,9 +20,9 @@ const Result = () => {
   const [isTouched, setIsTouched] = useState(false);
 
   return (
-    <>
+    <Container>
       <MyPageHeader />
-      <div>초대장 생성 완료!</div>
+      <Title>초대장 생성 완료!</Title>
       <Card
         onClick={() => {
           setIsTouched((prev) => !prev);
@@ -43,13 +43,25 @@ const Result = () => {
           />
         </CardBack>
       </Card>
-      <div>초대장을 터치해주세요!</div>
+      <Description>초대장을 터치해주세요!</Description>
       <ShareList />
-    </>
+    </Container>
   );
 };
 
 export default Result;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Title = styled.div`
+  color: #3e3e3e;
+  font-size: 1.25rem;
+  font-weight: 600;
+`;
 
 const Card = styled.div<{ isTouched: boolean }>`
   position: relative;
@@ -75,4 +87,10 @@ const CardFront = styled(DefaultCardStyle)``;
 
 const CardBack = styled(DefaultCardStyle)`
   transform: rotateY(180deg);
+`;
+
+const Description = styled.div`
+  color: #cfcdcd;
+  font-size: 0.8125rem;
+  font-weight: 500;
 `;
