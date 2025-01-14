@@ -7,6 +7,7 @@ import { template } from '../../data/Template';
 import TextArea from '../../components/common/TextArea';
 import { InvitationState, InvitationInfo } from '../../atom/InvitationInfo';
 import { useRecoilState } from 'recoil';
+import { useStepStateReset } from '../../hooks/useStepStateReset';
 
 const CreateFront = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
@@ -64,6 +65,8 @@ const CreateFront = () => {
       step: 3,
     }));
   };
+
+  useStepStateReset();
 
   return (
     <Container>

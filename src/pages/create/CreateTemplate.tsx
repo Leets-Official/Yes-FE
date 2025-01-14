@@ -6,6 +6,7 @@ import theme from '../../style/theme';
 import { useRecoilState } from 'recoil';
 import { InvitationState, InvitationInfo } from './../../atom/InvitationInfo';
 import TemplatePreview from '../../components/create/TemplatePreview';
+import { useStepStateReset } from '../../hooks/useStepStateReset';
 
 const CreateTemplate = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
@@ -72,6 +73,8 @@ const CreateTemplate = () => {
     }
     console.log('Updated Invitation State:', invitation); // 확인용
   };
+
+  useStepStateReset();
 
   return (
     <Container>
