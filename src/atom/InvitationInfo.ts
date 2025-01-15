@@ -36,7 +36,7 @@ export const initialInvitation = {
   step: 0,
   nickname: '',
   isTemplate: true,
-  templateKey: 'EXAMPLE',
+  templateKey: 'ALIEN',
   imageFile: undefined,
   imageUrl: '',
   contents: [],

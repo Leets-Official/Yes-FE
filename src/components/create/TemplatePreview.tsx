@@ -30,8 +30,7 @@ const TemplatePreview: React.FC<TemplatePreviewProps> = ({
           <PreviewFront
             src={
               isTemplate
-                ? template[selectedTemplate as keyof typeof template]?.template_src ||
-                  template.EXAMPLE.template_src
+                ? template[selectedTemplate as keyof typeof template]?.template_pre_src
                 : imageUrl || ''
             }
             alt="템플릿이미지"
@@ -42,10 +41,7 @@ const TemplatePreview: React.FC<TemplatePreviewProps> = ({
           <PreviewBack
             isTemplate={isTemplate}
             bgColor={
-              isTemplate
-                ? template[selectedTemplate as keyof typeof template]?.bg_color ||
-                  template.EXAMPLE.bg_color
-                : 'white'
+              isTemplate ? template[selectedTemplate as keyof typeof template]?.bg_color : 'white'
             }
           />
           <p>뒷면</p>
@@ -65,7 +61,7 @@ const TemplatePreview: React.FC<TemplatePreviewProps> = ({
           </ImageItemBox>
           {Object.keys(template).map((key, index) => (
             <ImageItemBox key={index} onClick={() => handleTemplateClick(key)}>
-              <ImageItem src={template[key as keyof typeof template].template_src} />
+              <ImageItem src={template[key as keyof typeof template].template_pre_src} />
             </ImageItemBox>
           ))}
         </ImageList>
@@ -80,6 +76,7 @@ const PreviewContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   margin: 0 auto;
   gap: 0.75rem;
 
@@ -115,16 +112,7 @@ const SelectContainer = styled.div`
   margin-right: auto;
   overflow-x: scroll;
   &::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${theme.color.main};
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #ffffff; // 스크롤바 트랙(배경) 색상
+    display: none;
   }
 `;
 

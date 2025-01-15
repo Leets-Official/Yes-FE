@@ -5,6 +5,7 @@ import theme from '../../style/theme';
 import Input from '../../components/common/Input';
 import { useRecoilState } from 'recoil';
 import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
+import { useResetStepState } from '../../hooks/useResetStepState';
 
 const CreateNickName = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
@@ -18,6 +19,8 @@ const CreateNickName = () => {
   const handleNextButtonClick = () => {
     setInvitation((prev) => ({ ...prev, step: 1 }));
   };
+
+  useResetStepState();
 
   return (
     <Container>

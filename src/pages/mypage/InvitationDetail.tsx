@@ -6,8 +6,8 @@ import { template } from '../../data/Template';
 
 const data = {
   id: 0,
-  img: '/image/template_example.png',
-  templateKey: 'EXAMPLE' as keyof typeof template,
+  img: '/image/Pre_Invi_Princess.png',
+  templateKey: 'PRINCESS' as keyof typeof template,
   title: '연말파티 초대장',
   date: '2024.12.25',
   location: '강남역 어딘가',

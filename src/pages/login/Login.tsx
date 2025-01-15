@@ -36,7 +36,7 @@ const Container = styled.div`
 
 const Logo = styled.img`
   width: 100%;
-  max-width: 200px;
+  max-width: 211px;
   height: auto;
 `;
 
