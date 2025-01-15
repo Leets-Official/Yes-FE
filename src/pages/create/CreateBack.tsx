@@ -5,7 +5,7 @@ import TextArea from '../../components/common/TextArea';
 import InvitationBack from '../../components/result/InvitationBack';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
-import { useStepStateReset } from '../../hooks/useStepStateReset';
+import { useResetStepState } from '../../hooks/useResetStepState';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
@@ -28,7 +28,7 @@ const CreateBack = () => {
     }));
   };
 
-  useStepStateReset();
+  useResetStepState();
 
   return (
     <Container>

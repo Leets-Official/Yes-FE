@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { InvitationInfo } from '../atom/InvitationInfo';
 import { useNavigate } from 'react-router-dom';
 
-export const useStepStateReset = () => {
+export const useResetStepState = () => {
   const navigate = useNavigate();
   const [invitation, setInvitation] = useRecoilState(InvitationInfo); // 초대장 정보
 
