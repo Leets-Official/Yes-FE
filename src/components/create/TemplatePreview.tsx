@@ -112,16 +112,7 @@ const SelectContainer = styled.div`
   margin-right: auto;
   overflow-x: scroll;
   &::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${theme.color.main};
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #ffffff; // 스크롤바 트랙(배경) 색상
+    display: none;
   }
 `;
 
