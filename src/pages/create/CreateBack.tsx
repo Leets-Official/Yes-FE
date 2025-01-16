@@ -6,6 +6,7 @@ import InvitationBack from '../../components/result/InvitationBack';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
 import { InvitationHeader } from '../../components/layout/InvitationHeader';
+import { useResetStepState } from '../../hooks/useResetStepState';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
@@ -27,6 +28,8 @@ const CreateBack = () => {
       [field]: e.target.value,
     }));
   };
+
+  useResetStepState();
 
   return (
     <Container>

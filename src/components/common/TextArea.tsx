@@ -23,13 +23,14 @@ const TextArea = ({
   value,
   onChange,
   maxLength,
+  ...props
 }: {
   width?: string;
   height?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   maxLength?: number;
-}) => {
+} & React.TextareaHTMLAttributes<HTMLTextAreaElement>) => {
   return (
     <StyledTextArea
       width={width || '15.125rem'}
@@ -37,6 +38,7 @@ const TextArea = ({
       value={value}
       onChange={onChange}
       maxLength={maxLength}
+      {...props}
     />
   );
 };
