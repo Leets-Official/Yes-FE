@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TextArea from '../../components/common/TextArea';
 import { template } from '../../data/Template';
-import { InvitationState } from '../../atom/InvitationInfo';
+import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
+import { useRecoilValue } from 'recoil';
 
 interface TemplateFrontProps {
   templateKey: keyof typeof template;
@@ -15,6 +16,7 @@ const TemplateFront: React.FC<TemplateFrontProps> = ({
   invitation,
   setInvitation,
 }) => {
+  const { step } = useRecoilValue(InvitationInfo);
   // 텍스트 초기화 함수
   const initializeTextValues = () => {
     return new Array(template[templateKey].text_cnt).fill('');
@@ -60,10 +62,10 @@ const TemplateFront: React.FC<TemplateFrontProps> = ({
 
   return (
     <TemplateFrontContainer src={template[templateKey].template_src}>
-      {template[templateKey].text_position_size.map((el, index) => {
-        const length = calculateMaxLength(el[2], el[3], 11);
+      {template[templateKey].text_attr.map((el, index) => {
+        const length = calculateMaxLength(el[2] as number, el[3] as number, el[4] as number);
         return (
-          <InvitationText key={index} top={el[0]} left={el[1]}>
+          <InvitationText key={index} top={el[0] as number} left={el[1] as number}>
             <InvitationTextArea
               width={`${el[2]}px`}
               height={`${el[3]}px`}
@@ -73,6 +75,9 @@ const TemplateFront: React.FC<TemplateFrontProps> = ({
               }
               maxLength={length}
               font={template[templateKey].font}
+              fontSize={el[4] as number}
+              fontColor={el[5] as string}
+              step={step}
             />
           </InvitationText>
         );
@@ -100,13 +105,22 @@ const InvitationText = styled.div<{ top: number; left: number }>`
   left: ${(props) => `${props.left}px`};
 `;
 
-const InvitationTextArea = styled(TextArea)<{ font: string }>`
+const InvitationTextArea = styled(TextArea)<{
+  font: string;
+  fontSize: number;
+  fontColor: string;
+  step: number;
+}>`
   overflow: hidden;
+  background-color: inherit;
   padding: 0.2rem 0.25rem;
   box-sizing: border-box;
   text-align: center;
   font-size: 11px;
   border-radius: 4px;
-  border: 1px solid #787878;
+  // 2단계 경우에만, textarea border 존재재
+  border: ${(props) => (props.step == 2 ? '1px solid #787878' : 'none')};
   font-family: ${(props) => props.font};
+  font-size: ${(props) => `${props.fontSize}px`};
+  color: ${(props) => props.fontColor};
 `;
