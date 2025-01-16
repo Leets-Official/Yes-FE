@@ -3,15 +3,11 @@ import { TbUserCircle } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 
 export const HomeHeader = () => {
-  const currentUrl = window.location.href.split('/').reverse()[0];
-
   return (
     <Section>
-      {currentUrl === 'home' && (
-        <MyPageLink to="/mypage">
-          <TbUserCircle strokeWidth={1} color="#3E3E3E" />
-        </MyPageLink>
-      )}
+      <MyPageLink to="/mypage">
+        <TbUserCircle strokeWidth={1} color="#3E3E3E" />
+      </MyPageLink>
     </Section>
   );
 };

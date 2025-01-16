@@ -20,7 +20,7 @@ const ErrorPage = () => {
 
   return (
     <Container>
-      <BiSolidMessageError color={theme.color.main} size={30} />
+      <BiSolidMessageError color={theme.color.main} size={56} />
       <Phrase>존재하지 않는 페이지입니다.</Phrase>
       <Button
         onClick={handleBackStep}
