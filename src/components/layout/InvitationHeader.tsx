@@ -36,7 +36,7 @@ const Section = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 1rem 0;
   width: 100%;
 
   > svg.back.hidden {

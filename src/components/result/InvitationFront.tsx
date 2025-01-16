@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
-  width: 300px;
-  height: 500px;
-  background-color: #000;
+  width: 21.375rem;
+  height: 26.6875rem;
+  border-radius: 0.5rem;
+  background-color: #ff8383;
   color: #fff;
+  font-weight: 500;
 `;
 
 const InvitationFront = () => {
