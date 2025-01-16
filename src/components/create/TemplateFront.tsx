@@ -91,6 +91,7 @@ const TemplateFrontContainer = styled.div<{ src: string }>`
   width: 321px;
   height: 401px;
   border-radius: 8px;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const InvitationText = styled.div<{ top: number; left: number }>`

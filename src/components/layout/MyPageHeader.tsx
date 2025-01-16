@@ -54,6 +54,9 @@ const Section = styled.section`
   justify-content: space-between;
   padding: 1rem 0;
   width: 100%;
+  max-width: 480px;
+  z-index: 1;
+  background-color: white;
 `;
 
 const LeftButton = styled(FiChevronLeft)`

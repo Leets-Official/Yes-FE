@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import InvitationOverview from '../../components/mypage/InvitationOverview';
 import styled from 'styled-components';
-import { FiChevronRight } from 'react-icons/fi';
 
 // 예시 데이터
 const data = [
@@ -78,7 +77,6 @@ const InvitationList = ({ type }: { type: string }) => {
     <Container key={index}>
       <Header>
         <div className="made-date">{date}</div>
-        <FiChevronRight strokeWidth={2} size={24} />
       </Header>
       {groupedInvitations[date].map((invitation: Invitation) => (
         <InvitationOverview key={invitation.id} invitation={invitation} />
@@ -101,10 +99,10 @@ const Container = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
 
   .made-date {
+    margin-right: auto;
     color: #3e3e3e;
     font-weight: 600;
     font-size: 20px;

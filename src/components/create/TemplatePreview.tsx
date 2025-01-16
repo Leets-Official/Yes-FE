@@ -95,6 +95,7 @@ const PreviewFront = styled.img`
   width: 166px;
   height: 207px;
   border-radius: 8px;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const PreviewBack = styled.div<{ isTemplate: boolean; bgColor: string }>`
@@ -103,6 +104,7 @@ const PreviewBack = styled.div<{ isTemplate: boolean; bgColor: string }>`
   border-radius: 8px;
   border: ${(props) => (props.isTemplate ? 'none' : '1px solid #cfcdcd')};
   background-color: ${(props) => props.bgColor};
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const SelectContainer = styled.div`
@@ -141,4 +143,5 @@ const ImageItem = styled.img`
   height: 100%;
   border-radius: 8px;
   object-fit: cover;
+  border: 1px solid #cfcdcd;
 `;
