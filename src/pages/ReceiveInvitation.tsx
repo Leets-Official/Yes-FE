@@ -22,31 +22,59 @@ const data = {
 
 const ReceiveInvitation = () => {
   const [nickname, setNickname] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+  // 조건부 렌더링 테스트용 데이터
+  const isAuth = true;
+  const myResponse = null;
 
   return (
     <Container>
-      {/* TODO: 토큰 유무 확인 후 조건부 렌더링 */}
-      {/* <Modal>
-        <img src={small_yes} alt="logo" />
-        <div>초대장 확인을 위해서 닉네임을 입력해주세요</div>
-        <Input width="14.1875rem" value={nickname} onChange={(e) => setNickname(e.target.value)} />
-        <ConfirmButton size="small" color={theme.color.main} textColor="#fff" onClick={() => {}}>
-          확인
-        </ConfirmButton>
-      </Modal> */}
+      {isAuth && isModalOpen && (
+        <Modal>
+          <img src={small_yes} alt="logo" />
+          <div>초대장 확인을 위해서 닉네임을 입력해주세요</div>
+          <Input
+            width="14.1875rem"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
+          <ConfirmButton
+            size="small"
+            color={theme.color.main}
+            textColor="#fff"
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+          >
+            확인
+          </ConfirmButton>
+        </Modal>
+      )}
 
       <MyPageHeader />
-      {/* <Title>*닉네임*님의 초대를 받았습니다</Title>
-      <Description>참석여부를 위해 로그인 해주세요!</Description> */}
 
-      <Title>우리 약속한 날에 만나자!</Title>
-      <Bubble>
-        <D_Day>
-          <div>일정까지</div>
-          <b>D-10</b>
-        </D_Day>
-        <img src={speachBubble} alt="speachBubble" />
-      </Bubble>
+      {/* 응답이 존재하지 않을 경우 */}
+      {myResponse === null && (
+        <>
+          <Title>*닉네임*님의 초대를 받았습니다</Title>
+          <Description>참석여부를 위해 로그인 해주세요!</Description>
+        </>
+      )}
+
+      {/* 응답이 존재할 경우 */}
+      {myResponse !== null && (
+        <>
+          <Title>우리 약속한 날에 만나자!</Title>
+          <Bubble>
+            <D_Day>
+              <div>일정까지</div>
+              <b>D-10</b>
+            </D_Day>
+            <img src={speachBubble} alt="speachBubble" />
+          </Bubble>
+        </>
+      )}
 
       <InvitationCard
         title={data.title}
@@ -56,24 +84,33 @@ const ReceiveInvitation = () => {
       />
       <TouchMessage>초대장을 터치해보세요</TouchMessage>
 
-      {/* <LoginButton size="medium" color={theme.color.kakao} onClick={() => {}}>
-        카카오로 로그인
-      </LoginButton> */}
-      {/* <ButtonList>
-        <DeclineButton size="medium" color="#E6E6E6" textColor="#000" onClick={() => {}}>
-          거절
-        </DeclineButton>
-        <AcceptButton size="medium" color={theme.color.main} textColor="#fff" onClick={() => {}}>
-          yes!
-        </AcceptButton>
-      </ButtonList> */}
+      {!isAuth && (
+        <LoginButton size="medium" color={theme.color.kakao} onClick={() => {}}>
+          카카오로 로그인
+        </LoginButton>
+      )}
 
-      <ButtonList>
-        <MyAnswer>내 응답: yes!</MyAnswer>
-        <AcceptButton size="medium" color={theme.color.main} textColor="#fff" onClick={() => {}}>
-          yes!
-        </AcceptButton>
-      </ButtonList>
+      {/* 응답이 존재할 경우 */}
+      {isAuth && myResponse !== null && (
+        <ButtonList>
+          <MyAnswer>내 응답: yes!</MyAnswer>
+          <AcceptButton size="medium" color={theme.color.main} textColor="#fff" onClick={() => {}}>
+            yes!
+          </AcceptButton>
+        </ButtonList>
+      )}
+
+      {/* 응답이 존재하지 않을 경우 */}
+      {isAuth && myResponse === null && (
+        <ButtonList>
+          <DeclineButton size="medium" color="#E6E6E6" textColor="#000" onClick={() => {}}>
+            거절
+          </DeclineButton>
+          <AcceptButton size="medium" color={theme.color.main} textColor="#fff" onClick={() => {}}>
+            yes!
+          </AcceptButton>
+        </ButtonList>
+      )}
     </Container>
   );
 };
