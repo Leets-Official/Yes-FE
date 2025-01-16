@@ -10,6 +10,7 @@ import { RecoilRoot } from 'recoil';
 import InvitationList from './pages/mypage/InvitationList';
 import MyPageMain from './pages/mypage/MyPageMain';
 import InvitationDetail from './pages/mypage/InvitationDetail';
+import ReceiveInvitation from './pages/ReceiveInvitation';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/login/oauth" element={<KakaoRedirectHandler />} />
           <Route path="/home" element={<Home />} />
           <Route path="/invitation/create" element={<InvitationCreate />} />
+          <Route path="/invitation/:invitationId" element={<ReceiveInvitation />} />
           <Route path="/result/:invitationId" element={<Result />} />
           <Route path="/mypage" element={<MyPage />}>
             <Route path="" element={<MyPageMain />} />
