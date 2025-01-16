@@ -46,7 +46,7 @@ const Card = styled.div<{ isTouched: boolean }>`
   position: relative;
   width: 21.375rem;
   height: 26.6875rem;
-  margin: 1.9rem 0;
+  margin: 0 0 1.9rem 0;
   transform-style: preserve-3d;
   transition: transform 0.8s ease;
   transform: ${({ isTouched }) => (isTouched ? 'rotateY(180deg)' : 'rotateY(0deg)')};
