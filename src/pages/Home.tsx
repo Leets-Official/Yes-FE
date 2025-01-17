@@ -11,7 +11,6 @@ export const Home = () => {
   const handleMakeInvitation = () => {
     navigate('/invitation/create');
   };
-
   return (
     <Container>
       <HomeHeader />

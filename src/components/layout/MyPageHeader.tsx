@@ -10,11 +10,14 @@ export const MyPageHeader = () => {
   const handleClose = () => {
     if (location.pathname.startsWith('/mypage/detail/')) {
       navigate(-1);
+    } else if (location.pathname.startsWith('/mypage/')) {
+      navigate('/mypage');
     } else if (location.pathname === '/mypage') {
       navigate('/home');
+    } else if (location.pathname.startsWith('/result/')) {
+      navigate('/home', { replace: true });
     }
   };
-
   return (
     <Section>
       <LeftButton
@@ -54,6 +57,9 @@ const Section = styled.section`
   justify-content: space-between;
   padding: 1rem 0;
   width: 100%;
+  max-width: 480px;
+  z-index: 1;
+  background-color: white;
 `;
 
 const LeftButton = styled(FiChevronLeft)`

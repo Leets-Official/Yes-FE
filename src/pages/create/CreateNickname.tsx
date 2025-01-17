@@ -1,23 +1,35 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import { InvitationHeader } from '../../components/layout/InvitationHeader';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
 import Input from '../../components/common/Input';
+import { IoAlertCircleOutline } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
 import { useResetStepState } from '../../hooks/useResetStepState';
 
 const CreateNickName = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
+  const [isNotNull, setIsNotNull] = useState(-1); // -1 : 초기상태 , 0 : 유효성 검증 실패, 1 : 유효성 검증 성공
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nickname = e.target.value;
     setInvitation((prev) => ({ ...prev, nickname: nickname }));
+
+    // 경고 문구 초기화
+    if (nickname !== '') setIsNotNull(1);
+    else setIsNotNull(0);
   };
 
   // 다음단계
   const handleNextButtonClick = () => {
-    setInvitation((prev) => ({ ...prev, step: 1 }));
+    if (invitation.nickname === '') {
+      setIsNotNull(0);
+    } else {
+      setIsNotNull(1);
+      setInvitation((prev) => ({ ...prev, step: 1 }));
+    }
   };
 
   useResetStepState();
@@ -38,6 +50,12 @@ const CreateNickName = () => {
               placeholder="10자 내로 작성해주세요."
               maxLength={10}
             />
+            {isNotNull == 0 && (
+              <ErrorPhrase>
+                <IoAlertCircleOutline size={13} />
+                <span>닉네임을 입력해주세요</span>
+              </ErrorPhrase>
+            )}
           </InputField>
         </NicknameForm>
       </MainContent>
@@ -110,8 +128,20 @@ const InputField = styled.div`
 
 const NicknameInput = styled(Input)`
   width: 100%;
+  margin: 0.5rem 0 0.813rem 0;
   padding: 0 1rem;
   box-sizing: border-box;
+`;
+
+const ErrorPhrase = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.313rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  > * {
+    color: #ff8b8b;
+  }
 `;
 
 const NextButton = styled(Button)`

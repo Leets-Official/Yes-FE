@@ -10,6 +10,7 @@ import { RecoilRoot } from 'recoil';
 import InvitationList from './pages/mypage/InvitationList';
 import MyPageMain from './pages/mypage/MyPageMain';
 import InvitationDetail from './pages/mypage/InvitationDetail';
+import ErrorPage from './pages/ErrorPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="send" element={<InvitationList type="send" />} />
             <Route path="detail/:id" element={<InvitationDetail />} />
           </Route>
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

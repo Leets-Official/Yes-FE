@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import LOGO from '/image/yes.svg'; // 로고 SVG 파일을 import
 import Button from '../../components/common/Button';
-import { HomeHeader } from '../../components/layout/HomeHeader';
 import theme from '../../style/theme';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export const Login = () => {
   // oauth 요청 URL
@@ -14,8 +13,12 @@ export const Login = () => {
 
   return (
     <Container>
-      <HomeHeader />
-      <Logo src={LOGO} />
+      <LottieWrapper>
+        <DotLottieReact
+          src="https://lottie.host/86ced484-225b-440b-83cf-d99e3f1056c0/IejUx6FXJ1.lottie"
+          autoplay
+        />
+      </LottieWrapper>
       <KakaoLoginButton color={theme.color.kakao} onClick={handleLogin}>
         카카오로 로그인하기
       </KakaoLoginButton>
@@ -24,23 +27,30 @@ export const Login = () => {
 };
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   height: 100vh;
   width: 100vw;
   max-width: 480px;
-  overflow-y: hidden;
+  overflow: hidden;
 `;
 
-const Logo = styled.img`
+const LottieWrapper = styled.div`
+  position: absolute;
   width: 100%;
-  max-width: 211px;
-  height: auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  bottom: -5rem;
 `;
 
 const KakaoLoginButton = styled(Button)`
+  position: absolute;
+  bottom: 2.625rem;
   width: 90%;
-  margin-bottom: 2.625rem;
+  z-index: 1;
 `;
