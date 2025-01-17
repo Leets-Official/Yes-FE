@@ -26,11 +26,11 @@ const ReceiveInvitation = () => {
 
   // 조건부 렌더링 테스트용 데이터
   const isAuth = true;
-  const myResponse = null;
+  const myResponse = 'ㄴㅇㄹ';
 
   return (
     <Container>
-      {isAuth && isModalOpen && (
+      {isAuth && myResponse === null && isModalOpen && (
         <Modal>
           <img src={small_yes} alt="logo" />
           <div>초대장 확인을 위해서 닉네임을 입력해주세요</div>
