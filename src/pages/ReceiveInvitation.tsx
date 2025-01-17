@@ -54,16 +54,13 @@ const ReceiveInvitation = () => {
 
       <MyPageHeader />
 
-      {/* 응답이 존재하지 않을 경우 */}
-      {myResponse === null && (
+      {/* 응답 존재 여부에 따라 변경 */}
+      {myResponse === null ? (
         <>
           <Title>*닉네임*님의 초대를 받았습니다</Title>
           <Description>참석여부를 위해 로그인 해주세요!</Description>
         </>
-      )}
-
-      {/* 응답이 존재할 경우 */}
-      {myResponse !== null && (
+      ) : (
         <>
           <Title>우리 약속한 날에 만나자!</Title>
           <Bubble>
