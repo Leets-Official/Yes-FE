@@ -77,6 +77,8 @@ const Invitation = styled.div<{ isTouched: boolean }>`
   transform-style: preserve-3d;
   transition: transform 0.8s ease;
   transform: ${({ isTouched }) => (isTouched ? 'rotateY(180deg)' : 'rotateY(0deg)')};
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const DefaultInvitationStyle = styled.div`
