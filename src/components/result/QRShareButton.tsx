@@ -6,7 +6,7 @@ import theme from '../../style/theme';
 import { useState } from 'react';
 
 const QRShareButton = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <Container>

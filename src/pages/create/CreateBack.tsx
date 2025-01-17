@@ -22,6 +22,16 @@ const CreateBack = () => {
     minute: '',
   });
 
+  const formattedDate = [
+    date.year && `${date.year}년`,
+    date.month && `${date.month}월`,
+    date.day && `${date.day}일`,
+    date.hour && `${date.hour}시`,
+    date.minute && `${date.minute}분`,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   const handleDateChange = (field: DateField) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate((prev) => ({
       ...prev,
@@ -46,11 +56,12 @@ const CreateBack = () => {
 
       <AlignCenter>
         <InvitationBack
+          isInput
           size="small"
           title={title}
           location={location}
           description={description}
-          date={`${date.year}년 ${date.month}월 ${date.day}일 ${date.hour}시 ${date.minute}분`}
+          date={formattedDate}
         />
         <Gap>
           <Field>
@@ -156,6 +167,7 @@ const DateInput = styled.input.attrs({ type: 'number' })`
   width: 2rem;
   border: none;
   text-align: right;
+  margin-top: 0.03rem;
 
   &:focus {
     outline: none;
