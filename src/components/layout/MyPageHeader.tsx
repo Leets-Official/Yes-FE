@@ -9,14 +9,15 @@ export const MyPageHeader = () => {
 
   const handleClose = () => {
     if (location.pathname.startsWith('/mypage/detail/')) {
-      navigate(-1); // /mypage/send /received구분해서 보내고 싶긴한데...
+      navigate(-1);
+    } else if (location.pathname.startsWith('/mypage/')) {
+      navigate('/mypage');
     } else if (location.pathname === '/mypage') {
       navigate('/home');
     } else if (location.pathname.startsWith('/result/')) {
       navigate('/home', { replace: true });
     }
   };
-
   return (
     <Section>
       <LeftButton
