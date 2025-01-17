@@ -1,12 +1,31 @@
 import styled from 'styled-components';
 import QRshare from '../../assets/QRsahre.svg';
+import Modal from '../common/Modal';
+import Button from '../common/Button';
+import theme from '../../style/theme';
+import { useState } from 'react';
 
 const QRShareButton = () => {
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
   return (
     <Container>
-      <Button>
+      {isModalOpen && (
+        <Modal width={10.37} hasCloseButton onClose={() => setIsModalOpen(false)}>
+          <QR>QR</QR>
+          <div>QR 이미지를 저장해 공유해보세요!</div>
+          <DownloadButton size="small" color={theme.color.main} textColor="#fff" onClick={() => {}}>
+            저장하기
+          </DownloadButton>
+        </Modal>
+      )}
+      <QRButton
+        onClick={() => {
+          setIsModalOpen(true);
+        }}
+      >
         <img src={QRshare} alt="링크 복사" />
-      </Button>
+      </QRButton>
       <div>QR 코드</div>
     </Container>
   );
@@ -23,7 +42,7 @@ const Container = styled.div`
   }
 `;
 
-const Button = styled.button`
+const QRButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
@@ -33,4 +52,15 @@ const Button = styled.button`
     width: 2.75rem;
     height: 2.75rem;
   }
+`;
+
+const DownloadButton = styled(Button)`
+  width: 5.5625rem;
+  height: 2rem;
+`;
+
+const QR = styled.div`
+  width: 8rem;
+  height: 8rem;
+  background-color: #ddd;
 `;

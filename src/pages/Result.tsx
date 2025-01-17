@@ -48,7 +48,7 @@ const Title = styled.div`
   color: #3e3e3e;
   font-size: 1.25rem;
   font-weight: 600;
-  margin-top: 0.75rem;
+  margin: 0.75rem 0 1.31rem 0;
 `;
 
 const TouchMessage = styled.div`

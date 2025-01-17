@@ -5,7 +5,6 @@ import Modal from '../components/common/Modal';
 import { MyPageHeader } from '../components/layout/MyPageHeader';
 import theme from '../style/theme';
 import styled from 'styled-components';
-import small_yes from '/image/small_yes.svg';
 import speachBubble from '../assets/speachBubble.svg';
 import { useState } from 'react';
 
@@ -31,8 +30,7 @@ const ReceiveInvitation = () => {
   return (
     <Container>
       {isAuth && myResponse === null && isModalOpen && (
-        <Modal>
-          <img src={small_yes} alt="logo" />
+        <Modal width={14.1825} hasCloseButton={false}>
           <div>초대장 확인을 위해서 닉네임을 입력해주세요</div>
           <Input
             width="14.1875rem"
