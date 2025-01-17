@@ -94,21 +94,21 @@ const ReceiveInvitation = () => {
       {isAuth && myResponse !== null && (
         <ButtonList>
           <MyAnswer>내 응답: yes!</MyAnswer>
-          <AcceptButton size="medium" color={theme.color.main} textColor="#fff" onClick={() => {}}>
+          <SelectButton size="medium" color={theme.color.main} textColor="#fff" onClick={() => {}}>
             yes!
-          </AcceptButton>
+          </SelectButton>
         </ButtonList>
       )}
 
       {/* 응답이 존재하지 않을 경우 */}
       {isAuth && myResponse === null && (
         <ButtonList>
-          <DeclineButton size="medium" color="#E6E6E6" textColor="#000" onClick={() => {}}>
+          <SelectButton size="medium" color="#E6E6E6" textColor="#000" onClick={() => {}}>
             거절
-          </DeclineButton>
-          <AcceptButton size="medium" color={theme.color.main} textColor="#fff" onClick={() => {}}>
+          </SelectButton>
+          <SelectButton size="medium" color={theme.color.main} textColor="#fff" onClick={() => {}}>
             yes!
-          </AcceptButton>
+          </SelectButton>
         </ButtonList>
       )}
     </Container>
@@ -122,7 +122,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 100vw;
+  width: 90vw;
   max-width: 480px;
   overflow-y: hidden;
 `;
@@ -200,12 +200,7 @@ const LoginButton = styled(Button)`
   margin-bottom: 2.625rem;
 `;
 
-const DeclineButton = styled(Button)`
-  width: 10.5rem;
-  font-weight: 600;
-`;
-
-const AcceptButton = styled(Button)`
+const SelectButton = styled(Button)`
   width: 10.5rem;
   font-weight: 600;
 `;
