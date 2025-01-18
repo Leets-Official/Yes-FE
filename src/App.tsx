@@ -11,6 +11,7 @@ import InvitationList from './pages/mypage/InvitationList';
 import MyPageMain from './pages/mypage/MyPageMain';
 import InvitationDetail from './pages/mypage/InvitationDetail';
 import ErrorPage from './pages/ErrorPage';
+import { PrivateRoutes } from './routes/PrivateRoutes';
 
 function App() {
   return (
@@ -18,15 +19,17 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/login/oauth" element={<KakaoRedirectHandler />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/invitation/create" element={<InvitationCreate />} />
-          <Route path="/result/:invitationId" element={<Result />} />
-          <Route path="/mypage" element={<MyPage />}>
-            <Route path="" element={<MyPageMain />} />
-            <Route path="received" element={<InvitationList type="received" />} />
-            <Route path="send" element={<InvitationList type="send" />} />
-            <Route path="detail/:id" element={<InvitationDetail />} />
+          <Route path="/login" element={<KakaoRedirectHandler />} />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/invitation/create" element={<InvitationCreate />} />
+            <Route path="/result/:invitationId" element={<Result />} />
+            <Route path="/mypage" element={<MyPage />}>
+              <Route path="" element={<MyPageMain />} />
+              <Route path="received" element={<InvitationList type="received" />} />
+              <Route path="send" element={<InvitationList type="send" />} />
+              <Route path="detail/:id" element={<InvitationDetail />} />
+            </Route>
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>
