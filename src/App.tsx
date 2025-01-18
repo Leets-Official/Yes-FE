@@ -11,6 +11,7 @@ import InvitationList from './pages/mypage/InvitationList';
 import MyPageMain from './pages/mypage/MyPageMain';
 import InvitationDetail from './pages/mypage/InvitationDetail';
 import ErrorPage from './pages/ErrorPage';
+import ReceiveInvitation from './pages/ReceiveInvitation';
 import { PrivateRoutes } from './routes/PrivateRoutes';
 import { ToastContainer } from 'react-toastify';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -27,6 +28,7 @@ function App() {
             <Route element={<PrivateRoutes />}>
               <Route path="/home" element={<Home />} />
               <Route path="/invitation/create" element={<InvitationCreate />} />
+              <Route path="/invitation/:invitationId" element={<ReceiveInvitation />} />
               <Route path="/result/:invitationId" element={<Result />} />
               <Route path="/mypage" element={<MyPage />}>
                 <Route path="" element={<MyPageMain />} />

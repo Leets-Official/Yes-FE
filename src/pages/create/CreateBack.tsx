@@ -65,11 +65,7 @@ const CreateBack = () => {
               <DateInput type="number" value={date.month} onChange={handleDateChange('month')} /> 월
               <DateInput type="number" value={date.day} onChange={handleDateChange('day')} /> 일
               <DateInput type="number" value={date.hour} onChange={handleDateChange('hour')} /> 시
-              <DateInput
-                type="number"
-                value={date.minute}
-                onChange={handleDateChange('minute')}
-              />{' '}
+              <DateInput type="number" value={date.minute} onChange={handleDateChange('minute')} />
               분
             </DateInputWrapper>
           </Field>
@@ -156,7 +152,7 @@ const DescriptionField = styled(Field)`
   }
 `;
 
-const DateInput = styled.input`
+const DateInput = styled.input.attrs({ type: 'number' })`
   width: 2rem;
   border: none;
   text-align: right;
@@ -164,6 +160,12 @@ const DateInput = styled.input`
   &:focus {
     outline: none;
     box-shadow: none;
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 `;
 
@@ -175,6 +177,6 @@ const DateInputWrapper = styled.div`
   border-radius: 8px;
   width: 15.125rem;
   height: 2.3125rem;
-  padding: 1px 1.5rem;
+  padding: 0 1.5rem;
   font-size: 0.875rem;
 `;
