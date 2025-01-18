@@ -2,14 +2,23 @@ import styled from 'styled-components';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { isAccessToken } from '../../utils/isAccessToken';
 
 export const Login = () => {
-  // oauth 요청 URL
+  const navigate = useNavigate();
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_REST_API}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}`;
 
   const handleLogin = () => {
     window.location.href = kakaoURL;
   };
+
+  useEffect(() => {
+    if (isAccessToken()) {
+      navigate('/home', { replace: true });
+    }
+  }, []);
 
   return (
     <Container>
