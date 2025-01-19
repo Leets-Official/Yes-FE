@@ -22,6 +22,10 @@ const CreateBack = () => {
     minute: '',
   });
 
+  // TODO: 세션 스토리지에 저장된 값 가져오기
+  const backgroundColor = '#fff';
+  const fontColor = '#000';
+
   const formattedDate = [
     date.year && `${date.year}년`,
     date.month && `${date.month}월`,
@@ -62,6 +66,8 @@ const CreateBack = () => {
           location={location}
           description={description}
           date={formattedDate}
+          backgroundColor={backgroundColor}
+          fontColor={fontColor}
         />
         <Gap>
           <Field>

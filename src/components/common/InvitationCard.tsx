@@ -8,11 +8,15 @@ const InvitationCard = ({
   date,
   location,
   description,
+  backgroundColor = '#fff',
+  fontColor = '#000',
 }: {
   title: string;
   date: string;
   location: string;
   description: string;
+  backgroundColor: string;
+  fontColor: string;
 }) => {
   const [isTouched, setIsTouched] = useState(false);
 
@@ -34,6 +38,8 @@ const InvitationCard = ({
           date={date}
           location={location}
           description={description}
+          backgroundColor={backgroundColor}
+          fontColor={fontColor}
         />
       </CardBack>
     </Card>

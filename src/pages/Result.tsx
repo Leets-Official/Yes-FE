@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import ShareList from '../components/result/ShareList';
 import { MyPageHeader } from '../components/layout/MyPageHeader';
 import InvitationCard from '../components/common/InvitationCard';
+import { template } from '../data/Template';
 
 // 임시 데이터
 const data = {
   id: 0,
   img: null,
+  templateKey: 'ALIEN',
   title: '연말파티 초대장',
   date: '2024.12.25',
   location: '강남역 어딘가',
@@ -24,6 +26,8 @@ const Result = () => {
         date={data.date}
         location={data.location}
         description={data.description}
+        backgroundColor={template[data.templateKey].bg_color}
+        fontColor={template[data.templateKey].bg_text_color}
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
       <ShareList />

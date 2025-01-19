@@ -7,6 +7,8 @@ const InvitationBack = ({
   location,
   description,
   isInput = false,
+  backgroundColor = '#fff',
+  fontColor = '#000',
 }: {
   size?: 'small' | 'big';
   title: string;
@@ -14,26 +16,32 @@ const InvitationBack = ({
   location: string;
   description: string;
   isInput?: boolean;
+  backgroundColor: string;
+  fontColor: string;
 }) => {
   return (
-    <Container size={size}>
+    <Container size={size} backgroundColor={backgroundColor} fontColor={fontColor}>
       <Content size={size}>
-        <Title size={size} isInput={isInput}>
+        <Title size={size} isInput={isInput} fontColor={fontColor}>
           {title}
         </Title>
         <Field size={size}>
-          <Info size={size}>일정</Info>
-          <Info size={size} isInput={isInput}>
+          <Info size={size} fontColor={fontColor}>
+            일정
+          </Info>
+          <Info size={size} isInput={isInput} fontColor={fontColor}>
             {date}
           </Info>
         </Field>
         <Field size={size}>
-          <Info size={size}>장소</Info>
-          <Info size={size} isInput={isInput}>
+          <Info size={size} fontColor={fontColor}>
+            장소
+          </Info>
+          <Info size={size} isInput={isInput} fontColor={fontColor}>
             {location}
           </Info>
         </Field>
-        <Description size={size} isInput={isInput}>
+        <Description size={size} isInput={isInput} fontColor={fontColor}>
           {description}
         </Description>
       </Content>
@@ -70,12 +78,13 @@ const sizeStyles = {
   },
 };
 
-const Container = styled.div<{ size: 'small' | 'big' }>`
+const Container = styled.div<{ size: 'small' | 'big'; backgroundColor: string; fontColor: string }>`
   ${({ size }) => sizeStyles[size].container}
   border-radius: 0.5rem;
-  background-color: #ff8383;
-  color: #fff;
+  background-color: ${(props) => props.backgroundColor};
+  color: ${(props) => props.fontColor};
   font-weight: 500;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const Content = styled.div<{ size: 'small' | 'big' }>`
@@ -92,7 +101,7 @@ const Field = styled.div<{ size: 'small' | 'big' }>`
   gap: ${({ size }) => sizeStyles[size].fieldGap};
 `;
 
-const Info = styled.div<{ size: 'small' | 'big'; isInput?: boolean }>`
+const Info = styled.div<{ size: 'small' | 'big'; isInput?: boolean; fontColor: string }>`
   display: flex;
   align-items: center;
   padding-left: 0.3rem;
@@ -100,46 +109,46 @@ const Info = styled.div<{ size: 'small' | 'big'; isInput?: boolean }>`
   font-weight: 500;
   font-size: ${({ size }) => sizeStyles[size].fontSize};
 
-  ${({ isInput }) =>
+  ${({ isInput, fontColor }) =>
     isInput &&
     css`
       width: 9.25rem;
       height: 1.5rem;
-      border: 1px solid #fff;
+      border: 1px solid ${fontColor};
       border-radius: 0.25rem;
     `}
 `;
 
-const Title = styled.div<{ size: 'small' | 'big'; isInput?: boolean }>`
+const Title = styled.div<{ size: 'small' | 'big'; isInput?: boolean; fontColor: string }>`
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: ${({ size }) => sizeStyles[size].titleFontSize};
 
-  ${({ isInput }) =>
+  ${({ isInput, fontColor }) =>
     isInput &&
     css`
       width: 7.75rem;
       height: 1.9375rem;
-      border: 1px solid #fff;
+      border: 1px solid ${fontColor};
       border-radius: 0.25rem;
     `}
 `;
 
-const Description = styled(Info)<{ isInput?: boolean }>`
+const Description = styled(Info)<{ isInput?: boolean; fontColor: string }>`
   display: flex;
   justify-content: center;
   white-space: pre-wrap;
   word-break: break-all;
   margin: 0 auto;
 
-  ${({ isInput }) =>
+  ${({ isInput, fontColor }) =>
     isInput &&
     css`
       width: 12rem;
       height: 4rem;
-      border: 1px solid #fff;
+      border: 1px solid ${fontColor};
       border-radius: 0.25rem;
     `}
 `;
