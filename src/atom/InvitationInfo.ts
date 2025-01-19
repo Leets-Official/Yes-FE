@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-const { persistAtom } = recoilPersist({ key: 'invitationPersist', storage: localStorage });
+const { persistAtom } = recoilPersist({ key: 'invitationPersist', storage: sessionStorage });
 
 /**
  * [ 초대장 정보 recoil Atom]
