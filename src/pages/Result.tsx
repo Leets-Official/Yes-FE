@@ -3,8 +3,9 @@ import ShareList from '../components/result/ShareList';
 import { MyPageHeader } from '../components/layout/MyPageHeader';
 import InvitationCard from '../components/common/InvitationCard';
 import { template } from '../data/Template';
+import { useEffect } from 'react';
 
-// 임시 데이터
+// 임시 데이터 (서버 응답)
 const data = {
   id: 0,
   img: null,
@@ -17,6 +18,10 @@ const data = {
 };
 
 const Result = () => {
+  useEffect(() => {
+    sessionStorage.removeItem('invitationPersist');
+  }, []);
+
   return (
     <Container>
       <MyPageHeader />

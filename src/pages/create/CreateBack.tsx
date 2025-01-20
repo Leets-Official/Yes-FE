@@ -7,10 +7,18 @@ import Button from '../../components/common/Button';
 import theme from '../../style/theme';
 import { InvitationHeader } from '../../components/layout/InvitationHeader';
 import { useResetStepState } from '../../hooks/useResetStepState';
+import { template } from '../../data/Template';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { InvitationState, InvitationInfo } from '../../atom/InvitationInfo';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 const CreateBack = () => {
+  const navigate = useNavigate();
+
+  const setInvitation = useSetRecoilState<InvitationState>(InvitationInfo);
+
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
@@ -22,9 +30,23 @@ const CreateBack = () => {
     minute: '',
   });
 
-  // TODO: 세션 스토리지에 저장된 값 가져오기
-  const backgroundColor = '#fff';
-  const fontColor = '#000';
+  const invitationId = 'invitationId'; // 초대장 임시 아이디
+
+  let backgroundColor;
+  let fontColor;
+
+  const invitationInfo = JSON.parse(sessionStorage.getItem('invitationPersist') || 'null');
+
+  const templateKey = invitationInfo?.invitationInfo?.templateKey || 'null';
+  const isTemplate = invitationInfo?.invitationInfo?.isTemplate || 'null';
+
+  if (isTemplate) {
+    backgroundColor = template[templateKey as string].bg_color;
+    fontColor = template[templateKey as string].bg_text_color;
+  } else {
+    backgroundColor = '#fff';
+    fontColor = '#000';
+  }
 
   const formattedDate = [
     date.year && `${date.year}년`,
@@ -52,8 +74,19 @@ const CreateBack = () => {
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
       </b>
       <ButtonWrapper>
-        {/* TODO: onClick 함수 수정 */}
-        <Button color={theme.color.main} textColor="#fff" fullWidth onClick={() => {}}>
+        <Button
+          color={theme.color.main}
+          textColor="#fff"
+          fullWidth
+          onClick={() => {
+            // api 호출
+            setInvitation((prev) => ({
+              ...prev,
+              step: 0,
+            }));
+            navigate(`/result/${invitationId}`);
+          }}
+        >
           초대장 생성하기
         </Button>
       </ButtonWrapper>
