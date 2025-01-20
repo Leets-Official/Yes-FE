@@ -12,27 +12,43 @@ import MyPageMain from './pages/mypage/MyPageMain';
 import InvitationDetail from './pages/mypage/InvitationDetail';
 import ErrorPage from './pages/ErrorPage';
 import ReceiveInvitation from './pages/ReceiveInvitation';
+import { PrivateRoutes } from './routes/PrivateRoutes';
+import { ToastContainer } from 'react-toastify';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from './pages/ErrorFallback';
 
 function App() {
   return (
     <RecoilRoot>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/login/oauth" element={<KakaoRedirectHandler />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/invitation/create" element={<InvitationCreate />} />
-          <Route path="/invitation/:invitationId" element={<ReceiveInvitation />} />
-          <Route path="/result/:invitationId" element={<Result />} />
-          <Route path="/mypage" element={<MyPage />}>
-            <Route path="" element={<MyPageMain />} />
-            <Route path="received" element={<InvitationList type="received" />} />
-            <Route path="send" element={<InvitationList type="send" />} />
-            <Route path="detail/:id" element={<InvitationDetail />} />
-          </Route>
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </BrowserRouter>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/login/*" element={<KakaoRedirectHandler />} />
+            <Route element={<PrivateRoutes />}>
+              <Route path="/home" element={<Home />} />
+              <Route path="/invitation/create" element={<InvitationCreate />} />
+              <Route path="/invitation/:invitationId" element={<ReceiveInvitation />} />
+              <Route path="/result/:invitationId" element={<Result />} />
+              <Route path="/mypage" element={<MyPage />}>
+                <Route path="" element={<MyPageMain />} />
+                <Route path="received" element={<InvitationList type="received" />} />
+                <Route path="send" element={<InvitationList type="send" />} />
+                <Route path="detail/:id" element={<InvitationDetail />} />
+              </Route>
+            </Route>
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+          <ToastContainer
+            style={{ maxWidth: '300px' }}
+            position="top-center" // 토스트 메시지 위치 설정
+            autoClose={3000} // 자동 닫힘 시간 (밀리초)
+            limit={2}
+            pauseOnFocusLoss // 창 포커스가 사라질 때 멈춤
+            theme="colored"
+          />
+        </BrowserRouter>
+      </ErrorBoundary>
     </RecoilRoot>
   );
 }
