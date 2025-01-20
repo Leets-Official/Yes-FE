@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Input from '../../components/common/Input';
 import TextArea from '../../components/common/TextArea';
@@ -29,24 +29,24 @@ const CreateBack = () => {
     hour: '',
     minute: '',
   });
+  const [backgroundColor, setBackgroundColor] = useState('#fff');
+  const [fontColor, setFontColor] = useState('#000');
 
   const invitationId = 'invitationId'; // 초대장 임시 아이디
 
-  let backgroundColor;
-  let fontColor;
+  useEffect(() => {
+    const invitationInfo = JSON.parse(sessionStorage.getItem('invitationPersist') || 'null');
+    const templateKey = invitationInfo?.invitationInfo?.templateKey || 'null';
+    const isTemplate = invitationInfo?.invitationInfo?.isTemplate || false;
 
-  const invitationInfo = JSON.parse(sessionStorage.getItem('invitationPersist') || 'null');
-
-  const templateKey = invitationInfo?.invitationInfo?.templateKey || 'null';
-  const isTemplate = invitationInfo?.invitationInfo?.isTemplate || 'null';
-
-  if (isTemplate) {
-    backgroundColor = template[templateKey as string].bg_color;
-    fontColor = template[templateKey as string].bg_text_color;
-  } else {
-    backgroundColor = '#fff';
-    fontColor = '#000';
-  }
+    if (isTemplate) {
+      setBackgroundColor(template[templateKey as string].bg_color);
+      setFontColor(template[templateKey as string].bg_text_color);
+    } else {
+      setBackgroundColor('#fff');
+      setFontColor('#000');
+    }
+  }, []);
 
   const formattedDate = [
     date.year && `${date.year}년`,
