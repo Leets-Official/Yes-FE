@@ -11,10 +11,10 @@ import { useResetStepState } from '../../hooks/useResetStepState';
 const CreateTemplate = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
 
-  const [isTemplate, setIsTemplate] = useState(true); // 제공 템플릿 사용 여부
+  const [isTemplate, setIsTemplate] = useState(invitation?.isTemplate); // 제공 템플릿 사용 여부
   const [selectedTemplate, setSelectedTemplate] = useState<string>(invitation?.templateKey || ''); // 현재 선택된 템플릿
-  const [imageUrl, setImageUrl] = useState<string | null>(null); // 이미지 URL
-  const [imageFile, setImageFile] = useState<File | null>(null); // 이미지 파일
+  const [imageUrl, setImageUrl] = useState<string | null>(invitation?.imageUrl || ''); // 이미지 URL
+  const [imageFile, setImageFile] = useState<File | null>(invitation?.imageFile || null); // 이미지 파일
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 템플릿 선택 핸들러 함수
