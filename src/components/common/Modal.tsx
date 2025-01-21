@@ -1,9 +1,27 @@
 import styled from 'styled-components';
+import small_yes from '/image/small_yes.svg';
 
-const Modal = ({ children }: { children: React.ReactNode }) => {
+const Modal = ({
+  children,
+  width,
+  hasCloseButton,
+  onClose,
+}: {
+  children: React.ReactNode;
+  width: number;
+  hasCloseButton: boolean;
+  onClose?: () => void;
+}) => {
   return (
     <Container>
-      <Content>{children}</Content>
+      <Content $width={width}>
+        <Header $width={width}>
+          <Space />
+          <img src={small_yes} alt="logo" />
+          {hasCloseButton ? <CloseButton onClick={onClose} /> : <Space />}
+        </Header>
+        {children}
+      </Content>
     </Container>
   );
 };
@@ -15,10 +33,13 @@ const Container = styled.div`
   z-index: 10;
   width: 100vw;
   height: 100vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.4);
 `;
 
-const Content = styled.div`
+const Content = styled.div<{ $width: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +48,7 @@ const Content = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 14.1825rem;
+  width: ${(props) => props.$width + 'rem'};
 
   background-color: #fff;
   border-radius: 1rem;
@@ -35,4 +56,22 @@ const Content = styled.div`
 
   gap: 1.06rem;
   padding: 1.19rem 2.69rem;
+`;
+
+const Header = styled.div<{ $width: number }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: ${(props) => props.$width + 2.69 + 'rem'};
+`;
+
+const Space = styled.div`
+  width: 1rem;
+  height: 1rem;
+`;
+
+const CloseButton = styled.button`
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
 `;

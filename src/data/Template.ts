@@ -1,4 +1,6 @@
-export const template = {
+import { TemplateType } from '../type/TemplateType';
+
+export const template: TemplateType = {
   ALIEN: {
     template_src: '/image/Invi_Alien.png', // 1. 템플릿 이미지 파일 (텍스트 X)
     template_pre_src: '/image/Pre_Invi_Alien.png', // 2. 템플릿 미리보기 이미지 파일 (텍스트 O)

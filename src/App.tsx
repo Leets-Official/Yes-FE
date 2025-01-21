@@ -25,18 +25,18 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login/*" element={<KakaoRedirectHandler />} />
-            <Route element={<PrivateRoutes />}>
-              <Route path="/home" element={<Home />} />
-              <Route path="/invitation/create" element={<InvitationCreate />} />
-              <Route path="/invitation/:invitationId" element={<ReceiveInvitation />} />
-              <Route path="/result/:invitationId" element={<Result />} />
-              <Route path="/mypage" element={<MyPage />}>
-                <Route path="" element={<MyPageMain />} />
-                <Route path="received" element={<InvitationList type="received" />} />
-                <Route path="send" element={<InvitationList type="send" />} />
-                <Route path="detail/:id" element={<InvitationDetail />} />
-              </Route>
+            {/* <Route element={<PrivateRoutes />}> */}
+            <Route path="/home" element={<Home />} />
+            <Route path="/invitation/create" element={<InvitationCreate />} />
+            <Route path="/invitation/:invitationId" element={<ReceiveInvitation />} />
+            <Route path="/result/:invitationId" element={<Result />} />
+            <Route path="/mypage" element={<MyPage />}>
+              <Route path="" element={<MyPageMain />} />
+              <Route path="received" element={<InvitationList type="received" />} />
+              <Route path="send" element={<InvitationList type="send" />} />
+              <Route path="detail/:id" element={<InvitationDetail />} />
             </Route>
+            {/* </Route> */}
             <Route path="*" element={<ErrorPage />} />
           </Routes>
           <ToastContainer

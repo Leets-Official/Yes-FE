@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Input from '../../components/common/Input';
 import TextArea from '../../components/common/TextArea';
@@ -7,10 +7,15 @@ import Button from '../../components/common/Button';
 import theme from '../../style/theme';
 import { InvitationHeader } from '../../components/layout/InvitationHeader';
 import { useResetStepState } from '../../hooks/useResetStepState';
+import { template } from '../../data/Template';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { InvitationInfo } from '../../atom/InvitationInfo';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 const CreateBack = () => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
@@ -21,6 +26,34 @@ const CreateBack = () => {
     hour: '',
     minute: '',
   });
+  const [backgroundColor, setBackgroundColor] = useState('#fff');
+  const [fontColor, setFontColor] = useState('#000');
+  const [invitation, setInvitation] = useRecoilState(InvitationInfo);
+
+  const invitationId = 'invitationId'; // 초대장 임시 아이디
+
+  useEffect(() => {
+    const templateKey = invitation.templateKey || 'null';
+    const isTemplate = !!invitation.templateKey;
+
+    if (isTemplate) {
+      setBackgroundColor(template[templateKey as string]?.bg_color || '#fff');
+      setFontColor(template[templateKey as string]?.bg_text_color || '#000');
+    } else {
+      setBackgroundColor('#fff');
+      setFontColor('#000');
+    }
+  }, [invitation.templateKey]);
+
+  const formattedDate = [
+    date.year && `${date.year}년`,
+    date.month && `${date.month}월`,
+    date.day && `${date.day}일`,
+    date.hour && `${date.hour}시`,
+    date.minute && `${date.minute}분`,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const handleDateChange = (field: DateField) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate((prev) => ({
@@ -38,19 +71,33 @@ const CreateBack = () => {
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
       </b>
       <ButtonWrapper>
-        {/* TODO: onClick 함수 수정 */}
-        <Button color={theme.color.main} textColor="#fff" fullWidth onClick={() => {}}>
+        <Button
+          color={theme.color.main}
+          textColor="#fff"
+          fullWidth
+          onClick={() => {
+            // api 호출
+            setInvitation((prev) => ({
+              ...prev,
+              step: 0,
+            }));
+            navigate(`/result/${invitationId}`);
+          }}
+        >
           초대장 생성하기
         </Button>
       </ButtonWrapper>
 
       <AlignCenter>
         <InvitationBack
+          isInput
           size="small"
           title={title}
           location={location}
           description={description}
-          date={`${date.year}년 ${date.month}월 ${date.day}일 ${date.hour}시 ${date.minute}분`}
+          date={formattedDate}
+          backgroundColor={backgroundColor}
+          fontColor={fontColor}
         />
         <Gap>
           <Field>
@@ -156,6 +203,7 @@ const DateInput = styled.input.attrs({ type: 'number' })`
   width: 2rem;
   border: none;
   text-align: right;
+  margin-top: 0.03rem;
 
   &:focus {
     outline: none;
