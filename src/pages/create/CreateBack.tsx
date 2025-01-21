@@ -9,16 +9,13 @@ import { InvitationHeader } from '../../components/layout/InvitationHeader';
 import { useResetStepState } from '../../hooks/useResetStepState';
 import { template } from '../../data/Template';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { InvitationState, InvitationInfo } from '../../atom/InvitationInfo';
+import { useRecoilState } from 'recoil';
+import { InvitationInfo } from '../../atom/InvitationInfo';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 const CreateBack = () => {
   const navigate = useNavigate();
-
-  const setInvitation = useSetRecoilState<InvitationState>(InvitationInfo);
-
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
@@ -31,22 +28,22 @@ const CreateBack = () => {
   });
   const [backgroundColor, setBackgroundColor] = useState('#fff');
   const [fontColor, setFontColor] = useState('#000');
+  const [invitation, setInvitation] = useRecoilState(InvitationInfo);
 
   const invitationId = 'invitationId'; // 초대장 임시 아이디
 
   useEffect(() => {
-    const invitationInfo = JSON.parse(sessionStorage.getItem('invitationPersist') || 'null');
-    const templateKey = invitationInfo?.invitationInfo?.templateKey || 'null';
-    const isTemplate = invitationInfo?.invitationInfo?.isTemplate || false;
+    const templateKey = invitation.templateKey || 'null';
+    const isTemplate = !!invitation.templateKey;
 
     if (isTemplate) {
-      setBackgroundColor(template[templateKey as string].bg_color);
-      setFontColor(template[templateKey as string].bg_text_color);
+      setBackgroundColor(template[templateKey as string]?.bg_color || '#fff');
+      setFontColor(template[templateKey as string]?.bg_text_color || '#000');
     } else {
       setBackgroundColor('#fff');
       setFontColor('#000');
     }
-  }, []);
+  }, [invitation.templateKey]);
 
   const formattedDate = [
     date.year && `${date.year}년`,
