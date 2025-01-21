@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 // 임시 데이터 (서버 응답)
 const data = {
   id: 0,
-  img: null,
+  imgURL: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
   templateKey: 'ALIEN',
   title: '연말파티 초대장',
   date: '2024.12.25',
@@ -27,6 +27,7 @@ const Result = () => {
       <MyPageHeader />
       <Title>초대장 생성 완료!</Title>
       <InvitationCard
+        //imgURL={data.imgURL}
         title={data.title}
         date={data.date}
         location={data.location}
@@ -35,7 +36,7 @@ const Result = () => {
         fontColor={template[data.templateKey].bg_text_color}
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
-      <ShareList />
+      <ShareList imgURL={data.imgURL} />
     </Container>
   );
 };

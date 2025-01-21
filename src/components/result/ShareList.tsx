@@ -3,11 +3,11 @@ import CopyLinkButton from './CopyLinkButton';
 import KakoShareButton from './KaKaoShareButton';
 import QRShareButton from './QRShareButton';
 
-const ShareList = () => {
+const ShareList = ({ imgURL }: { imgURL: string }) => {
   return (
     <Container>
       <CopyLinkButton />
-      <KakoShareButton />
+      <KakoShareButton imgURL={imgURL} />
       <QRShareButton />
     </Container>
   );

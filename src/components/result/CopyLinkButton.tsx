@@ -20,11 +20,11 @@ const CopyLinkButton = () => {
     };
   }, []);
 
-  const inviationId = window.location.pathname.split('/')[2];
+  const invitationId = window.location.pathname.split('/')[2];
 
   return (
     <Container>
-      <Button data-clipboard-text={`yourevents.site/${inviationId}`} aria-label="링크 복사">
+      <Button data-clipboard-text={`yourevents.site/${invitationId}`} aria-label="링크 복사">
         <img src={copylink} alt="링크 복사" />
       </Button>
       <div>URL 복사</div>
