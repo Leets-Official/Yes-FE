@@ -5,19 +5,22 @@ import { useEffect } from 'react';
 const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
   const invitationURL = 'https://localhost:3000/' + window.location.pathname.split('/')[2];
 
-  // Kakao SDK 초기화
   useEffect(() => {
     if (!window.Kakao) {
       console.error('Kakao SDK is not loaded.');
       return;
     }
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(import.meta.env.VITE_KAKAO_KAKAO_JS_KEY);
-      console.log('Kakao SDK initialized:', window.Kakao.isInitialized());
+
+    console.log('Kakao object exists:', window.Kakao);
+
+    if (window.Kakao.isInitialized()) {
+      console.log('Kakao SDK is already initialized');
+    } else {
+      window.Kakao.init(import.meta.env.VITE_KAKAO_JS_KEY);
+      console.log('Kakao SDK initialized');
     }
   }, []);
 
-  // 메시지 공유 함수
   const shareToKakao = () => {
     if (!window.Kakao) {
       console.error('Kakao SDK is not loaded.');
