@@ -12,8 +12,8 @@ export const template: TemplateType = {
       [286, 54, 91, 20, 14, '#3E3E3E'],
       [326, 48, 103, 35, 14, '#3E3E3E'],
     ], // 4. 각 텍스트창 속성 (top,left,width,height,font-size,font-color)
-    bg_color: '#04FD0B', // 5. 초대장 뒷면 배경 컬러
-    bg_text_color: '#FFFFFF', // 6. 초대장 뒷면 텍스트 컬러
+    bg_color: '#C8F58E', // 5. 초대장 뒷면 배경 컬러
+    bg_text_color: '#3E3E3E', // 6. 초대장 뒷면 텍스트 컬러
   },
   RABBIT: {
     template_src: '/image/Invi_Rabbit.png',
@@ -42,7 +42,7 @@ export const template: TemplateType = {
       [206, 60, 210, 63, 14, '#000000'],
     ],
     bg_color: '#80EDFF',
-    bg_text_color: '#FFFFFF',
+    bg_text_color: '#3E3E3E',
   },
   CHIRASHI: {
     template_src: '/image/Invi_Chirashi.png',
