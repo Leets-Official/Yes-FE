@@ -2,8 +2,10 @@ import styled from 'styled-components';
 import kakaoshare from '../../assets/kakaoshare.svg';
 import { useEffect } from 'react';
 
+const nickname = '공주';
+
 const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
-  const invitationURL = 'https://localhost:3000/' + window.location.pathname.split('/')[2];
+  const invitationURL = 'https://yourevents.site/' + window.location.pathname.split('/')[2];
 
   useEffect(() => {
     if (!window.Kakao) {
@@ -30,8 +32,7 @@ const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
     window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: '친구로부터 초대장이 도착했어요!',
-        description: '머라쓰지.....',
+        title: `${nickname}로부터 초대장이 도착했어요!`,
         imageUrl: imgURL,
         link: {
           webUrl: invitationURL,
