@@ -24,7 +24,7 @@ export const Login = () => {
     <Container>
       <LottieWrapper>
         <DotLottieReact
-          src="https://lottie.host/86ced484-225b-440b-83cf-d99e3f1056c0/IejUx6FXJ1.lottie"
+          src="https://lottie.host/469e0894-51f1-4bbb-88f7-eb10ef8ee925/VoFsOlGjPW.lottie"
           autoplay
         />
       </LottieWrapper>
