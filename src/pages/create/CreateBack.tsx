@@ -101,12 +101,16 @@ const CreateBack = () => {
         />
         <Gap>
           <Field>
-            <label>제목</label>
+            <label>
+              제목 <span>*</span>
+            </label>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </Field>
 
           <Field>
-            <label>일정</label>
+            <label>
+              일정 <span>*</span>
+            </label>
             <DateInputWrapper>
               <DateInput type="number" value={date.year} onChange={handleDateChange('year')} /> 년
               <DateInput type="number" value={date.month} onChange={handleDateChange('month')} /> 월
@@ -118,7 +122,9 @@ const CreateBack = () => {
           </Field>
 
           <Field>
-            <label>장소</label>
+            <label>
+              장소 <span>*</span>
+            </label>
             <Input value={location} onChange={(e) => setLocation(e.target.value)} />
           </Field>
 
@@ -183,12 +189,16 @@ const Gap = styled.div`
 
 const Field = styled.div`
   display: flex;
-  gap: 1.69rem;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
   font-size: 0.875rem;
 
   label {
-    color: #3e3e3e;
+    color: #787878;
+  }
+  span {
+    color: ${theme.color.main};
   }
 `;
 
