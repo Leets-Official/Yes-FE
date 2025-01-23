@@ -49,7 +49,7 @@ interface Invitation {
 }
 
 const InvitationList = ({ type }: { type: string }) => {
-  const [invitationList, setInvitationList] = useState<Invitation[]>([]);
+  const [, setInvitationList] = useState<Invitation[]>([]);
   const [groupedInvitations, setGroupedInvitations] = useState<Record<string, Invitation[]>>({});
 
   useEffect(() => {

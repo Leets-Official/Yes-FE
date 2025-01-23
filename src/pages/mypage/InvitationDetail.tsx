@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import AttendeeList from '../../components/mypage/AttendeeList';
 import { template } from '../../data/Template';
@@ -17,7 +16,7 @@ const data = {
 };
 
 const InvitationDetail = () => {
-  const { id } = useParams<{ id: string }>(); // API 구현 시 필요.
+  // const { id } = useParams<{ id: string }>(); // API 구현 시 필요.
 
   const [isTouched, setIsTouched] = useState(false); // 카드를 뒤집는 상태
 

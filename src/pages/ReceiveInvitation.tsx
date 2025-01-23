@@ -76,6 +76,9 @@ const ReceiveInvitation = () => {
         date={data.date}
         location={data.location}
         description={data.description}
+        // TODO: 컬러 값 수정 필요
+        backgroundColor="#fff"
+        fontColor="#000"
       />
       <TouchMessage>초대장을 터치해보세요</TouchMessage>
 

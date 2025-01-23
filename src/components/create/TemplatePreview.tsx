@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { TbPhotoPlus } from 'react-icons/tb';
-import theme from '../../style/theme';
 import { template } from './../../data/Template';
 
 interface TemplatePreviewProps {
