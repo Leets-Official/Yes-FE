@@ -8,6 +8,7 @@ import { IoAlertCircleOutline } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
 import { useResetStepState } from '../../hooks/useResetStepState';
+import ErrorPhrase from '../../components/common/ErrorPhrase';
 
 const CreateNickName = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
@@ -50,12 +51,7 @@ const CreateNickName = () => {
               placeholder="10자 내로 작성해주세요."
               maxLength={10}
             />
-            {isNotNull == 0 && (
-              <ErrorPhrase>
-                <IoAlertCircleOutline size={13} />
-                <span>닉네임을 입력해주세요</span>
-              </ErrorPhrase>
-            )}
+            {isNotNull == 0 && <ErrorPhrase message="닉네임을 입력해주세요" />}
           </InputField>
         </NicknameForm>
       </MainContent>
@@ -131,17 +127,6 @@ const NicknameInput = styled(Input)`
   margin: 0.5rem 0 0.813rem 0;
   padding: 0 1rem;
   box-sizing: border-box;
-`;
-
-const ErrorPhrase = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.313rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  > * {
-    color: #ff8b8b;
-  }
 `;
 
 const NextButton = styled(Button)`
