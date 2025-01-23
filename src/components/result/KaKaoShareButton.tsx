@@ -52,7 +52,7 @@ const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
   return (
     <Container>
       <Button onClick={shareToKakao}>
-        <img src={kakaoshare} alt="링크 복사" />
+        <img src={kakaoshare} alt="카카오" />
       </Button>
       <div>카카오톡 공유</div>
     </Container>
