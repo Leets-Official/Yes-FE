@@ -5,7 +5,7 @@ const ErrorPhrase = ({ message }: { message: string }) => {
   return (
     <Container>
       <IoAlertCircleOutline size={13} />
-      <span>{message}</span>
+      <div>{message}</div>
     </Container>
   );
 };

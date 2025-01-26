@@ -11,14 +11,26 @@ import { template } from '../../data/Template';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { InvitationInfo } from '../../atom/InvitationInfo';
+import useValidation from '../../hooks/useValidation';
+import ErrorPhrase from '../../components/common/ErrorPhrase';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 const CreateBack = () => {
   const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
+  const {
+    value: title,
+    isValid: isTitleValid,
+    handleInputChange: handleTitleChange,
+    validate: validateTitle,
+  } = useValidation('');
+  const {
+    value: location,
+    isValid: isLocationValid,
+    handleInputChange: handleLocationChange,
+    validate: validateLocation,
+  } = useValidation('');
+  const { value: description, handleInputChange: handleDescriptionChange } = useValidation('');
   const [date, setDate] = useState({
     year: '',
     month: '',
@@ -62,6 +74,23 @@ const CreateBack = () => {
     }));
   };
 
+  const handleCreateInvitation = () => {
+    const isTitleValidated = validateTitle();
+    const isLocationValidated = validateLocation();
+
+    if (isTitleValidated && isLocationValidated) {
+      // API 호출 및 상태 업데이트
+      setInvitation((prev) => ({
+        ...prev,
+        title,
+        location,
+        description,
+        step: 0,
+      }));
+      navigate(`/result/${invitationId}`);
+    }
+  };
+
   useResetStepState();
 
   return (
@@ -75,14 +104,7 @@ const CreateBack = () => {
           color={theme.color.main}
           textColor="#fff"
           fullWidth
-          onClick={() => {
-            // api 호출
-            setInvitation((prev) => ({
-              ...prev,
-              step: 0,
-            }));
-            navigate(`/result/${invitationId}`);
-          }}
+          onClick={handleCreateInvitation}
         >
           초대장 생성하기
         </Button>
@@ -104,7 +126,8 @@ const CreateBack = () => {
             <label>
               제목 <span>*</span>
             </label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input value={title} onChange={handleTitleChange} />
+            {isTitleValid === 0 && <ErrorPhrase message="제목을 입력해주세요" />}
           </Field>
 
           <Field>
@@ -125,12 +148,13 @@ const CreateBack = () => {
             <label>
               장소 <span>*</span>
             </label>
-            <Input value={location} onChange={(e) => setLocation(e.target.value)} />
+            <Input value={location} onChange={handleLocationChange} />
+            {isLocationValid === 0 && <ErrorPhrase message="장소를 입력해주세요" />}
           </Field>
 
           <DescriptionField>
             <label>문구</label>
-            <TextArea value={description} onChange={(e) => setDescription(e.target.value)} />
+            <TextArea value={description} onChange={handleDescriptionChange} />
           </DescriptionField>
         </Gap>
       </AlignCenter>
@@ -144,7 +168,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.25rem;
-  margin-bottom: 6.12rem;
+  margin-bottom: 12rem;
   font-weight: 500;
   height: 100vh;
   width: 100vw;
@@ -168,7 +192,10 @@ const ButtonWrapper = styled.div`
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  width: 90%;
+  width: 100%;
+  max-width: 440px;
+  box-sizing: border-box;
+  padding: 0 5%;
 `;
 
 const AlignCenter = styled.div`
