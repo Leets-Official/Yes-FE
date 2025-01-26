@@ -260,7 +260,7 @@ const DateInputWrapper = styled.div`
   justify-content: center;
   border: 1px solid #cfcdcd;
   border-radius: 8px;
-  width: 15.125rem;
+  width: 18.4375rem;
   height: 2.3125rem;
   padding: 0 1.5rem;
   font-size: 0.875rem;
