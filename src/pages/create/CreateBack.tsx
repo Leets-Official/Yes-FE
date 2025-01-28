@@ -32,6 +32,7 @@ const CreateBack = () => {
     validate: validateLocation,
   } = useValidation('');
   const { value: description, handleInputChange: handleDescriptionChange } = useValidation('');
+  const [isDateValid, setIsDateValid] = useState(false);
   const [date, setDate] = useState({
     year: '',
     month: '',
@@ -44,6 +45,13 @@ const CreateBack = () => {
   const [invitation, setInvitation] = useRecoilState(InvitationInfo);
 
   const invitationId = 'invitationId'; // 초대장 임시 아이디
+
+  useEffect(() => {
+    if (date.year && date.month && date.day && date.hour && date.minute) {
+      setIsDateValid(true);
+    }
+    setIsDateValid(false);
+  }, [date]);
 
   useEffect(() => {
     const templateKey = invitation.templateKey || 'null';
@@ -79,7 +87,7 @@ const CreateBack = () => {
     const isTitleValidated = validateTitle();
     const isLocationValidated = validateLocation();
 
-    if (isTitleValidated && isLocationValidated) {
+    if (isTitleValidated && isLocationValidated && isDateValid) {
       // API 호출 및 상태 업데이트
       setInvitation((prev) => ({
         ...prev,
@@ -161,6 +169,7 @@ const CreateBack = () => {
               />
               분
             </DateInputWrapper>
+            {!isDateValid && <ErrorPhrase message="일정을 입력해주세요" />}
           </Field>
 
           <Field>
