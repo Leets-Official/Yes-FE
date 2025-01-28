@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import InvitationOverview from '../../components/mypage/InvitationOverview';
 import styled from 'styled-components';
+import Modal from '../../components/common/Modal';
+import theme from '../../style/theme';
+import Button from '../../components/common/Button';
 
 // 예시 데이터
 const data = [
@@ -51,6 +54,20 @@ interface Invitation {
 const InvitationList = ({ type }: { type: string }) => {
   const [, setInvitationList] = useState<Invitation[]>([]);
   const [groupedInvitations, setGroupedInvitations] = useState<Record<string, Invitation[]>>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInvitationId, setSelectedInvitationId] = useState<number | null>(null);
+
+  const handleDeleteInvitation = (id: number) => {
+    // 삭제 API
+    console.log(id);
+    // 모달 닫기
+    setIsModalOpen(false);
+  };
+
+  const openDeleteModal = (id: number) => {
+    setSelectedInvitationId(id); // 삭제할 초대장의 id를 선택
+    setIsModalOpen(true); // 모달 열기
+  };
 
   useEffect(() => {
     if (type === 'received' || type === 'send') {
@@ -75,11 +92,43 @@ const InvitationList = ({ type }: { type: string }) => {
 
   return Object.keys(groupedInvitations).map((date, index) => (
     <Container key={index}>
+      {isModalOpen && (
+        <Modal width={14.1825} hasCloseButton={false}>
+          <div>해당 초대장을 삭제하시나요?</div>
+          <Align>
+            <ModalButton
+              size="small"
+              color="#CFCDCD"
+              textColor="#fff"
+              onClick={() =>
+                selectedInvitationId !== null && handleDeleteInvitation(selectedInvitationId)
+              }
+            >
+              삭제
+            </ModalButton>
+            <ModalButton
+              size="small"
+              color={theme.color.main}
+              textColor="#fff"
+              onClick={() => {
+                setIsModalOpen(false);
+              }}
+            >
+              유지
+            </ModalButton>
+          </Align>
+        </Modal>
+      )}
       <Header>
         <div className="made-date">{date}</div>
       </Header>
       {groupedInvitations[date].map((invitation: Invitation) => (
-        <InvitationOverview key={invitation.id} invitation={invitation} />
+        <InvitationOverview
+          key={invitation.id}
+          invitation={invitation}
+          handleDeleteInvitation={openDeleteModal}
+          type={type}
+        />
       ))}
     </Container>
   ));
@@ -107,4 +156,14 @@ const Header = styled.div`
     font-weight: 600;
     font-size: 20px;
   }
+`;
+
+const Align = styled.div`
+  display: flex;
+  gap: 1.2rem;
+`;
+
+const ModalButton = styled(Button)`
+  width: 5.5625rem;
+  padding: 0.5rem 0;
 `;

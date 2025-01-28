@@ -11,15 +11,21 @@ interface Invitation {
   made_date: string;
 }
 
-const InvitationOverview = ({ invitation }: { invitation: Invitation }) => {
+interface InvitationOverviewProps {
+  invitation: Invitation;
+  handleDeleteInvitation: (id: number) => void;
+  type: string;
+}
+
+const InvitationOverview = ({
+  invitation,
+  handleDeleteInvitation,
+  type,
+}: InvitationOverviewProps) => {
   const navigate = useNavigate();
   const handleInvitationClick = (id: number) => {
     /**초대장 상세보기 이동 */
     navigate(`/mypage/detail/${id}`);
-  };
-
-  const handleDeleteInvitation = (id: number) => {
-    // 삭제 API 연결
   };
 
   return (
@@ -33,15 +39,16 @@ const InvitationOverview = ({ invitation }: { invitation: Invitation }) => {
           <SubText>{invitation.date}</SubText>
           <SubText>{invitation.location}</SubText>
         </Texts>
-        {/**invitation.isMine(boolean) 값을 통해 보여줌 */}
-        <DeleteButton
-          color="white"
-          textColor="#CFCDCD"
-          border="1px solid #CFCDCD"
-          onClick={() => handleDeleteInvitation(invitation.id)}
-        >
-          초대장 삭제
-        </DeleteButton>
+        {type === 'send' && (
+          <DeleteButton
+            color="white"
+            textColor="#CFCDCD"
+            border="1px solid #CFCDCD"
+            onClick={() => handleDeleteInvitation(invitation.id)}
+          >
+            초대장 삭제
+          </DeleteButton>
+        )}
       </Content>
     </Contents>
   );
