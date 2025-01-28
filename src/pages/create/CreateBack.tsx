@@ -13,6 +13,7 @@ import { useRecoilState } from 'recoil';
 import { InvitationInfo } from '../../atom/InvitationInfo';
 import useValidation from '../../hooks/useValidation';
 import ErrorPhrase from '../../components/common/ErrorPhrase';
+import DateInput from '../../components/common/DateInput';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
@@ -67,10 +68,10 @@ const CreateBack = () => {
     .filter(Boolean)
     .join(' ');
 
-  const handleDateChange = (field: DateField) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = (field: DateField) => (value: string | number) => {
     setDate((prev) => ({
       ...prev,
-      [field]: e.target.value,
+      [field]: value,
     }));
   };
 
@@ -135,11 +136,29 @@ const CreateBack = () => {
               일정 <span>*</span>
             </label>
             <DateInputWrapper>
-              <DateInput type="number" value={date.year} onChange={handleDateChange('year')} /> 년
-              <DateInput type="number" value={date.month} onChange={handleDateChange('month')} /> 월
-              <DateInput type="number" value={date.day} onChange={handleDateChange('day')} /> 일
-              <DateInput type="number" value={date.hour} onChange={handleDateChange('hour')} /> 시
-              <DateInput type="number" value={date.minute} onChange={handleDateChange('minute')} />
+              <DateInput value={date.year} onChange={handleDateChange('year')} inputType="year" />{' '}
+              년
+              <DateInput
+                value={date.month}
+                onChange={handleDateChange('month')}
+                inputType="month"
+              />
+              월
+              <DateInput
+                value={date.day}
+                onChange={handleDateChange('day')}
+                inputType="day"
+                year={parseInt(date.year)}
+                month={parseInt(date.month)}
+              />{' '}
+              일
+              <DateInput value={date.hour} onChange={handleDateChange('hour')} inputType="hour" />
+              시
+              <DateInput
+                value={date.minute}
+                onChange={handleDateChange('minute')}
+                inputType="minute"
+              />
               분
             </DateInputWrapper>
           </Field>
@@ -233,24 +252,6 @@ const DescriptionField = styled(Field)`
   align-items: flex-start;
   div {
     margin-top: 1.06rem;
-  }
-`;
-
-const DateInput = styled.input.attrs({ type: 'number' })`
-  width: 2rem;
-  border: none;
-  text-align: right;
-  margin-top: 0.03rem;
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  &::-webkit-inner-spin-button,
-  &::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
   }
 `;
 
