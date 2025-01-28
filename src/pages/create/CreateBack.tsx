@@ -150,7 +150,7 @@ const CreateBack = () => {
                 inputType="day"
                 year={parseInt(date.year)}
                 month={parseInt(date.month)}
-              />{' '}
+              />
               일
               <DateInput value={date.hour} onChange={handleDateChange('hour')} inputType="hour" />
               시
@@ -211,10 +211,10 @@ const ButtonWrapper = styled.div`
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  width: 100%;
+  width: calc(100% - 10%);
   max-width: 440px;
   box-sizing: border-box;
-  padding: 0 5%;
+  padding: 0;
 `;
 
 const AlignCenter = styled.div`
