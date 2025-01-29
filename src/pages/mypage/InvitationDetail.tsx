@@ -22,7 +22,7 @@ const data = {
 const InvitationDetail = () => {
   //const { id } = useParams<{ id: string }>();
 
-  const [invitation, setInvitation] = useState<Invitation>({
+  const [invitation] = useState<Invitation>({
     invitationId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
     createDate: '2025-01-29T09:02:06.444Z',
     title: '웰컴하우스',
