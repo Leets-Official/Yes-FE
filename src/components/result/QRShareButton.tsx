@@ -3,7 +3,7 @@ import QRshare from '../../assets/QRsahre.svg';
 import Modal from '../common/Modal';
 import Button from '../common/Button';
 import theme from '../../style/theme';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import useGetQR from '../../api/useGetQR';
 
 const QRShareButton = () => {
@@ -12,12 +12,40 @@ const QRShareButton = () => {
 
   const { data: QRUrl } = useGetQR(invitationId);
 
+  const onClickDownload = useCallback((srcUrl: string, name: string) => {
+    fetch(srcUrl, { method: 'GET' })
+      .then((res) => res.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+        }, 1000);
+        a.remove();
+      })
+      .catch((err) => {
+        console.error('err', err);
+      });
+  }, []);
+
+  console.log(QRUrl);
+
   return (
     <Container>
       {isModalOpen && (
         <Modal width={10.37} hasCloseButton onClose={() => setIsModalOpen(false)}>
           <QR src={QRUrl} alt="QR" />
-          <DownloadButton size="small" color={theme.color.main} textColor="#fff" onClick={() => {}}>
+          <DownloadButton
+            size="small"
+            color={theme.color.main}
+            textColor="#fff"
+            // onClick={() => {}}
+            onClick={() => onClickDownload(QRUrl, `${invitationId}_QR.png`)}
+          >
             저장하기
           </DownloadButton>
         </Modal>
