@@ -14,9 +14,9 @@ const InvitationStats = ({
     if (type === 'received') {
       // 받은 초대장 목록 이동
       navigate('/mypage/received');
-    } else if (type === 'send') {
+    } else if (type === 'sent') {
       // 보낸 초대장 목록 이동
-      navigate('/mypage/send');
+      navigate('/mypage/sent');
     }
   };
 
@@ -27,7 +27,7 @@ const InvitationStats = ({
         <StatCount>{receivedInvitationCount}</StatCount>
       </Stat>
       <SplitStat />
-      <Stat onClick={() => handleStatClick('send')}>
+      <Stat onClick={() => handleStatClick('sent')}>
         <StatTitle>보낸 초대장</StatTitle>
         <StatCount>{sentInvitationCount}</StatCount>
       </Stat>

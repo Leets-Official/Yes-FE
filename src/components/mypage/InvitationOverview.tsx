@@ -31,7 +31,7 @@ const InvitationOverview = ({
           <SubText>{formatDate(invitation.schedule)}</SubText>
           <SubText>{invitation.location}</SubText>
         </Texts>
-        {type === 'send' && (
+        {type === 'sent' && (
           <DeleteButton
             color="white"
             textColor="#CFCDCD"

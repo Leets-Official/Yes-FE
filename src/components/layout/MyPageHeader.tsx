@@ -20,14 +20,14 @@ export const MyPageHeader = () => {
     <Section>
       <LeftButton
         className={
-          currentUrl === '/mypage/received' || currentUrl === '/mypage/send' ? 'visible' : 'hidden'
+          currentUrl === '/mypage/received' || currentUrl === '/mypage/sent' ? 'visible' : 'hidden'
         }
         strokeWidth={2}
         size={24}
         onClick={() => navigate('/mypage')}
       />
       <HeaderTitle>
-        {currentUrl === '/mypage/received' || currentUrl === '/mypage/send' ? (
+        {currentUrl === '/mypage/received' || currentUrl === '/mypage/sent' ? (
           currentUrl === '/mypage/received' ? (
             '받은 초대장'
           ) : (
@@ -40,7 +40,7 @@ export const MyPageHeader = () => {
       {!location.pathname.startsWith('/mypage/detail/') && (
         <CloseIcon
           className={
-            currentUrl === '/mypage/received' || currentUrl === '/mypage/send'
+            currentUrl === '/mypage/received' || currentUrl === '/mypage/sent'
               ? 'hidden'
               : 'visible'
           }

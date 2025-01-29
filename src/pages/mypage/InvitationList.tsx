@@ -4,15 +4,13 @@ import styled from 'styled-components';
 import Modal from '../../components/common/Modal';
 import theme from '../../style/theme';
 import Button from '../../components/common/Button';
-import { receivedInvatationListAPI, sendInvatationListAPI, deleteInvitationAPI } from '../../api';
-import { useResetRecoilState } from 'recoil';
-import { UserInfo } from '../../atom/UserInfo';
-import { useErrorBoundary } from 'react-error-boundary';
 import { formatDate } from '../../utils/formatDate';
+import { useGetInvitationList } from '../../api/useGetInvitationList';
+import { useDeleteInvitation } from '../../api/useDeleteInvitation';
 
 const InvitationList = ({ type }: { type: string }) => {
-  const resetUserInfo = useResetRecoilState(UserInfo);
-  const { showBoundary } = useErrorBoundary();
+  const { invitations } = useGetInvitationList(type);
+  const { deleteInvitation } = useDeleteInvitation();
 
   const [invitationList, setInvitationList] = useState<Invitation[]>([]); // 초대장 리스트
   const [groupedInvitations, setGroupedInvitations] = useState<Record<string, Invitation[]>>({}); // 날짜별 그룹 초대장 리스트
@@ -20,60 +18,23 @@ const InvitationList = ({ type }: { type: string }) => {
   const [selectedInvitationId, setSelectedInvitationId] = useState<string | null>(null); // 삭제선택된 초대장 ID
   const [isEmpty, setIsEmpty] = useState(true); // 초대장이 존재하는지 여부 체크
 
-  const handleDeleteInvitation = (id: string) => {
-    // 삭제 API
-    deleteInvitationAPI(resetUserInfo, showBoundary, id).then((res) => {
-      if (res.isSuccess) {
-        setInvitationList((prevList) =>
-          prevList.filter((invitation) => invitation.invitationId !== id),
-        ); // 삭제 성공시, 해당 초대장 제거
-        setIsModalOpen(false);
-      } else {
-        console.log(res.message);
-        setIsModalOpen(false);
-      }
-    });
-  };
-
-  const openDeleteModal = (id: string) => {
-    setSelectedInvitationId(id); // 삭제할 초대장의 id를 선택
-    setIsModalOpen(true); // 모달 열기
-  };
+  useEffect(() => {
+    setInvitationList(invitations);
+  }, [invitations]);
 
   useEffect(() => {
-    if (type === 'received' || type === 'send') {
-      // 받은 초대장/보낸 초대장 불러오기
-      if (type === 'received') {
-        receivedInvatationListAPI(resetUserInfo, showBoundary).then((res) => {
-          if (res.isSuccess && res.result !== null) {
-            setInvitationList(res.result);
-          }
-        });
-      } else if (type === 'send') {
-        sendInvatationListAPI(resetUserInfo, showBoundary).then((res) => {
-          if (res.isSuccess && res.result !== null) {
-            setInvitationList(res.result);
-          }
-        });
-      }
-    }
-  }, [type]);
-
-  useEffect(() => {
-    // invitationList가 변경되면 이 부분에서 그룹화 작업
     if (invitationList.length === 0) {
       setIsEmpty(true);
     } else {
       setIsEmpty(false);
-      // invitationList를 createDate 기준으로 내림차순 정렬
       const sortedInvitationList = [...invitationList].sort((a, b) => {
-        return new Date(b.createDate).getTime() - new Date(a.createDate).getTime(); // 최신순 정렬
+        return new Date(b.createDate).getTime() - new Date(a.createDate).getTime();
       });
 
-      // createDate 별로 그룹화
+      // 만들어진 날짜별로 초대장 그룹화.
       const grouped = sortedInvitationList.reduce(
         (acc, invitation) => {
-          const formattedDate = formatDate(invitation.createDate); // YYYY.MM.DD 형식으로 변환.
+          const formattedDate = formatDate(invitation.createDate);
           if (!acc[formattedDate]) {
             acc[formattedDate] = [];
           }
@@ -82,9 +43,22 @@ const InvitationList = ({ type }: { type: string }) => {
         },
         {} as Record<string, Invitation[]>,
       );
+
       setGroupedInvitations(grouped);
     }
   }, [invitationList]);
+
+  const handleDeleteInvitation = (id: string) => {
+    deleteInvitation(id, () => {
+      setInvitationList((prevList) => prevList.filter((inv) => inv.invitationId !== id));
+    });
+    setIsModalOpen(false);
+  };
+
+  const openDeleteModal = (id: string) => {
+    setSelectedInvitationId(id); // 삭제할 초대장의 id를 선택
+    setIsModalOpen(true); // 모달 열기
+  };
 
   return (
     <>
