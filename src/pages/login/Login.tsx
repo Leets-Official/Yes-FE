@@ -54,7 +54,6 @@ const LottieWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  bottom: -5rem;
 `;
 
 const KakaoLoginButton = styled(Button)`

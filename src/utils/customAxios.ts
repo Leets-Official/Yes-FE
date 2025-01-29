@@ -41,22 +41,23 @@ const createPrivateAxios = (resetUserInfo: () => void) => {
   );
 
   instance.interceptors.response.use(
-    (response) => response.data,
+    (response) => response,
     async (error) => {
-      if (error.response && error.response.data.status === 401) {
+      console.log(error.response.data);
+      if (error.response && error.response.data.result.status === 401) {
         showToast('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
         // 토큰 만료 또는 토큰 이상 시 재로그인 필요 (only error toast + redirect)
         resetUserInfo(); // 회원정보 초기화
         removeCookie('accessToken'); // 쿠키에서 accessToken 제거
         redirectToLoginPage(); // 로그인 페이지로 리다이렉트
-      } else if (error.response.data.status === 500) {
+      } else if (error.response.data.result.status === 500) {
         // 서버 에러 (only error 페이지)
-        let err = new Error(error.response.data.message);
-        err.name = error.response.data.code;
+        let err = new Error(error.response.data.result.message);
+        err.name = error.response.data.result.code;
         throw err;
       } else {
         // 일반 에러 처리 (only error toast)
-        const errorMessage = error.response.data.message;
+        const errorMessage = error.response.data.result.message;
         if (errorMessage) {
           showToast(errorMessage);
         }
