@@ -4,16 +4,19 @@ import Modal from '../common/Modal';
 import Button from '../common/Button';
 import theme from '../../style/theme';
 import { useState } from 'react';
+import useGetQR from '../../api/useGetQR';
 
 const QRShareButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const invitationId = window.location.pathname.split('/')[2];
+
+  const { data: QRUrl } = useGetQR(invitationId);
 
   return (
     <Container>
       {isModalOpen && (
         <Modal width={10.37} hasCloseButton onClose={() => setIsModalOpen(false)}>
-          <QR>QR</QR>
-          <div>QR 이미지를 저장해 공유해보세요!</div>
+          <QR src={QRUrl} alt="QR" />
           <DownloadButton size="small" color={theme.color.main} textColor="#fff" onClick={() => {}}>
             저장하기
           </DownloadButton>
@@ -59,7 +62,7 @@ const DownloadButton = styled(Button)`
   height: 2rem;
 `;
 
-const QR = styled.div`
+const QR = styled.img`
   width: 8rem;
   height: 8rem;
   background-color: #ddd;
