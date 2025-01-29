@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Modal from '../../components/common/Modal';
 import theme from '../../style/theme';
 import Button from '../../components/common/Button';
-import { receivedInvatationListAPI, sendInvatationListAPI } from '../../api';
+import { receivedInvatationListAPI, sendInvatationListAPI, deleteInvitationAPI } from '../../api';
 import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../../atom/UserInfo';
 import { useErrorBoundary } from 'react-error-boundary';
@@ -42,9 +42,17 @@ const InvitationList = ({ type }: { type: string }) => {
 
   const handleDeleteInvitation = (id: string) => {
     // 삭제 API
-    console.log(id);
-    // 모달 닫기
-    setIsModalOpen(false);
+    deleteInvitationAPI(resetUserInfo, showBoundary, id).then((res) => {
+      if (res.isSuccess) {
+        setInvitationList((prevList) =>
+          prevList.filter((invitation) => invitation.invitationId !== id),
+        ); // 삭제 성공시, 해당 초대장 제거
+        setIsModalOpen(false);
+      } else {
+        console.log(res.message);
+        setIsModalOpen(false);
+      }
+    });
   };
 
   const openDeleteModal = (id: string) => {
