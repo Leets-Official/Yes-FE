@@ -14,23 +14,13 @@ const QRShareButton = () => {
 
   const onClickDownload = useCallback((srcUrl: string | null, name: string) => {
     if (!srcUrl) return;
-    fetch(srcUrl, { method: 'GET' })
-      .then((res) => res.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = name;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => {
-          window.URL.revokeObjectURL(url);
-        }, 1000);
-        a.remove();
-      })
-      .catch((err) => {
-        console.error('err', err);
-      });
+    const a = document.createElement('a');
+    a.href = srcUrl;
+    a.download = name;
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }, []);
 
   console.log(QRUrl);
