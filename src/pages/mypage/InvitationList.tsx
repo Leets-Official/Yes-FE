@@ -8,27 +8,7 @@ import { receivedInvatationListAPI, sendInvatationListAPI, deleteInvitationAPI }
 import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../../atom/UserInfo';
 import { useErrorBoundary } from 'react-error-boundary';
-
-interface Invitation {
-  invitationId: string;
-  thumbnailUrl: string | null;
-  title: string;
-  schedule: string;
-  location: string;
-  createDate: string;
-  remark: string;
-}
-
-// locale 데이터 => YYYY.MM.DD 변환 함수
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  return `${year}년 ${month}월 ${day}일`;
-};
+import { formatDate } from '../../utils/formatDate';
 
 const InvitationList = ({ type }: { type: string }) => {
   const resetUserInfo = useResetRecoilState(UserInfo);
@@ -148,7 +128,6 @@ const InvitationList = ({ type }: { type: string }) => {
                 key={invitation.invitationId}
                 invitation={invitation}
                 handleDeleteInvitation={openDeleteModal}
-                formatDate={formatDate}
                 type={type}
               />
             ))}

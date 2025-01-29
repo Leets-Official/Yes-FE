@@ -1,29 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../common/Button';
-
-interface Invitation {
-  invitationId: string;
-  thumbnailUrl: string | null;
-  title: string;
-  schedule: string;
-  location: string;
-  createDate: string;
-  remark: string;
-}
+import { formatDate } from '../../utils/formatDate';
 
 interface InvitationOverviewProps {
   invitation: Invitation;
   handleDeleteInvitation: (id: string) => void;
   type: string;
-  formatDate: (dateString: string) => string;
 }
 
 const InvitationOverview = ({
   invitation,
   handleDeleteInvitation,
   type,
-  formatDate,
 }: InvitationOverviewProps) => {
   const navigate = useNavigate();
   const handleInvitationClick = (id: string) => {
