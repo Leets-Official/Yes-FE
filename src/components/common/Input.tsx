@@ -34,8 +34,8 @@ const Input = ({
 }) => {
   return (
     <StyledInput
-      width={width || '18.125rem'}
-      height={height || '2.3125rem'}
+      width={width || '21.4375rem'}
+      height={height || '2.5rem'}
       value={value}
       onChange={onChange}
       placeholder={placeholder}

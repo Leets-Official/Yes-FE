@@ -6,6 +6,7 @@ import InvitationBack from '../result/InvitationBack';
 const InvitationCard = ({
   imgUrl,
   title,
+  imgURL,
   date,
   location,
   description,
@@ -14,6 +15,7 @@ const InvitationCard = ({
 }: {
   imgUrl: string;
   title: string;
+  imgURL: string;
   date: string;
   location: string;
   description: string;
@@ -30,7 +32,7 @@ const InvitationCard = ({
       isTouched={isTouched}
     >
       <CardFront>
-        <InvitationFront imgUrl={imgUrl} />
+        <InvitationFront imgURL={imgURL} />
       </CardFront>
 
       <CardBack>

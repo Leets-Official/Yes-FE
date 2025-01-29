@@ -25,10 +25,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login/*" element={<KakaoRedirectHandler />} />
+            <Route path="/invitation/:invitationId" element={<ReceiveInvitation />} />
             <Route element={<PrivateRoutes />}>
               <Route path="/home" element={<Home />} />
               <Route path="/invitation/create" element={<InvitationCreate />} />
-              <Route path="/invitation/:invitationId" element={<ReceiveInvitation />} />
               <Route path="/result/:invitationId" element={<Result />} />
               <Route path="/mypage" element={<MyPage />}>
                 <Route path="" element={<MyPageMain />} />
