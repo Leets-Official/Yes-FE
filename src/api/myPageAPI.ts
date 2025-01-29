@@ -100,5 +100,31 @@ export const deleteInvitationAPI = async (
 };
 
 // 마이페이지 상세 초대장 조회 API
+export const invitationDetailAPI = async (
+  resetUserInfo: () => void,
+  showBoundary: (error: any) => void,
+  id: string,
+) => {
+  const response = {
+    isSuccess: false,
+    message: '',
+    result: null,
+  };
+  try {
+    const result = await privateAxios(resetUserInfo).get(`/invitation/${id}`);
+    response.isSuccess = true;
+    response.message = result.data.message;
+    response.result = result.data.result;
+  } catch (error: any) {
+    if (error.name !== 'GENERAL') {
+      showBoundary(error);
+    }
+    response.isSuccess = false;
+    response.message = error.message;
+  }
+  return response;
+};
 
-// QR 조회 API
+// 참석자 / 불참석자 API
+
+// QR 조회 API (임시)

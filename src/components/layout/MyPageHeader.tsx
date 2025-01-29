@@ -8,9 +8,7 @@ export const MyPageHeader = () => {
   const currentUrl = useLocation().pathname;
 
   const handleClose = () => {
-    if (location.pathname.startsWith('/mypage/detail/')) {
-      navigate(-1);
-    } else if (location.pathname.startsWith('/mypage/')) {
+    if (location.pathname.startsWith('/mypage/')) {
       navigate('/mypage');
     } else if (location.pathname === '/mypage') {
       navigate('/home');
@@ -39,14 +37,18 @@ export const MyPageHeader = () => {
           <img src="/image/small_yes.svg" />
         )}
       </HeaderTitle>
-      <CloseIcon
-        className={
-          currentUrl === '/mypage/received' || currentUrl === '/mypage/send' ? 'hidden' : 'visible'
-        }
-        strokeWidth={1}
-        size={28}
-        onClick={handleClose}
-      />
+      {!location.pathname.startsWith('/mypage/detail/') && (
+        <CloseIcon
+          className={
+            currentUrl === '/mypage/received' || currentUrl === '/mypage/send'
+              ? 'hidden'
+              : 'visible'
+          }
+          strokeWidth={1}
+          size={28}
+          onClick={handleClose}
+        />
+      )}
     </Section>
   );
 };

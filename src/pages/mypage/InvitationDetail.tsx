@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AttendeeList from '../../components/mypage/AttendeeList';
 import { template } from '../../data/Template';
+import ShareList from '../../components/result/ShareList';
+import { invitationDetailAPI } from '../../api';
+import { useResetRecoilState } from 'recoil';
+import { UserInfo } from '../../atom/UserInfo';
+import { useErrorBoundary } from 'react-error-boundary';
+import { useParams } from 'react-router-dom';
+import InvitationCard from '../../components/common/InvitationCard';
+import { formatDate } from '../../utils/formatDate';
 
 const data = {
   id: 0,
@@ -13,47 +21,56 @@ const data = {
   made_date: '2024.12.14',
   description: '몸만 와라 친구들아',
   attendees: ['나얌', '리락이', '쿠마마'],
+  be_attendees: ['하이', '표옹옹'],
 };
 
 const InvitationDetail = () => {
-  // const { id } = useParams<{ id: string }>(); // API 구현 시 필요.
+  const { id } = useParams<{ id: string }>();
+  const resetUserInfo = useResetRecoilState(UserInfo);
+  const { showBoundary } = useErrorBoundary();
 
-  const [isTouched, setIsTouched] = useState(false); // 카드를 뒤집는 상태
+  const [invitation, setInvitation] = useState<Invitation>({
+    invitationId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    createDate: '2025-01-29T09:02:06.444Z',
+    title: '웰컴하우스',
+    schedule: '2025-01-29T09:02:06.445Z',
+    location: '우리집',
+    thumbnailUrl: 'img',
+    remark: '와라',
+  });
 
-  const handleInvitationClick = () => {
-    setIsTouched((prev) => !prev); // 카드를 클릭할 때마다 뒤집기 상태 변경
-  };
+  useEffect(() => {
+    let temp = false; // (테스트용으로 삭제할 값입니다.)
+    if (temp && id) {
+      // 초대장 상세정보 API
+      invitationDetailAPI(resetUserInfo, showBoundary, id).then((res) => {
+        if (res.isSuccess && res.result !== null) {
+          setInvitation(res.result);
+        }
+      });
+    } else {
+      console.error('invitationId is missing');
+    }
+    // (참석자/불참석자 API) - 서버 미구현
+  }, []);
 
   return (
     <Container>
       {/**플립되는 초대장 */}
-      <Invitation isTouched={isTouched} onClick={handleInvitationClick}>
-        {/* 초대장 앞면 */}
-        <InvitationFront>
-          <InvitationImage src={data.img} />
-        </InvitationFront>
-
-        {/* 초대장 뒷면 (컬러 지정 관련 회의 필요)*/}
-        <InvitationBack
-          bgColor={template[data.templateKey].bg_color}
-          color={template[data.templateKey].bg_text_color}
-        >
-          <Title>{data.title}</Title>
-          <Gap />
-          <TextBox>
-            <Text>일정</Text>
-            <Text>{data.date}</Text>
-          </TextBox>
-          <TextBox>
-            <Text>장소</Text>
-            <Text>{data.location}</Text>
-          </TextBox>
-          <Gap />
-          <Text>{data.description}</Text>
-        </InvitationBack>
-      </Invitation>
+      <InvitationCard
+        title={invitation.title}
+        date={formatDate(invitation.schedule)}
+        location={invitation.location}
+        description={invitation.remark}
+        backgroundColor={template[data.templateKey].bg_color}
+        fontColor={template[data.templateKey].bg_text_color}
+      />
+      {/**카카오톡 공유(링크, QR) = isMine인 경우에만...*/}
+      <ShareList imgURL={data.img} />
       {/**참석자 명단 */}
-      <AttendeeList attendees={data.attendees} />
+      <AttendeeList attendees={data.attendees} title="참석자 목록" />
+      {/**불참석자 명단 */}
+      <AttendeeList attendees={data.be_attendees} title="불참석자 목록" />
     </Container>
   );
 };
@@ -67,64 +84,4 @@ const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
   padding: 0 0.313rem;
-`;
-
-const Invitation = styled.div<{ isTouched: boolean }>`
-  position: relative;
-  width: 300px;
-  height: 375px;
-  transform-style: preserve-3d;
-  transition: transform 0.8s ease;
-  transform: ${({ isTouched }) => (isTouched ? 'rotateY(180deg)' : 'rotateY(0deg)')};
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
-`;
-
-const DefaultInvitationStyle = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 8px;
-  display: flex;
-`;
-
-const InvitationFront = styled(DefaultInvitationStyle)``;
-
-const InvitationImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-`;
-
-const InvitationBack = styled(DefaultInvitationStyle)<{ bgColor: string; color: string }>`
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-
-  padding: 2.875rem 2.438rem;
-  color: ${(props) => props.color};
-  background-color: ${(props) => props.bgColor};
-  transform: rotateY(180deg);
-`;
-
-const Title = styled.div`
-  font-size: 24px;
-  font-weight: 600;
-`;
-
-const TextBox = styled.div`
-  display: flex;
-  gap: 2.25rem;
-  margin-bottom: 1.188rem;
-`;
-
-const Text = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-`;
-
-const Gap = styled.div`
-  height: 2.375rem;
 `;

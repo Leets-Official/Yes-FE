@@ -3,6 +3,7 @@ import {
   receivedInvatationListAPI,
   sendInvatationListAPI,
   deleteInvitationAPI,
+  invitationDetailAPI,
 } from './myPageAPI';
 
 export {
@@ -10,4 +11,5 @@ export {
   receivedInvatationListAPI, // 마이페이지 받은 초대장 리스트 조회 API
   sendInvatationListAPI, // 마이페이지 보낸 초대장 리스트 조회 API
   deleteInvitationAPI, // 초대장 삭제 API
+  invitationDetailAPI, // 초대장 상세조회 API
 };
