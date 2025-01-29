@@ -4,6 +4,7 @@ import InvitationFront from '../result/InvitationFront';
 import InvitationBack from '../result/InvitationBack';
 
 const InvitationCard = ({
+  imgUrl,
   title,
   date,
   location,
@@ -11,6 +12,7 @@ const InvitationCard = ({
   backgroundColor = '#fff',
   fontColor = '#000',
 }: {
+  imgUrl: string;
   title: string;
   date: string;
   location: string;
@@ -28,7 +30,7 @@ const InvitationCard = ({
       isTouched={isTouched}
     >
       <CardFront>
-        <InvitationFront />
+        <InvitationFront imgUrl={imgUrl} />
       </CardFront>
 
       <CardBack>

@@ -12,7 +12,7 @@ declare global {
   };
   type Invitation = {
     invitationId: string;
-    thumbnailUrl: string | null;
+    thumbnailUrl: string;
     title: string;
     schedule: string;
     location: string;

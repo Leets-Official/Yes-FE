@@ -3,11 +3,6 @@ import styled from 'styled-components';
 import AttendeeList from '../../components/mypage/AttendeeList';
 import { template } from '../../data/Template';
 import ShareList from '../../components/result/ShareList';
-import { invitationDetailAPI } from '../../api';
-import { useResetRecoilState } from 'recoil';
-import { UserInfo } from '../../atom/UserInfo';
-import { useErrorBoundary } from 'react-error-boundary';
-import { useParams } from 'react-router-dom';
 import InvitationCard from '../../components/common/InvitationCard';
 import { formatDate } from '../../utils/formatDate';
 
@@ -25,9 +20,7 @@ const data = {
 };
 
 const InvitationDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const resetUserInfo = useResetRecoilState(UserInfo);
-  const { showBoundary } = useErrorBoundary();
+  //const { id } = useParams<{ id: string }>();
 
   const [invitation, setInvitation] = useState<Invitation>({
     invitationId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -35,22 +28,12 @@ const InvitationDetail = () => {
     title: '웰컴하우스',
     schedule: '2025-01-29T09:02:06.445Z',
     location: '우리집',
-    thumbnailUrl: 'img',
+    thumbnailUrl: 'https://pbs.twimg.com/media/GLwiWDdaoAAP1id.jpg',
     remark: '와라',
   });
 
   useEffect(() => {
-    let temp = false; // (테스트용으로 삭제할 값입니다.)
-    if (temp && id) {
-      // 초대장 상세정보 API
-      invitationDetailAPI(resetUserInfo, showBoundary, id).then((res) => {
-        if (res.isSuccess && res.result !== null) {
-          setInvitation(res.result);
-        }
-      });
-    } else {
-      console.error('invitationId is missing');
-    }
+    // 초대장 상세조회 API
     // (참석자/불참석자 API) - 서버 미구현
   }, []);
 
@@ -58,6 +41,7 @@ const InvitationDetail = () => {
     <Container>
       {/**플립되는 초대장 */}
       <InvitationCard
+        imgUrl={invitation.thumbnailUrl}
         title={invitation.title}
         date={formatDate(invitation.schedule)}
         location={invitation.location}
