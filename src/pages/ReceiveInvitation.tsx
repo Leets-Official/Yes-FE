@@ -11,7 +11,7 @@ import { useState } from 'react';
 // 임시 데이터
 const data = {
   id: 0,
-  img: null,
+  imgURL: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
   title: '연말파티 초대장',
   date: '2024.12.25',
   location: '강남역 어딘가',
@@ -73,6 +73,7 @@ const ReceiveInvitation = () => {
 
       <InvitationCard
         title={data.title}
+        imgURL={data.imgURL}
         date={data.date}
         location={data.location}
         description={data.description}

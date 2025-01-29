@@ -8,13 +8,12 @@ import { useEffect } from 'react';
 // 임시 데이터 (서버 응답)
 const data = {
   id: 0,
-  imgURL: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
+  thumbnailUrl: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
   templateKey: 'ALIEN',
   title: '연말파티 초대장',
-  date: '2024.12.25',
+  schedule: '2024.12.25',
   location: '강남역 어딘가',
-  description: '몸만 와라 친구들아',
-  made_date: '2024.12.14',
+  remark: '몸만 와라 친구들아',
 };
 
 const Result = () => {
@@ -27,16 +26,16 @@ const Result = () => {
       <MyPageHeader />
       <Title>초대장 생성 완료!</Title>
       <InvitationCard
-        //imgURL={data.imgURL}
+        imgURL={data.thumbnailUrl}
         title={data.title}
-        date={data.date}
+        date={data.schedule}
         location={data.location}
-        description={data.description}
+        description={data.remark}
         backgroundColor={template[data.templateKey].bg_color}
         fontColor={template[data.templateKey].bg_text_color}
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
-      <ShareList imgURL={data.imgURL} />
+      <ShareList imgURL={data.thumbnailUrl} />
     </Container>
   );
 };

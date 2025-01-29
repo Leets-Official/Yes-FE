@@ -6,9 +6,8 @@ const StyledImg = styled.img`
   border-radius: 0.5rem;
 `;
 
-const InvitationFront = () => {
-  //TODO: 경로를 동적으로 병경하도록 설정
-  return <StyledImg src="/image/Pre_Invi_Receipt.png" alt="front" />;
+const InvitationFront = ({ imgURL }: { imgURL: string }) => {
+  return <StyledImg src={imgURL} alt="front" />;
 };
 
 export default InvitationFront;

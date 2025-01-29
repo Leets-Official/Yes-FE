@@ -5,6 +5,7 @@ import InvitationBack from '../result/InvitationBack';
 
 const InvitationCard = ({
   title,
+  imgURL,
   date,
   location,
   description,
@@ -12,6 +13,7 @@ const InvitationCard = ({
   fontColor = '#000',
 }: {
   title: string;
+  imgURL: string;
   date: string;
   location: string;
   description: string;
@@ -28,7 +30,7 @@ const InvitationCard = ({
       isTouched={isTouched}
     >
       <CardFront>
-        <InvitationFront />
+        <InvitationFront imgURL={imgURL} />
       </CardFront>
 
       <CardBack>

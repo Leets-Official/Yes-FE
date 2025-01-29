@@ -41,7 +41,7 @@ const createPrivateAxios = (resetUserInfo: () => void) => {
   );
 
   instance.interceptors.response.use(
-    (response) => response.data,
+    (response) => response,
     async (error) => {
       if (error.response && error.response.data.status === 401) {
         showToast('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
