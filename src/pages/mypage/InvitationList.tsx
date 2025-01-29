@@ -10,7 +10,7 @@ import { UserInfo } from '../../atom/UserInfo';
 import { useErrorBoundary } from 'react-error-boundary';
 
 interface Invitation {
-  invitationId: number;
+  invitationId: string;
   thumbnailUrl: string | null;
   title: string;
   schedule: string;
@@ -19,6 +19,17 @@ interface Invitation {
   remark: string;
 }
 
+// locale 데이터 => YYYY.MM.DD 변환 함수
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  return `${year}년 ${month}월 ${day}일`;
+};
+
 const InvitationList = ({ type }: { type: string }) => {
   const resetUserInfo = useResetRecoilState(UserInfo);
   const { showBoundary } = useErrorBoundary();
@@ -26,17 +37,17 @@ const InvitationList = ({ type }: { type: string }) => {
   const [invitationList, setInvitationList] = useState<Invitation[]>([]); // 초대장 리스트
   const [groupedInvitations, setGroupedInvitations] = useState<Record<string, Invitation[]>>({}); // 날짜별 그룹 초대장 리스트
   const [isModalOpen, setIsModalOpen] = useState(false); // 초대장 삭제 모달 오픈 여부
-  const [selectedInvitationId, setSelectedInvitationId] = useState<number | null>(null); // 삭제선택된 초대장 ID
+  const [selectedInvitationId, setSelectedInvitationId] = useState<string | null>(null); // 삭제선택된 초대장 ID
   const [isEmpty, setIsEmpty] = useState(true); // 초대장이 존재하는지 여부 체크
 
-  const handleDeleteInvitation = (id: number) => {
+  const handleDeleteInvitation = (id: string) => {
     // 삭제 API
     console.log(id);
     // 모달 닫기
     setIsModalOpen(false);
   };
 
-  const openDeleteModal = (id: number) => {
+  const openDeleteModal = (id: string) => {
     setSelectedInvitationId(id); // 삭제할 초대장의 id를 선택
     setIsModalOpen(true); // 모달 열기
   };
@@ -66,20 +77,26 @@ const InvitationList = ({ type }: { type: string }) => {
       setIsEmpty(true);
     } else {
       setIsEmpty(false);
+      // invitationList를 createDate 기준으로 내림차순 정렬
+      const sortedInvitationList = [...invitationList].sort((a, b) => {
+        return new Date(b.createDate).getTime() - new Date(a.createDate).getTime(); // 최신순 정렬
+      });
+
       // createDate 별로 그룹화
-      const grouped = invitationList.reduce(
+      const grouped = sortedInvitationList.reduce(
         (acc, invitation) => {
-          if (!acc[invitation.createDate]) {
-            acc[invitation.createDate] = [];
+          const formattedDate = formatDate(invitation.createDate); // YYYY.MM.DD 형식으로 변환.
+          if (!acc[formattedDate]) {
+            acc[formattedDate] = [];
           }
-          acc[invitation.createDate].push(invitation);
+          acc[formattedDate].push(invitation);
           return acc;
         },
         {} as Record<string, Invitation[]>,
       );
       setGroupedInvitations(grouped);
     }
-  }, [invitationList]); // invitationList가 변경될 때마다 실행
+  }, [invitationList]);
 
   return (
     <>
@@ -123,6 +140,7 @@ const InvitationList = ({ type }: { type: string }) => {
                 key={invitation.invitationId}
                 invitation={invitation}
                 handleDeleteInvitation={openDeleteModal}
+                formatDate={formatDate}
                 type={type}
               />
             ))}

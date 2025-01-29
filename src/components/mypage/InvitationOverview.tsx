@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Button from '../common/Button';
 
 interface Invitation {
-  invitationId: number;
+  invitationId: string;
   thumbnailUrl: string | null;
   title: string;
   schedule: string;
@@ -14,17 +14,19 @@ interface Invitation {
 
 interface InvitationOverviewProps {
   invitation: Invitation;
-  handleDeleteInvitation: (id: number) => void;
+  handleDeleteInvitation: (id: string) => void;
   type: string;
+  formatDate: (dateString: string) => string;
 }
 
 const InvitationOverview = ({
   invitation,
   handleDeleteInvitation,
   type,
+  formatDate,
 }: InvitationOverviewProps) => {
   const navigate = useNavigate();
-  const handleInvitationClick = (id: number) => {
+  const handleInvitationClick = (id: string) => {
     /**초대장 상세보기 이동 */
     navigate(`/mypage/detail/${id}`);
   };
@@ -37,7 +39,7 @@ const InvitationOverview = ({
       <Content>
         <Texts onClick={() => handleInvitationClick(invitation.invitationId)}>
           <MainText>{invitation.title}</MainText>
-          <SubText>{invitation.schedule}</SubText>
+          <SubText>{formatDate(invitation.schedule)}</SubText>
           <SubText>{invitation.location}</SubText>
         </Texts>
         {type === 'send' && (
