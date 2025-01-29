@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const AttendeeList = ({ attendees }: { attendees: string[] }) => {
+const AttendeeList = ({ attendees, title }: { attendees: string[]; title: string }) => {
   const [colors, setColors] = useState<string[]>([]);
 
   useEffect(() => {
@@ -21,12 +21,14 @@ const AttendeeList = ({ attendees }: { attendees: string[] }) => {
 
   return (
     <Container>
-      <Title>참석자 목록</Title>
-      {attendees.map((attendee, index) => (
-        <AttendeeName key={index} color={colors[index]}>
-          {attendee}
-        </AttendeeName>
-      ))}
+      <Title>{title}</Title>
+      <AttendeeBox>
+        {attendees.map((attendee, index) => (
+          <AttendeeName key={index} color={colors[index]}>
+            {attendee}
+          </AttendeeName>
+        ))}
+      </AttendeeBox>
     </Container>
   );
 };
@@ -36,6 +38,7 @@ export default AttendeeList;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 1.063rem;
   margin-top: 3.563rem;
   margin-right: auto;
@@ -45,6 +48,12 @@ const Title = styled.div`
   color: #3e3e3e;
   font-size: 16px;
   font-weight: 600;
+`;
+
+const AttendeeBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 `;
 
 const AttendeeName = styled.div<{ color: string }>`

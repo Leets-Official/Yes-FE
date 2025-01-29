@@ -1,29 +1,46 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Button from '../common/Button';
+import { formatDate } from '../../utils/formatDate';
 
-interface Invitation {
-  id: number;
-  img: string | null;
-  title: string;
-  date: string;
-  location: string;
-  made_date: string;
+interface InvitationOverviewProps {
+  invitation: Invitation;
+  handleDeleteInvitation: (id: string) => void;
+  type: string;
 }
 
-const InvitationOverview = ({ invitation }: { invitation: Invitation }) => {
+const InvitationOverview = ({
+  invitation,
+  handleDeleteInvitation,
+  type,
+}: InvitationOverviewProps) => {
   const navigate = useNavigate();
-  const handleInvitationClick = (id: number) => {
+  const handleInvitationClick = (id: string) => {
     /**초대장 상세보기 이동 */
     navigate(`/mypage/detail/${id}`);
   };
 
   return (
-    <Contents onClick={() => handleInvitationClick(invitation.id)}>
-      <Content className="img-bg">{invitation.img && <img src={invitation.img} />}</Content>
+    <Contents>
+      <Content className="img-bg" onClick={() => handleInvitationClick(invitation.invitationId)}>
+        {invitation.thumbnailUrl && <img src={invitation.thumbnailUrl} />}
+      </Content>
       <Content>
-        <MainText>{invitation.title}</MainText>
-        <SubText>{invitation.date}</SubText>
-        <SubText>{invitation.location}</SubText>
+        <Texts onClick={() => handleInvitationClick(invitation.invitationId)}>
+          <MainText>{invitation.title}</MainText>
+          <SubText>{formatDate(invitation.schedule)}</SubText>
+          <SubText>{invitation.location}</SubText>
+        </Texts>
+        {type === 'sent' && (
+          <DeleteButton
+            color="white"
+            textColor="#CFCDCD"
+            border="1px solid #CFCDCD"
+            onClick={() => handleDeleteInvitation(invitation.invitationId)}
+          >
+            초대장 삭제
+          </DeleteButton>
+        )}
       </Content>
     </Contents>
   );
@@ -51,6 +68,12 @@ const Content = styled.div`
   }
 `;
 
+const Texts = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
 const MainText = styled.div`
   font-weight: 500;
   margin-bottom: 0.688rem;
@@ -60,4 +83,11 @@ const SubText = styled.div`
   color: #787878;
   font-weight: 400;
   margin-bottom: 0.25rem;
+`;
+
+const DeleteButton = styled(Button)`
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: auto;
 `;

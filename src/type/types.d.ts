@@ -10,6 +10,15 @@ declare global {
   type Templates = {
     [key: string]: Template;
   };
+  type Invitation = {
+    invitationId: string;
+    thumbnailUrl: string;
+    title: string;
+    schedule: string;
+    location: string;
+    createDate: string;
+    remark: string;
+  };
 }
 
 export {};

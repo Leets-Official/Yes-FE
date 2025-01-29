@@ -1,16 +1,22 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const InvitationStats = () => {
+const InvitationStats = ({
+  receivedInvitationCount,
+  sentInvitationCount,
+}: {
+  receivedInvitationCount: number;
+  sentInvitationCount: number;
+}) => {
   const navigate = useNavigate();
 
   const handleStatClick = (type: string) => {
     if (type === 'received') {
       // 받은 초대장 목록 이동
       navigate('/mypage/received');
-    } else if (type === 'send') {
+    } else if (type === 'sent') {
       // 보낸 초대장 목록 이동
-      navigate('/mypage/send');
+      navigate('/mypage/sent');
     }
   };
 
@@ -18,12 +24,12 @@ const InvitationStats = () => {
     <StatsContainer>
       <Stat onClick={() => handleStatClick('received')}>
         <StatTitle>받은 초대장</StatTitle>
-        <StatCount>0</StatCount>
+        <StatCount>{receivedInvitationCount}</StatCount>
       </Stat>
       <SplitStat />
-      <Stat onClick={() => handleStatClick('send')}>
+      <Stat onClick={() => handleStatClick('sent')}>
         <StatTitle>보낸 초대장</StatTitle>
-        <StatCount>3</StatCount>
+        <StatCount>{sentInvitationCount}</StatCount>
       </Stat>
     </StatsContainer>
   );

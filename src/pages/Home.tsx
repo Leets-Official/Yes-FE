@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import LOGO from '/image/yes.svg';
+import LOGO from '/home_logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { HomeHeader } from '../components/layout/HomeHeader';
 import Button from '../components/common/Button';
@@ -31,11 +31,11 @@ const Container = styled.div`
   width: 100vw;
   max-width: 480px;
   overflow-y: hidden;
+  background-color: #fff7ec;
 `;
 
 const Logo = styled.img`
   width: 100%;
-  max-width: 211px;
   height: auto;
 `;
 

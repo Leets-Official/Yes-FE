@@ -1,17 +1,26 @@
 import styled from 'styled-components';
 import InvitationStats from '../../components/mypage/InvitationStats';
+import { removeCookie } from '../../utils/cookies';
+import { useNavigate } from 'react-router-dom';
+import { useGetMyPageInfo } from '../../api/useGetMyPageInfo';
 
 const MyPageMain = () => {
-  const handleLogout = () => {};
-  const handleWithdraw = () => {};
+  const { user } = useGetMyPageInfo();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    removeCookie('accessToken');
+    navigate('/', { replace: true });
+  };
 
   return (
     <UserBox>
-      <UserName>김예스</UserName>
-      <InvitationStats />
+      <UserName>{user.nickname}</UserName>
+      <InvitationStats
+        receivedInvitationCount={user.receivedInvitationCount}
+        sentInvitationCount={user.sentInvitationCount}
+      />
       <AccountControls>
         <AccountControl onClick={handleLogout}>로그아웃</AccountControl>
-        <AccountControl onClick={handleWithdraw}>회원탈퇴</AccountControl>
       </AccountControls>
     </UserBox>
   );
