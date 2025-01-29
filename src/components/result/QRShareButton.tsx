@@ -12,7 +12,8 @@ const QRShareButton = () => {
 
   const { data: QRUrl } = useGetQR(invitationId);
 
-  const onClickDownload = useCallback((srcUrl: string, name: string) => {
+  const onClickDownload = useCallback((srcUrl: string | null, name: string) => {
+    if (!srcUrl) return;
     fetch(srcUrl, { method: 'GET' })
       .then((res) => res.blob())
       .then((blob) => {
@@ -38,12 +39,11 @@ const QRShareButton = () => {
     <Container>
       {isModalOpen && (
         <Modal width={10.37} hasCloseButton onClose={() => setIsModalOpen(false)}>
-          <QR src={QRUrl} alt="QR" />
+          <QR src={QRUrl ?? ''} alt="QR" />
           <DownloadButton
             size="small"
             color={theme.color.main}
             textColor="#fff"
-            // onClick={() => {}}
             onClick={() => onClickDownload(QRUrl, `${invitationId}_QR.png`)}
           >
             저장하기

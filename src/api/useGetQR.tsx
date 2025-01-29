@@ -4,27 +4,24 @@ import { useErrorBoundary } from 'react-error-boundary';
 import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../atom/UserInfo';
 
-const BASE_URL = import.meta.env.VITE_SERVER_URL;
-
 export const useGetQR = (invitationId: string) => {
-  const [data, setData] = useState<string>('');
+  const [data, setData] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
   const { showBoundary } = useErrorBoundary(); // 전역 에러 처리
   const resetUserInfo = useResetRecoilState(UserInfo); // 토큰 만료 시 유저 정보 초기화
 
   useEffect(() => {
+    if (!invitationId) return;
+
     const fetchData = async () => {
       try {
-        const response = await privateAxios(resetUserInfo).get(`${BASE_URL}/invitation/qr`, {
+        const response = await privateAxios(resetUserInfo).get(`/invitation/qr`, {
           params: { invitationId },
         });
 
-        if (response.status === 200) {
-          setData(response.data.result.qrUrl);
-          setError(null);
-        } else {
-          setError(response.data.message);
-        }
+        setData(response.data.result.qrUrl);
+        setError(null);
       } catch (error: any) {
         if (error.name !== 'GENERAL') {
           showBoundary(error); // 500 에러 → 전역 에러 핸들링
