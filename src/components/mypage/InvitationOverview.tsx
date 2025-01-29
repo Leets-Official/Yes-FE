@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import Button from '../common/Button';
 
 interface Invitation {
-  id: number;
-  img: string | null;
+  invitationId: number;
+  thumbnailUrl: string | null;
   title: string;
-  date: string;
+  schedule: string;
   location: string;
-  made_date: string;
+  createDate: string;
+  remark: string;
 }
 
 interface InvitationOverviewProps {
@@ -30,13 +31,13 @@ const InvitationOverview = ({
 
   return (
     <Contents>
-      <Content className="img-bg" onClick={() => handleInvitationClick(invitation.id)}>
-        {invitation.img && <img src={invitation.img} />}
+      <Content className="img-bg" onClick={() => handleInvitationClick(invitation.invitationId)}>
+        {invitation.thumbnailUrl && <img src={invitation.thumbnailUrl} />}
       </Content>
       <Content>
-        <Texts onClick={() => handleInvitationClick(invitation.id)}>
+        <Texts onClick={() => handleInvitationClick(invitation.invitationId)}>
           <MainText>{invitation.title}</MainText>
-          <SubText>{invitation.date}</SubText>
+          <SubText>{invitation.schedule}</SubText>
           <SubText>{invitation.location}</SubText>
         </Texts>
         {type === 'send' && (
@@ -44,7 +45,7 @@ const InvitationOverview = ({
             color="white"
             textColor="#CFCDCD"
             border="1px solid #CFCDCD"
-            onClick={() => handleDeleteInvitation(invitation.id)}
+            onClick={() => handleDeleteInvitation(invitation.invitationId)}
           >
             초대장 삭제
           </DeleteButton>
