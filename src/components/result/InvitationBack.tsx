@@ -91,13 +91,15 @@ const Content = styled.div<{ size: 'small' | 'big' }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  padding: 0 2.438rem;
   margin-top: ${({ size }) => sizeStyles[size].marginTop};
   gap: ${({ size }) => sizeStyles[size].contentGap};
 `;
 
 const Field = styled.div<{ size: 'small' | 'big' }>`
   display: flex;
-  align-items: center;
+  margin-right: auto;
   gap: ${({ size }) => sizeStyles[size].fieldGap};
 `;
 
