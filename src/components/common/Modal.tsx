@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import small_yes from '/image/small_yes.svg';
+import { IoIosClose } from 'react-icons/io';
 
 const Modal = ({
   children,
@@ -18,7 +19,11 @@ const Modal = ({
         <Header $width={width}>
           <Space />
           <img src={small_yes} alt="logo" />
-          {hasCloseButton ? <CloseButton onClick={onClose} /> : <Space />}
+          {hasCloseButton ? (
+            <IoIosClose strokeWidth={1} size={28} onClick={onClose} style={{ cursor: 'pointer' }} />
+          ) : (
+            <Space />
+          )}
         </Header>
         {children}
       </Content>
@@ -68,10 +73,4 @@ const Header = styled.div<{ $width: number }>`
 const Space = styled.div`
   width: 1rem;
   height: 1rem;
-`;
-
-const CloseButton = styled.button`
-  width: 1rem;
-  height: 1rem;
-  cursor: pointer;
 `;

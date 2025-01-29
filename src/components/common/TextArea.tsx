@@ -33,7 +33,7 @@ const TextArea = ({
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>) => {
   return (
     <StyledTextArea
-      width={width || '15.125rem'}
+      width={width || '18.4375rem'}
       height={height || '7rem'}
       value={value}
       onChange={onChange}

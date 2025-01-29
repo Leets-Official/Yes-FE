@@ -24,7 +24,7 @@ const QRShareButton = () => {
           setIsModalOpen(true);
         }}
       >
-        <img src={QRshare} alt="링크 복사" />
+        <img src={QRshare} alt="QR" />
       </QRButton>
       <div>QR 코드</div>
     </Container>

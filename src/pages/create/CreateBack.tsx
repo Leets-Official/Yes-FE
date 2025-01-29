@@ -11,14 +11,28 @@ import { template } from '../../data/Template';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { InvitationInfo } from '../../atom/InvitationInfo';
+import useValidation from '../../hooks/useValidation';
+import ErrorPhrase from '../../components/common/ErrorPhrase';
+import DateInput from '../../components/common/DateInput';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 const CreateBack = () => {
   const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
+  const {
+    value: title,
+    isValid: isTitleValid,
+    handleInputChange: handleTitleChange,
+    validate: validateTitle,
+  } = useValidation('');
+  const {
+    value: location,
+    isValid: isLocationValid,
+    handleInputChange: handleLocationChange,
+    validate: validateLocation,
+  } = useValidation('');
+  const { value: description, handleInputChange: handleDescriptionChange } = useValidation('');
+  const [isDateValid, setIsDateValid] = useState(false);
   const [date, setDate] = useState({
     year: '',
     month: '',
@@ -31,6 +45,13 @@ const CreateBack = () => {
   const [invitation, setInvitation] = useRecoilState(InvitationInfo);
 
   const invitationId = 'invitationId'; // 초대장 임시 아이디
+
+  useEffect(() => {
+    if (date.year && date.month && date.day && date.hour && date.minute) {
+      setIsDateValid(true);
+    }
+    setIsDateValid(false);
+  }, [date]);
 
   useEffect(() => {
     const templateKey = invitation.templateKey || 'null';
@@ -55,11 +76,28 @@ const CreateBack = () => {
     .filter(Boolean)
     .join(' ');
 
-  const handleDateChange = (field: DateField) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = (field: DateField) => (value: string | number) => {
     setDate((prev) => ({
       ...prev,
-      [field]: e.target.value,
+      [field]: value,
     }));
+  };
+
+  const handleCreateInvitation = () => {
+    const isTitleValidated = validateTitle();
+    const isLocationValidated = validateLocation();
+
+    if (isTitleValidated && isLocationValidated && isDateValid) {
+      // API 호출 및 상태 업데이트
+      setInvitation((prev) => ({
+        ...prev,
+        title,
+        location,
+        description,
+        step: 0,
+      }));
+      navigate(`/result/${invitationId}`);
+    }
   };
 
   useResetStepState();
@@ -75,14 +113,7 @@ const CreateBack = () => {
           color={theme.color.main}
           textColor="#fff"
           fullWidth
-          onClick={() => {
-            // api 호출
-            setInvitation((prev) => ({
-              ...prev,
-              step: 0,
-            }));
-            navigate(`/result/${invitationId}`);
-          }}
+          onClick={handleCreateInvitation}
         >
           초대장 생성하기
         </Button>
@@ -101,30 +132,57 @@ const CreateBack = () => {
         />
         <Gap>
           <Field>
-            <label>제목</label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            <label>
+              제목 <span>*</span>
+            </label>
+            <Input value={title} onChange={handleTitleChange} />
+            {isTitleValid === 0 && <ErrorPhrase message="제목을 입력해주세요" />}
           </Field>
 
           <Field>
-            <label>일정</label>
+            <label>
+              일정 <span>*</span>
+            </label>
             <DateInputWrapper>
-              <DateInput type="number" value={date.year} onChange={handleDateChange('year')} /> 년
-              <DateInput type="number" value={date.month} onChange={handleDateChange('month')} /> 월
-              <DateInput type="number" value={date.day} onChange={handleDateChange('day')} /> 일
-              <DateInput type="number" value={date.hour} onChange={handleDateChange('hour')} /> 시
-              <DateInput type="number" value={date.minute} onChange={handleDateChange('minute')} />
+              <DateInput value={date.year} onChange={handleDateChange('year')} inputType="year" />{' '}
+              년
+              <DateInput
+                value={date.month}
+                onChange={handleDateChange('month')}
+                inputType="month"
+              />
+              월
+              <DateInput
+                value={date.day}
+                onChange={handleDateChange('day')}
+                inputType="day"
+                year={parseInt(date.year)}
+                month={parseInt(date.month)}
+              />
+              일
+              <DateInput value={date.hour} onChange={handleDateChange('hour')} inputType="hour" />
+              시
+              <DateInput
+                value={date.minute}
+                onChange={handleDateChange('minute')}
+                inputType="minute"
+              />
               분
             </DateInputWrapper>
+            {!isDateValid && <ErrorPhrase message="일정을 입력해주세요" />}
           </Field>
 
           <Field>
-            <label>장소</label>
-            <Input value={location} onChange={(e) => setLocation(e.target.value)} />
+            <label>
+              장소 <span>*</span>
+            </label>
+            <Input value={location} onChange={handleLocationChange} />
+            {isLocationValid === 0 && <ErrorPhrase message="장소를 입력해주세요" />}
           </Field>
 
           <DescriptionField>
             <label>문구</label>
-            <TextArea value={description} onChange={(e) => setDescription(e.target.value)} />
+            <TextArea value={description} onChange={handleDescriptionChange} />
           </DescriptionField>
         </Gap>
       </AlignCenter>
@@ -138,7 +196,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.25rem;
-  margin-bottom: 6.12rem;
+  margin-bottom: 12rem;
   font-weight: 500;
   height: 100vh;
   width: 100vw;
@@ -162,7 +220,10 @@ const ButtonWrapper = styled.div`
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  width: 90%;
+  width: calc(100% - 10%);
+  max-width: 440px;
+  box-sizing: border-box;
+  padding: 0;
 `;
 
 const AlignCenter = styled.div`
@@ -183,12 +244,16 @@ const Gap = styled.div`
 
 const Field = styled.div`
   display: flex;
-  gap: 1.69rem;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
   font-size: 0.875rem;
 
   label {
-    color: #3e3e3e;
+    color: #787878;
+  }
+  span {
+    color: ${theme.color.main};
   }
 `;
 
@@ -199,31 +264,13 @@ const DescriptionField = styled(Field)`
   }
 `;
 
-const DateInput = styled.input.attrs({ type: 'number' })`
-  width: 2rem;
-  border: none;
-  text-align: right;
-  margin-top: 0.03rem;
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  &::-webkit-inner-spin-button,
-  &::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-`;
-
 const DateInputWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid #cfcdcd;
   border-radius: 8px;
-  width: 15.125rem;
+  width: 18.4375rem;
   height: 2.3125rem;
   padding: 0 1.5rem;
   font-size: 0.875rem;
