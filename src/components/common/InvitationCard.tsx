@@ -4,7 +4,6 @@ import InvitationFront from '../result/InvitationFront';
 import InvitationBack from '../result/InvitationBack';
 
 const InvitationCard = ({
-  imgUrl,
   title,
   imgURL,
   date,
@@ -13,7 +12,6 @@ const InvitationCard = ({
   backgroundColor = '#fff',
   fontColor = '#000',
 }: {
-  imgUrl: string;
   title: string;
   imgURL: string;
   date: string;

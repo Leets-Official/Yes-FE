@@ -41,8 +41,8 @@ const InvitationDetail = () => {
     <Container>
       {/**플립되는 초대장 */}
       <InvitationCard
-        imgUrl={invitation.thumbnailUrl}
         title={invitation.title}
+        imgURL={invitation.thumbnailUrl}
         date={formatDate(invitation.schedule)}
         location={invitation.location}
         description={invitation.remark}
