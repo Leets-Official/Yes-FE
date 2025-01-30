@@ -4,9 +4,12 @@ import TextArea from '../../components/common/TextArea';
 import { template } from '../../data/Template';
 import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
 import { useRecoilValue } from 'recoil';
+import useCanvas from '../../hooks/useCanvas';
+import { TemplateKey } from '../../type/TemplateType';
+import Button from '../common/Button';
 
 interface TemplateFrontProps {
-  templateKey: keyof typeof template;
+  templateKey: TemplateKey;
   invitation: InvitationState;
   setInvitation: React.Dispatch<React.SetStateAction<InvitationState>>;
 }
@@ -60,29 +63,35 @@ const TemplateFront: React.FC<TemplateFrontProps> = ({
     }));
   }, [invitation.templateKey]);
 
+  const { canvasRef, saveCanvasImage } = useCanvas(templateKey, textValues);
+
   return (
-    <TemplateFrontContainer src={template[templateKey].template_src}>
-      {template[templateKey].text_attr.map((el, index) => {
-        const length = calculateMaxLength(el[2] as number, el[3] as number, el[4] as number);
-        return (
-          <InvitationText key={index} top={el[0] as number} left={el[1] as number}>
-            <InvitationTextArea
-              width={`${el[2]}px`}
-              height={`${el[3]}px`}
-              value={textValues[index]}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                handleTextChange(index, e.target.value)
-              }
-              maxLength={length}
-              font={template[templateKey].font}
-              fontSize={el[4] as number}
-              fontColor={el[5] as string}
-              step={step}
-            />
-          </InvitationText>
-        );
-      })}
-    </TemplateFrontContainer>
+    <>
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
+      <Button onClick={saveCanvasImage}>Save</Button>
+      <TemplateFrontContainer src={template[templateKey].template_src}>
+        {template[templateKey].text_attr.map((el, index) => {
+          const length = calculateMaxLength(el[2] as number, el[3] as number, el[4] as number);
+          return (
+            <InvitationText key={index} top={el[0] as number} left={el[1] as number}>
+              <InvitationTextArea
+                width={`${el[2]}px`}
+                height={`${el[3]}px`}
+                value={textValues[index]}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  handleTextChange(index, e.target.value)
+                }
+                maxLength={length}
+                font={template[templateKey].font}
+                fontSize={el[4] as number}
+                fontColor={el[5] as string}
+                step={step}
+              />
+            </InvitationText>
+          );
+        })}
+      </TemplateFrontContainer>
+    </>
   );
 };
 
