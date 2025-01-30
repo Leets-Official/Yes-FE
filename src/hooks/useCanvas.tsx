@@ -23,7 +23,6 @@ const useCanvas = (templateKey: string, textValues: string[]) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // 텍스트 그리기
         template[templateKey].text_attr.forEach((textAttr, index) => {
           const [left, top, width, height, fontSize, fontColor, x, y] = textAttr;
 
@@ -46,6 +45,7 @@ const useCanvas = (templateKey: string, textValues: string[]) => {
 
     // 캔버스를 PNG 이미지로 변환
     const imageUrl = canvas.toDataURL('image/png');
+    console.log(imageUrl);
 
     // 다운로드 링크 생성
     const link = document.createElement('a');
