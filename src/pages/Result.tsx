@@ -35,7 +35,7 @@ const Result = () => {
         fontColor={template[data.templateKey].bg_text_color}
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
-      <ShareList imgURL={data.thumbnailUrl} />
+      {/* <ShareList imgURL={data.thumbnailUrl} /> */}
     </Container>
   );
 };

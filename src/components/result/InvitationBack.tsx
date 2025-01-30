@@ -59,8 +59,9 @@ const sizeStyles = {
       font-size: 0.625rem;
     `,
     contentGap: '1.25rem',
-    fieldGap: '1.25rem',
-    fontSize: '0.8125rem',
+    contentPadding: '1.63rem',
+    fieldGap: '0.88rem',
+    fontSize: '0.625rem',
     titleFontSize: '1rem',
     marginTop: '1.75rem',
   },
@@ -71,6 +72,7 @@ const sizeStyles = {
       font-size: 1rem;
     `,
     contentGap: '2.37rem',
+    contentPadding: '2.438rem',
     fieldGap: '2.37rem',
     fontSize: '1rem',
     titleFontSize: '1.5rem',
@@ -92,8 +94,10 @@ const Content = styled.div<{ size: 'small' | 'big' }>`
   flex-direction: column;
   align-items: center;
 
-  padding: 0 2.438rem;
-  margin-top: ${({ size }) => sizeStyles[size].marginTop};
+  width: 100%;
+  box-sizing: border-box;
+  padding: ${({ size }) => sizeStyles[size].contentPadding};
+  // margin-top: ${({ size }) => sizeStyles[size].marginTop};
   gap: ${({ size }) => sizeStyles[size].contentGap};
 `;
 
@@ -106,7 +110,6 @@ const Field = styled.div<{ size: 'small' | 'big' }>`
 const Info = styled.div<{ size: 'small' | 'big'; isInput?: boolean; fontColor: string }>`
   display: flex;
   align-items: center;
-  padding-left: 0.3rem;
   max-width: 12rem;
   font-weight: 500;
   font-size: ${({ size }) => sizeStyles[size].fontSize};
@@ -148,7 +151,7 @@ const Description = styled(Info)<{ isInput?: boolean; fontColor: string }>`
   ${({ isInput, fontColor }) =>
     isInput &&
     css`
-      width: 12rem;
+      width: 11.1875rem;
       height: 4rem;
       border: 1px solid ${fontColor};
       border-radius: 0.25rem;
