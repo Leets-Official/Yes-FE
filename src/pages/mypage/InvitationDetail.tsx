@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import AttendeeList from '../../components/mypage/AttendeeList';
 import { template } from '../../data/Template';
 import ShareList from '../../components/result/ShareList';
 import InvitationCard from '../../components/common/InvitationCard';
 import { formatDate } from '../../utils/formatDate';
+import { useGetAttendees } from '../../api/useGetAttendees';
+import { useParams } from 'react-router-dom';
 
 const data = {
   id: 0,
@@ -20,7 +22,7 @@ const data = {
 };
 
 const InvitationDetail = () => {
-  //const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
 
   const [invitation] = useState<Invitation>({
     invitationId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -31,11 +33,10 @@ const InvitationDetail = () => {
     thumbnailUrl: 'https://pbs.twimg.com/media/GLwiWDdaoAAP1id.jpg',
     remark: '와라',
   });
-
-  useEffect(() => {
-    // 초대장 상세조회 API
-    // (참석자/불참석자 API) - 서버 미구현
-  }, []);
+  // id가 있을 때만 useGetAttendees 호출
+  const { attendingGuests, notAttendingGuests } = id
+    ? useGetAttendees(id)
+    : { attendingGuests: [], notAttendingGuests: [] };
 
   return (
     <Container>
@@ -52,9 +53,9 @@ const InvitationDetail = () => {
       {/**카카오톡 공유(링크, QR) = isMine인 경우에만...*/}
       <ShareList imgURL={data.img} />
       {/**참석자 명단 */}
-      <AttendeeList attendees={data.attendees} title="참석자 목록" />
+      <AttendeeList attendees={attendingGuests} title="참석자 목록" />
       {/**불참석자 명단 */}
-      <AttendeeList attendees={data.be_attendees} title="불참석자 목록" />
+      <AttendeeList attendees={notAttendingGuests} title="불참석자 목록" />
     </Container>
   );
 };
