@@ -85,7 +85,6 @@ const NicknameForm = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  padding: 0 1.68rem;
   margin-top: 2.25rem;
   gap: 2.25rem;
 `;
