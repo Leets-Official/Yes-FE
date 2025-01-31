@@ -6,7 +6,6 @@ import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
 import { useRecoilValue } from 'recoil';
 import useCanvas from '../../hooks/useCanvas';
 import { TemplateKey } from '../../type/TemplateType';
-import Button from '../common/Button';
 
 interface TemplateFrontProps {
   templateKey: TemplateKey;
@@ -63,12 +62,8 @@ const TemplateFront: React.FC<TemplateFrontProps> = ({
     }));
   }, [invitation.templateKey]);
 
-  const { canvasRef, saveCanvasImage } = useCanvas(templateKey, textValues);
-
   return (
     <>
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
-      <Button onClick={saveCanvasImage}>Save</Button>
       <TemplateFrontContainer src={template[templateKey].template_src}>
         {template[templateKey].text_attr.map((el, index) => {
           const length = calculateMaxLength(el[2] as number, el[3] as number, el[4] as number);

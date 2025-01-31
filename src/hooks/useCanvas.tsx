@@ -1,8 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { template } from '../data/Template';
+import { useErrorBoundary } from 'react-error-boundary';
+import { useResetRecoilState } from 'recoil';
+import { UserInfo } from '../atom/UserInfo';
+import { privateAxios } from '../utils/customAxios';
 
-const useCanvas = (templateKey: string, textValues: string[]) => {
+const useCanvas = (templateKey: string | undefined, textValues: string[]) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const resetUserInfo = useResetRecoilState(UserInfo);
+  const { showBoundary } = useErrorBoundary();
+  const [presignedUrl, setPresignedUrl] = useState<string>('');
 
   useEffect(() => {
     if (!templateKey) return;
@@ -38,23 +45,40 @@ const useCanvas = (templateKey: string, textValues: string[]) => {
     drawCanvas();
   }, [templateKey, textValues]);
 
-  // 캔버스 이미지 저장 함수
-  const saveCanvasImage = () => {
+  const saveCanvasImage = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // 캔버스를 PNG 이미지로 변환
-    const imageUrl = canvas.toDataURL('image/png');
-    console.log(imageUrl);
+    canvas.toBlob(async (blob) => {
+      const thisTime = new Date().getTime().toString();
+      if (!blob) return;
 
-    // 다운로드 링크 생성
-    const link = document.createElement('a');
-    link.href = imageUrl;
-    link.download = 'invitation_image.png'; // 다운로드할 파일 이름
-    link.click(); // 링크 클릭으로 다운로드 실행
+      // const url = URL.createObjectURL(blob);
+      // const a = document.createElement('a');
+      // a.href = url;
+      // a.download = `${thisTime}.png`;
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
+      // URL.revokeObjectURL(url);
+
+      try {
+        const response = await privateAxios(resetUserInfo).post(`/presignedurl`, {
+          imageName: `${thisTime}.png`,
+        });
+        console.log('success');
+        setPresignedUrl(response.data.result.preSignedUrl);
+      } catch (error: any) {
+        if (error.name !== 'GENERAL') {
+          showBoundary(error);
+        } else {
+          console.log(error.message);
+        }
+      }
+    });
   };
 
-  return { canvasRef, saveCanvasImage };
+  return { canvasRef, saveCanvasImage, presignedUrl };
 };
 
 export default useCanvas;
