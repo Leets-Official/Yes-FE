@@ -31,7 +31,7 @@ const useCanvas = (templateKey: string | undefined, textValues: string[]) => {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
         template[templateKey].text_attr.forEach((textAttr, index) => {
-          const [left, top, width, height, fontSize, fontColor, x, y] = textAttr;
+          const [, , , , fontSize, fontColor, x, y] = textAttr;
 
           ctx.font = `${fontSize * 10}px ${template[templateKey].font}`;
           ctx.textAlign = 'center';

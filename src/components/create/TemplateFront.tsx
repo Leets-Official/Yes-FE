@@ -4,10 +4,9 @@ import TextArea from '../../components/common/TextArea';
 import { template } from '../../data/Template';
 import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
 import { useRecoilValue } from 'recoil';
-import { TemplateKey } from '../../type/TemplateType';
 
 interface TemplateFrontProps {
-  templateKey: TemplateKey;
+  templateKey: keyof typeof template;
   invitation: InvitationState;
   setInvitation: React.Dispatch<React.SetStateAction<InvitationState>>;
 }

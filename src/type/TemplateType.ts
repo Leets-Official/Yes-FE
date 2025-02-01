@@ -9,5 +9,3 @@ export type TemplateType = {
     bg_text_color: string;
   };
 };
-
-export type TemplateKey = 'ALIEN' | 'RABBIT' | 'CYBER' | 'CHIRASHI' | 'PRINCESS' | 'RECEIPT';
