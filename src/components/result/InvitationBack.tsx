@@ -29,7 +29,7 @@ const InvitationBack = ({
           <Info size={size} fontColor={fontColor}>
             일정
           </Info>
-          <Info size={size} isInput={isInput} fontColor={fontColor}>
+          <Info size={size} isInput={isInput} fontColor={fontColor} hasPadding>
             {date}
           </Info>
         </Field>
@@ -37,7 +37,7 @@ const InvitationBack = ({
           <Info size={size} fontColor={fontColor}>
             장소
           </Info>
-          <Info size={size} isInput={isInput} fontColor={fontColor}>
+          <Info size={size} isInput={isInput} fontColor={fontColor} hasPadding>
             {location}
           </Info>
         </Field>
@@ -97,7 +97,6 @@ const Content = styled.div<{ size: 'small' | 'big' }>`
   width: 100%;
   box-sizing: border-box;
   padding: ${({ size }) => sizeStyles[size].contentPadding};
-  // margin-top: ${({ size }) => sizeStyles[size].marginTop};
   gap: ${({ size }) => sizeStyles[size].contentGap};
 `;
 
@@ -107,12 +106,24 @@ const Field = styled.div<{ size: 'small' | 'big' }>`
   gap: ${({ size }) => sizeStyles[size].fieldGap};
 `;
 
-const Info = styled.div<{ size: 'small' | 'big'; isInput?: boolean; fontColor: string }>`
+const Info = styled.div<{
+  size: 'small' | 'big';
+  isInput?: boolean;
+  fontColor: string;
+  hasPadding?: boolean;
+}>`
   display: flex;
   align-items: center;
   max-width: 12rem;
   font-weight: 500;
   font-size: ${({ size }) => sizeStyles[size].fontSize};
+
+  ${({ hasPadding }) =>
+    hasPadding &&
+    css`
+      // box-sizing: border-box;
+      padding-left: 0.2rem;
+    `}
 
   ${({ isInput, fontColor }) =>
     isInput &&

@@ -9,7 +9,6 @@ const useCanvas = (templateKey: string | undefined, textValues: string[]) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const resetUserInfo = useResetRecoilState(UserInfo);
   const { showBoundary } = useErrorBoundary();
-  const [presignedUrl, setPresignedUrl] = useState<string>('');
 
   useEffect(() => {
     if (!templateKey) return;
@@ -45,29 +44,37 @@ const useCanvas = (templateKey: string | undefined, textValues: string[]) => {
     drawCanvas();
   }, [templateKey, textValues]);
 
-  const saveCanvasImage = async () => {
+  const uploadCanvasImage = async () => {
     const canvas = canvasRef.current;
+    let presignedUrl: string = '';
     if (!canvas) return;
 
     canvas.toBlob(async (blob) => {
       const thisTime = new Date().getTime().toString();
       if (!blob) return;
 
-      // const url = URL.createObjectURL(blob);
-      // const a = document.createElement('a');
-      // a.href = url;
-      // a.download = `${thisTime}.png`;
-      // document.body.appendChild(a);
-      // a.click();
-      // document.body.removeChild(a);
-      // URL.revokeObjectURL(url);
-
       try {
+        // Presigned URL 요청
         const response = await privateAxios(resetUserInfo).post(`/presignedurl`, {
           imageName: `${thisTime}.png`,
         });
-        console.log('success');
-        setPresignedUrl(response.data.result.preSignedUrl);
+
+        presignedUrl = response.data.result.preSignedUrl;
+
+        // Presigned URL로 파일 업로드
+        // const uploadResponse = await fetch(presignedUrl, {
+        //   method: 'PUT',
+        //   body: blob,
+        //   headers: {
+        //     'Content-Type': 'image/png',
+        //   },
+        // });
+
+        // if (uploadResponse.ok) {
+        //   console.log('파일 업로드 성공!');
+        // } else {
+        //   console.error('파일 업로드 실패:', uploadResponse.statusText);
+        // }
       } catch (error: any) {
         if (error.name !== 'GENERAL') {
           showBoundary(error);
@@ -75,10 +82,12 @@ const useCanvas = (templateKey: string | undefined, textValues: string[]) => {
           console.log(error.message);
         }
       }
-    });
+    }, 'image/png'); // Blob 타입을 'image/png'로 지정
+
+    return presignedUrl;
   };
 
-  return { canvasRef, saveCanvasImage, presignedUrl };
+  return { canvasRef, uploadCanvasImage };
 };
 
 export default useCanvas;

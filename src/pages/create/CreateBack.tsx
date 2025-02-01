@@ -14,6 +14,8 @@ import { InvitationInfo } from '../../atom/InvitationInfo';
 import useValidation from '../../hooks/useValidation';
 import ErrorPhrase from '../../components/common/ErrorPhrase';
 import DateInput from '../../components/common/DateInput';
+import useCanvas from '../../hooks/useCanvas';
+import { usePostInvitation } from '../../api/usePostInvitation';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
@@ -33,6 +35,7 @@ const CreateBack = () => {
   } = useValidation('');
   const { value: description, handleInputChange: handleDescriptionChange } = useValidation('');
   const [isDateValid, setIsDateValid] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [date, setDate] = useState({
     year: '',
     month: '',
@@ -40,17 +43,34 @@ const CreateBack = () => {
     hour: '',
     minute: '',
   });
+  const [invitationData, setInvitationData] = useState({
+    ownerNickname: '',
+    thumbnailUrl: '',
+    title: '',
+    schedule: '',
+    location: '',
+    remark: '',
+  });
+
   const [backgroundColor, setBackgroundColor] = useState('#fff');
   const [fontColor, setFontColor] = useState('#000');
-  const [invitation, setInvitation] = useRecoilState(InvitationInfo);
+  const [invitation] = useRecoilState(InvitationInfo);
 
-  const invitationId = 'invitationId'; // 초대장 임시 아이디
+  const { canvasRef, uploadCanvasImage } = useCanvas(
+    invitation.templateKey,
+    invitation.contents || [],
+  );
 
   useEffect(() => {
+    const isInputStarted = date.year || date.month || date.day || date.hour || date.minute;
+
+    if (isInputStarted) {
+      setIsVisible(true);
+    }
+
     if (date.year && date.month && date.day && date.hour && date.minute) {
       setIsDateValid(true);
-    }
-    setIsDateValid(false);
+    } else setIsDateValid(false);
   }, [date]);
 
   useEffect(() => {
@@ -83,19 +103,28 @@ const CreateBack = () => {
     }));
   };
 
-  const handleCreateInvitation = () => {
+  const handleCreateInvitation = async () => {
     const isTitleValidated = validateTitle();
     const isLocationValidated = validateLocation();
 
     if (isTitleValidated && isLocationValidated && isDateValid) {
-      // API 호출 및 상태 업데이트
-      setInvitation((prev) => ({
-        ...prev,
-        title,
-        location,
-        description,
-        step: 0,
-      }));
+      // presigned URL 요청 & 파일 업로드
+      const presignedUrl = await uploadCanvasImage();
+      console.log('presignedUrl1:', presignedUrl);
+
+      // request data 세팅
+      if (presignedUrl) {
+        setInvitationData({
+          ownerNickname: invitation.nickname,
+          thumbnailUrl: presignedUrl,
+          title,
+          schedule: '', //formatted date로 수정
+          location,
+          remark: description,
+        });
+      }
+      // 초대장 생성하기 API 요청
+      const { invitationId } = await usePostInvitation(invitationData);
       navigate(`/result/${invitationId}`);
     }
   };
@@ -104,6 +133,7 @@ const CreateBack = () => {
 
   return (
     <Container>
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
       <InvitationHeader />
       <b>
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
@@ -169,7 +199,7 @@ const CreateBack = () => {
               />
               분
             </DateInputWrapper>
-            {!isDateValid && <ErrorPhrase message="일정을 입력해주세요" />}
+            {!isDateValid && isVisible && <ErrorPhrase message="일정을 입력해주세요" />}
           </Field>
 
           <Field>

@@ -4,7 +4,6 @@ import TextArea from '../../components/common/TextArea';
 import { template } from '../../data/Template';
 import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
 import { useRecoilValue } from 'recoil';
-import useCanvas from '../../hooks/useCanvas';
 import { TemplateKey } from '../../type/TemplateType';
 
 interface TemplateFrontProps {
