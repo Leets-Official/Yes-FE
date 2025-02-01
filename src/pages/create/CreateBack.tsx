@@ -144,11 +144,16 @@ const CreateBack = () => {
   const handleCreateInvitation = async () => {
     if (invitationData.title && invitationData.location && invitationData.schedule) {
       // presigned URL 요청 & 파일 업로드
-      await uploadCanvasImage();
+      const presignedUrl = await uploadCanvasImage();
 
-      // 초대장 생성하기 API 요청
-      const response = await postInvitation(invitationData);
-      navigate(`/result/${response.invitation.invitationId}`);
+      if (presignedUrl) {
+        // 초대장 생성하기 API 요청
+        const response = await postInvitation({
+          ...invitationData,
+          thumbnailUrl: presignedUrl.slice(0, presignedUrl.indexOf('?')),
+        });
+        navigate(`/result/${response.invitation.invitationId}`);
+      }
     }
   };
 
