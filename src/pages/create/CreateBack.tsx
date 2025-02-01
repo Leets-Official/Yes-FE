@@ -152,7 +152,7 @@ const CreateBack = () => {
           ...invitationData,
           thumbnailUrl: presignedUrl.slice(0, presignedUrl.indexOf('?')),
         });
-        navigate(`/result/${response.invitation.invitationId}`);
+        navigate(`/result/${response.invitation.invitationId}`, { state: invitationData });
       }
     }
   };
