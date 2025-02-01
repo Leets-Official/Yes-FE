@@ -11,7 +11,6 @@ import { template } from '../../data/Template';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { InvitationInfo } from '../../atom/InvitationInfo';
-import useValidation from '../../hooks/useValidation';
 import ErrorPhrase from '../../components/common/ErrorPhrase';
 import DateInput from '../../components/common/DateInput';
 import useCanvas from '../../hooks/useCanvas';
@@ -21,19 +20,11 @@ type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 const CreateBack = () => {
   const navigate = useNavigate();
-  const {
-    value: title,
-    isValid: isTitleValid,
-    handleInputChange: handleTitleChange,
-    validate: validateTitle,
-  } = useValidation('');
-  const {
-    value: location,
-    isValid: isLocationValid,
-    handleInputChange: handleLocationChange,
-    validate: validateLocation,
-  } = useValidation('');
-  const { value: description, handleInputChange: handleDescriptionChange } = useValidation('');
+
+  const [backgroundColor, setBackgroundColor] = useState('#fff');
+  const [fontColor, setFontColor] = useState('#000');
+  const [invitation] = useRecoilState(InvitationInfo);
+
   const [isDateValid, setIsDateValid] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [date, setDate] = useState({
@@ -44,7 +35,7 @@ const CreateBack = () => {
     minute: '',
   });
   const [invitationData, setInvitationData] = useState({
-    ownerNickname: '',
+    ownerNickname: invitation.nickname || '',
     thumbnailUrl: '',
     title: '',
     schedule: '',
@@ -52,14 +43,11 @@ const CreateBack = () => {
     remark: '',
   });
 
-  const [backgroundColor, setBackgroundColor] = useState('#fff');
-  const [fontColor, setFontColor] = useState('#000');
-  const [invitation] = useRecoilState(InvitationInfo);
-
   const { canvasRef, uploadCanvasImage } = useCanvas(
     invitation.templateKey,
     invitation.contents || [],
   );
+  const { postInvitation } = usePostInvitation();
 
   useEffect(() => {
     const isInputStarted = date.year || date.month || date.day || date.hour || date.minute;
@@ -71,7 +59,34 @@ const CreateBack = () => {
     if (date.year && date.month && date.day && date.hour && date.minute) {
       setIsDateValid(true);
     } else setIsDateValid(false);
+
+    // invitationData의 schedule 업데이트
+    const formattedDate = [
+      date.year && `${date.year}년`,
+      date.month && `${date.month}월`,
+      date.day && `${date.day}일`,
+      date.hour && `${date.hour}시`,
+      date.minute && `${date.minute}분`,
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    setInvitationData((prev) => ({
+      ...prev,
+      schedule: formattedDate,
+    }));
   }, [date]);
+
+  const onChange =
+    (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { value } = e.target;
+
+      // 객체 업데이트
+      setInvitationData({
+        ...invitationData,
+        [key]: value,
+      });
+    };
 
   useEffect(() => {
     const templateKey = invitation.templateKey || 'null';
@@ -86,16 +101,6 @@ const CreateBack = () => {
     }
   }, [invitation.templateKey]);
 
-  const formattedDate = [
-    date.year && `${date.year}년`,
-    date.month && `${date.month}월`,
-    date.day && `${date.day}일`,
-    date.hour && `${date.hour}시`,
-    date.minute && `${date.minute}분`,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   const handleDateChange = (field: DateField) => (value: string | number) => {
     setDate((prev) => ({
       ...prev,
@@ -104,27 +109,12 @@ const CreateBack = () => {
   };
 
   const handleCreateInvitation = async () => {
-    const isTitleValidated = validateTitle();
-    const isLocationValidated = validateLocation();
-
-    if (isTitleValidated && isLocationValidated && isDateValid) {
+    if (invitationData.title && invitationData.location && invitationData.schedule) {
       // presigned URL 요청 & 파일 업로드
-      const presignedUrl = await uploadCanvasImage();
-      console.log('presignedUrl1:', presignedUrl);
+      await uploadCanvasImage();
 
-      // request data 세팅
-      if (presignedUrl) {
-        setInvitationData({
-          ownerNickname: invitation.nickname,
-          thumbnailUrl: presignedUrl,
-          title,
-          schedule: '', //formatted date로 수정
-          location,
-          remark: description,
-        });
-      }
       // 초대장 생성하기 API 요청
-      const { invitationId } = await usePostInvitation(invitationData);
+      const invitationId = await postInvitation(invitationData);
       navigate(`/result/${invitationId}`);
     }
   };
@@ -153,10 +143,10 @@ const CreateBack = () => {
         <InvitationBack
           isInput
           size="small"
-          title={title}
-          location={location}
-          description={description}
-          date={formattedDate}
+          title={invitationData.title}
+          location={invitationData.location}
+          description={invitationData.remark}
+          date={invitationData.schedule}
           backgroundColor={backgroundColor}
           fontColor={fontColor}
         />
@@ -165,8 +155,8 @@ const CreateBack = () => {
             <label>
               제목 <span>*</span>
             </label>
-            <Input value={title} onChange={handleTitleChange} />
-            {isTitleValid === 0 && <ErrorPhrase message="제목을 입력해주세요" />}
+            <Input value={invitationData.title} onChange={onChange('title')} />
+            {invitationData.title.length === 0 && <ErrorPhrase message="제목을 입력해주세요" />}
           </Field>
 
           <Field>
@@ -206,13 +196,13 @@ const CreateBack = () => {
             <label>
               장소 <span>*</span>
             </label>
-            <Input value={location} onChange={handleLocationChange} />
-            {isLocationValid === 0 && <ErrorPhrase message="장소를 입력해주세요" />}
+            <Input value={invitationData.location} onChange={onChange('location')} />
+            {invitationData.location.length === 0 && <ErrorPhrase message="장소를 입력해주세요" />}
           </Field>
 
           <DescriptionField>
             <label>문구</label>
-            <TextArea value={description} onChange={handleDescriptionChange} />
+            <TextArea value={invitationData.remark} onChange={onChange('remark')} />
           </DescriptionField>
         </Gap>
       </AlignCenter>

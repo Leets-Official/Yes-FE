@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { privateAxios } from '../utils/customAxios';
 import { useErrorBoundary } from 'react-error-boundary';
 import { useResetRecoilState } from 'recoil';
@@ -13,35 +13,33 @@ type InvitationType = {
   remark: string;
 };
 
-export const usePostInvitation = (invitationData: InvitationType) => {
-  const [invitationId, setInvitationId] = useState<string | null>(null);
-
-  const { showBoundary } = useErrorBoundary();
+export const usePostInvitation = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const resetUserInfo = useResetRecoilState(UserInfo);
+  const { showBoundary } = useErrorBoundary();
 
-  useEffect(() => {
-    if (!invitationData) return;
+  const postInvitation = async (invitationData: InvitationType) => {
+    setLoading(true);
+    setError(null);
 
-    const fetchData = async () => {
-      try {
-        const response = await privateAxios(resetUserInfo).post(`/invitation`, {
-          invitationData,
-        });
+    console.log('invitationData', invitationData);
+    try {
+      const response = await privateAxios(resetUserInfo).post(`/invitation`, invitationData);
 
-        setInvitationId(response.data.result.invitation.invitationId);
-      } catch (error: any) {
-        if (error.name !== 'GENERAL') {
-          showBoundary(error);
-        } else {
-          console.log(error.message);
-        }
+      return response.data.result.invitation.invitationId;
+    } catch (error: any) {
+      if (error.name !== 'GENERAL') {
+        showBoundary(error);
+      } else {
+        console.error(error.message);
+        setError(error.message);
       }
-    };
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchData();
-  }, [invitationData]);
-
-  return { invitationId };
+  return { postInvitation, loading, error };
 };
-
-export default usePostInvitation;
