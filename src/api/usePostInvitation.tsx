@@ -27,7 +27,7 @@ export const usePostInvitation = () => {
     try {
       const response = await privateAxios(resetUserInfo).post(`/invitation`, invitationData);
 
-      return response.data.result.invitation.invitationId;
+      return response.data.result;
     } catch (error: any) {
       if (error.name !== 'GENERAL') {
         showBoundary(error);

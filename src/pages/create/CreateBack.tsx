@@ -27,7 +27,11 @@ const CreateBack = () => {
   const [invitation] = useRecoilState(InvitationInfo);
 
   const [isDateValid, setIsDateValid] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState({
+    title: false,
+    date: false,
+    location: false,
+  });
   const [date, setDate] = useState({
     year: '',
     month: '',
@@ -35,7 +39,7 @@ const CreateBack = () => {
     hour: '',
     minute: '',
   });
-  let formattedDate = '';
+  const [formattedDate, setFormattedDate] = useState<string>('');
   const [invitationData, setInvitationData] = useState({
     ownerNickname: invitation.nickname || '',
     thumbnailUrl: '',
@@ -55,23 +59,27 @@ const CreateBack = () => {
     const isInputStarted = date.year || date.month || date.day || date.hour || date.minute;
 
     if (isInputStarted) {
-      setIsVisible(true);
+      setIsVisible((prev) => ({
+        ...prev,
+        date: true,
+      }));
     }
 
     if (date.year && date.month && date.day && date.hour && date.minute) {
       setIsDateValid(true);
     } else setIsDateValid(false);
 
-    // invitationData의 schedule 업데이트
-    formattedDate = [
-      date.year && `${date.year}년`,
-      date.month && `${date.month}월`,
-      date.day && `${date.day}일`,
-      date.hour && `${date.hour}시`,
-      date.minute && `${date.minute}분`,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    setFormattedDate(
+      [
+        date.year && `${date.year}년`,
+        date.month && `${date.month}월`,
+        date.day && `${date.day}일`,
+        date.hour && `${date.hour}시`,
+        date.minute && `${date.minute}분`,
+      ]
+        .filter(Boolean)
+        .join(' '),
+    );
 
     const ISOschedule: string = getISOString(date) || '';
 
@@ -80,6 +88,28 @@ const CreateBack = () => {
       schedule: ISOschedule,
     }));
   }, [date]);
+
+  useEffect(() => {
+    const isInputStarted = invitationData.title;
+
+    if (isInputStarted) {
+      setIsVisible((prev) => ({
+        ...prev,
+        title: true,
+      }));
+    }
+  }, [invitationData.title]);
+
+  useEffect(() => {
+    const isInputStarted = invitationData.location;
+
+    if (isInputStarted) {
+      setIsVisible((prev) => ({
+        ...prev,
+        location: true,
+      }));
+    }
+  }, [invitationData.location]);
 
   const onChange =
     (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -117,8 +147,8 @@ const CreateBack = () => {
       await uploadCanvasImage();
 
       // 초대장 생성하기 API 요청
-      const invitationId = await postInvitation(invitationData);
-      navigate(`/result/${invitationId}`);
+      const response = await postInvitation(invitationData);
+      navigate(`/result/${response.invitation.invitationId}`);
     }
   };
 
@@ -159,7 +189,9 @@ const CreateBack = () => {
               제목 <span>*</span>
             </label>
             <Input value={invitationData.title} onChange={onChange('title')} />
-            {invitationData.title.length === 0 && <ErrorPhrase message="제목을 입력해주세요" />}
+            {!invitationData.title && isVisible.title && (
+              <ErrorPhrase message="제목을 입력해주세요" />
+            )}
           </Field>
 
           <Field>
@@ -192,7 +224,7 @@ const CreateBack = () => {
               />
               분
             </DateInputWrapper>
-            {!isDateValid && isVisible && <ErrorPhrase message="일정을 입력해주세요" />}
+            {!isDateValid && isVisible.date && <ErrorPhrase message="일정을 입력해주세요" />}
           </Field>
 
           <Field>
@@ -200,7 +232,9 @@ const CreateBack = () => {
               장소 <span>*</span>
             </label>
             <Input value={invitationData.location} onChange={onChange('location')} />
-            {invitationData.location.length === 0 && <ErrorPhrase message="장소를 입력해주세요" />}
+            {!invitationData.location && isVisible.location && (
+              <ErrorPhrase message="장소를 입력해주세요" />
+            )}
           </Field>
 
           <DescriptionField>
