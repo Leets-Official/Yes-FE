@@ -15,6 +15,7 @@ import ErrorPhrase from '../../components/common/ErrorPhrase';
 import DateInput from '../../components/common/DateInput';
 import useCanvas from '../../hooks/useCanvas';
 import { usePostInvitation } from '../../api/usePostInvitation';
+import getISOString from '../../hooks/getISOString';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
@@ -34,6 +35,7 @@ const CreateBack = () => {
     hour: '',
     minute: '',
   });
+  let formattedDate = '';
   const [invitationData, setInvitationData] = useState({
     ownerNickname: invitation.nickname || '',
     thumbnailUrl: '',
@@ -61,7 +63,7 @@ const CreateBack = () => {
     } else setIsDateValid(false);
 
     // invitationData의 schedule 업데이트
-    const formattedDate = [
+    formattedDate = [
       date.year && `${date.year}년`,
       date.month && `${date.month}월`,
       date.day && `${date.day}일`,
@@ -71,9 +73,11 @@ const CreateBack = () => {
       .filter(Boolean)
       .join(' ');
 
+    const ISOschedule: string = getISOString(date) || '';
+
     setInvitationData((prev) => ({
       ...prev,
-      schedule: formattedDate,
+      schedule: ISOschedule,
     }));
   }, [date]);
 
@@ -81,7 +85,6 @@ const CreateBack = () => {
     (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { value } = e.target;
 
-      // 객체 업데이트
       setInvitationData({
         ...invitationData,
         [key]: value,
@@ -146,7 +149,7 @@ const CreateBack = () => {
           title={invitationData.title}
           location={invitationData.location}
           description={invitationData.remark}
-          date={invitationData.schedule}
+          date={formattedDate}
           backgroundColor={backgroundColor}
           fontColor={fontColor}
         />
