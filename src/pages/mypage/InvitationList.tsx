@@ -16,15 +16,18 @@ const InvitationList = ({ type }: { type: string }) => {
   const [groupedInvitations, setGroupedInvitations] = useState<Record<string, Invitation[]>>({}); // 날짜별 그룹 초대장 리스트
   const [isModalOpen, setIsModalOpen] = useState(false); // 초대장 삭제 모달 오픈 여부
   const [selectedInvitationId, setSelectedInvitationId] = useState<string | null>(null); // 삭제선택된 초대장 ID
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [isEmpty, setIsEmpty] = useState(true); // 초대장이 존재하는지 여부 체크
 
   useEffect(() => {
+    setIsLoading(true);
     setInvitationList(invitations);
   }, [invitations]);
 
   useEffect(() => {
     if (invitationList.length === 0) {
       setIsEmpty(true);
+      setIsLoading(false);
     } else {
       setIsEmpty(false);
       const sortedInvitationList = [...invitationList].sort((a, b) => {
@@ -45,6 +48,7 @@ const InvitationList = ({ type }: { type: string }) => {
       );
 
       setGroupedInvitations(grouped);
+      setIsLoading(false);
     }
   }, [invitationList]);
 
@@ -62,7 +66,9 @@ const InvitationList = ({ type }: { type: string }) => {
 
   return (
     <>
-      {isEmpty ? (
+      {isLoading ? (
+        <Phrase>초대장 불러오는 중...</Phrase>
+      ) : isEmpty ? (
         <Phrase>초대장이 존재하지 않습니다.</Phrase>
       ) : (
         Object.keys(groupedInvitations).map((date, index) => (
