@@ -7,16 +7,31 @@ import theme from '../style/theme';
 import styled from 'styled-components';
 import speachBubble from '../assets/speachBubble.svg';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 // 임시 데이터
 const data = {
   id: 0,
-  imgURL: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
+  thumbnailUrl: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
   title: '연말파티 초대장',
-  date: '2024.12.25',
+  schedule: '2020-01-01T01:01:00.000',
   location: '강남역 어딘가',
-  description: '몸만 와라 친구들아',
-  made_date: '2024.12.14',
+  remark: '몸만 와라 친구들아',
+};
+
+const calculateDDay = (targetDate: string) => {
+  const today = dayjs();
+  const target = dayjs(targetDate);
+
+  const diff = target.diff(today, 'day');
+
+  if (diff > 0) {
+    return `D-${diff}`;
+  } else if (diff < 0) {
+    return `D+${Math.abs(diff)}`;
+  } else {
+    return 'D-Day';
+  }
 };
 
 const ReceiveInvitation = () => {
@@ -64,7 +79,7 @@ const ReceiveInvitation = () => {
           <Bubble>
             <D_Day>
               <div>일정까지</div>
-              <b>D-10</b>
+              <b>{calculateDDay(data.schedule)}</b>
             </D_Day>
             <img src={speachBubble} alt="speachBubble" />
           </Bubble>
@@ -73,10 +88,10 @@ const ReceiveInvitation = () => {
 
       <InvitationCard
         title={data.title}
-        imgURL={data.imgURL}
-        date={data.date}
+        imgURL={data.thumbnailUrl}
+        date={data.schedule}
         location={data.location}
-        description={data.description}
+        description={data.remark}
         // TODO: 컬러 값 수정 필요
         backgroundColor="#fff"
         fontColor="#000"
