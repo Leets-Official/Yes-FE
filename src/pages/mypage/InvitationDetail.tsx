@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import AttendeeList from '../../components/mypage/AttendeeList';
 import { template } from '../../data/Template';
@@ -7,6 +6,7 @@ import InvitationCard from '../../components/common/InvitationCard';
 import { formatDate } from '../../utils/formatDate';
 import { useGetAttendees } from '../../api/useGetAttendees';
 import { useParams } from 'react-router-dom';
+import { useGetInvitation } from '../../api/useGetInvitation';
 
 const data = {
   id: 0,
@@ -24,16 +24,18 @@ const data = {
 const InvitationDetail = () => {
   const { id } = useParams<{ id: string }>();
 
-  const [invitation] = useState<Invitation>({
-    invitationId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    createDate: '2025-01-29T09:02:06.444Z',
-    title: '웰컴하우스',
-    schedule: '2025-01-29T09:02:06.445Z',
-    location: '우리집',
-    thumbnailUrl: 'https://pbs.twimg.com/media/GLwiWDdaoAAP1id.jpg',
-    remark: '와라',
-  });
-  // id가 있을 때만 useGetAttendees 호출
+  // API 연결 이후 코드
+  const { invitation } = useGetInvitation(id || '');
+  // const [invitation] = useState<Invitation>({
+  //   invitationId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  //   createDate: '2025-01-29T09:02:06.444Z',
+  //   title: '웰컴하우스',
+  //   schedule: '2025-01-29T09:02:06.445Z',
+  //   location: '우리집',
+  //   thumbnailUrl: 'https://pbs.twimg.com/media/GLwiWDdaoAAP1id.jpg',
+  //   remark: '와라',
+  // });
+
   const { attendingGuests, notAttendingGuests } = id
     ? useGetAttendees(id)
     : { attendingGuests: [], notAttendingGuests: [] };
@@ -41,15 +43,17 @@ const InvitationDetail = () => {
   return (
     <Container>
       {/**플립되는 초대장 */}
-      <InvitationCard
-        title={invitation.title}
-        imgURL={invitation.thumbnailUrl}
-        date={formatDate(invitation.schedule)}
-        location={invitation.location}
-        description={invitation.remark}
-        backgroundColor={template[data.templateKey].bg_color}
-        fontColor={template[data.templateKey].bg_text_color}
-      />
+      {invitation && (
+        <InvitationCard
+          title={invitation.title}
+          imgURL={invitation.thumbnailUrl}
+          date={formatDate(invitation.schedule)}
+          location={invitation.location}
+          description={invitation.remark}
+          backgroundColor={template[data.templateKey].bg_color}
+          fontColor={template[data.templateKey].bg_text_color}
+        />
+      )}
       {/**카카오톡 공유(링크, QR) = isMine인 경우에만...*/}
       <ShareList imgURL={data.img} />
       {/**참석자 명단 */}
