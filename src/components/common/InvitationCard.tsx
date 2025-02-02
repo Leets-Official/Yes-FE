@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import InvitationFront from '../result/InvitationFront';
 import InvitationBack from '../result/InvitationBack';
+import dayjs from 'dayjs';
 
 const InvitationCard = ({
   title,
@@ -37,7 +38,7 @@ const InvitationCard = ({
         <InvitationBack
           size="big"
           title={title}
-          date={date}
+          date={dayjs(date).format('YYYY년 M월 D일 H시 m분')}
           location={location}
           description={description}
           backgroundColor={backgroundColor}
