@@ -32,17 +32,15 @@ const InvitationDetail = () => {
   return (
     <Container>
       {/* 플립되는 초대장 */}
-      {invitation && (
-        <InvitationCard
-          title={invitation.title}
-          imgURL={invitation.thumbnailUrl}
-          date={formatDate(invitation.schedule)}
-          location={invitation.location}
-          description={invitation.remark}
-          backgroundColor="#fff"
-          fontColor="black"
-        />
-      )}
+      <InvitationCard
+        title={invitation.title}
+        imgURL={invitation.thumbnailUrl}
+        date={formatDate(invitation.schedule)}
+        location={invitation.location}
+        description={invitation.remark}
+        backgroundColor="#fff"
+        fontColor="black"
+      />
       {/* 카카오톡 공유(링크, QR) */}
       <ShareList imgURL={invitation.thumbnailUrl} />
       {/* 참석자 명단 */}
