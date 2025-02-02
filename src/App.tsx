@@ -34,7 +34,7 @@ function App() {
                 <Route path="" element={<MyPageMain />} />
                 <Route path="received" element={<InvitationList type="received" />} />
                 <Route path="sent" element={<InvitationList type="sent" />} />
-                <Route path="detail/:id" element={<InvitationDetail />} />
+                <Route path="detail/:invitationId" element={<InvitationDetail />} />
               </Route>
             </Route>
             <Route path="*" element={<ErrorPage />} />

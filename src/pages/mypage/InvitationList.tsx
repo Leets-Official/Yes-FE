@@ -9,7 +9,7 @@ import { useGetInvitationList } from '../../api/useGetInvitationList';
 import { useDeleteInvitation } from '../../api/useDeleteInvitation';
 
 const InvitationList = ({ type }: { type: string }) => {
-  const { invitations } = useGetInvitationList(type);
+  const { invitations, isLoading } = useGetInvitationList(type);
   const { deleteInvitation } = useDeleteInvitation();
 
   const [invitationList, setInvitationList] = useState<Invitation[]>([]); // 초대장 리스트
@@ -62,7 +62,9 @@ const InvitationList = ({ type }: { type: string }) => {
 
   return (
     <>
-      {isEmpty ? (
+      {isLoading ? (
+        <Phrase>초대장 불러오는 중...</Phrase>
+      ) : isEmpty ? (
         <Phrase>초대장이 존재하지 않습니다.</Phrase>
       ) : (
         Object.keys(groupedInvitations).map((date, index) => (
