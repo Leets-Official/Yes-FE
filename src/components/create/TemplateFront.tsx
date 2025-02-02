@@ -61,28 +61,30 @@ const TemplateFront: React.FC<TemplateFrontProps> = ({
   }, [invitation.templateKey]);
 
   return (
-    <TemplateFrontContainer src={template[templateKey].template_src}>
-      {template[templateKey].text_attr.map((el, index) => {
-        const length = calculateMaxLength(el[2] as number, el[3] as number, el[4] as number);
-        return (
-          <InvitationText key={index} top={el[0] as number} left={el[1] as number}>
-            <InvitationTextArea
-              width={`${el[2]}px`}
-              height={`${el[3]}px`}
-              value={textValues[index]}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                handleTextChange(index, e.target.value)
-              }
-              maxLength={length}
-              font={template[templateKey].font}
-              fontSize={el[4] as number}
-              fontColor={el[5] as string}
-              step={step}
-            />
-          </InvitationText>
-        );
-      })}
-    </TemplateFrontContainer>
+    <>
+      <TemplateFrontContainer src={template[templateKey].template_src}>
+        {template[templateKey].text_attr.map((el, index) => {
+          const length = calculateMaxLength(el[2] as number, el[3] as number, el[4] as number);
+          return (
+            <InvitationText key={index} top={el[0] as number} left={el[1] as number}>
+              <InvitationTextArea
+                width={`${el[2]}px`}
+                height={`${el[3]}px`}
+                value={textValues[index]}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  handleTextChange(index, e.target.value)
+                }
+                maxLength={length}
+                font={template[templateKey].font}
+                fontSize={el[4] as number}
+                fontColor={el[5] as string}
+                step={step}
+              />
+            </InvitationText>
+          );
+        })}
+      </TemplateFrontContainer>
+    </>
   );
 };
 
