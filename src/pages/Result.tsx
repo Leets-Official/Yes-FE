@@ -2,28 +2,33 @@ import styled from 'styled-components';
 import ShareList from '../components/result/ShareList';
 import { MyPageHeader } from '../components/layout/MyPageHeader';
 import InvitationCard from '../components/common/InvitationCard';
-import { template } from '../data/Template';
+// import { template } from '../data/Template';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useResetRecoilState } from 'recoil';
+import { InvitationInfo } from '../atom/InvitationInfo';
 
 // 임시 데이터 (서버 응답)
-// const data = {
-//   id: 0,
-//   thumbnailUrl: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
-// templateKey: 'ALIEN',
-//   title: '연말파티 초대장',
-//   schedule: '2024.12.25',
-//   location: '강남역 어딘가',
-//   remark: '몸만 와라 친구들아',
-// };
+const data = {
+  id: 0,
+  thumbnailUrl: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
+  templateKey: 'ALIEN',
+  title: '연말파티 초대장',
+  schedule: '2024.12.25',
+  location: '강남역 어딘가',
+  remark: '몸만 와라 친구들아',
+};
 
 const Result = () => {
+  const resetInvitationInfo = useResetRecoilState(InvitationInfo);
+
   useEffect(() => {
     sessionStorage.removeItem('invitationPersist');
+    resetInvitationInfo();
   }, []);
 
-  const location = useLocation();
-  const data = location.state;
+  // const location = useLocation();
+  // const data = location.state;
 
   return (
     <Container>
@@ -42,7 +47,7 @@ const Result = () => {
         fontColor="#000"
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
-      <ShareList imgURL={data.thumbnailUrl} />
+      <ShareList imgURL={data.thumbnailUrl} size="big" />
     </Container>
   );
 };

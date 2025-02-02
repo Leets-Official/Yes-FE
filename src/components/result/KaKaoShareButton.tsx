@@ -1,10 +1,10 @@
-import styled from 'styled-components';
 import kakaoshare from '../../assets/kakaoshare.svg';
 import { useEffect } from 'react';
+import { Container, ButtonImg } from './ShareButtonStyle';
 
 const nickname = '공주';
 
-const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
+const KakaoShareButton = ({ imgURL, size }: { imgURL: string; size: 'small' | 'big' }) => {
   const invitationURL = 'https://yourevents.site/' + window.location.pathname.split('/')[2];
 
   useEffect(() => {
@@ -50,35 +50,13 @@ const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
   };
 
   return (
-    <Container>
-      <Button onClick={shareToKakao}>
+    <Container size={size}>
+      <ButtonImg size={size} onClick={shareToKakao}>
         <img src={kakaoshare} alt="카카오" />
-      </Button>
+      </ButtonImg>
       <div>카카오톡 공유</div>
     </Container>
   );
 };
 
 export default KakaoShareButton;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.31rem;
-
-  div {
-    font-size: 0.75rem;
-  }
-`;
-
-const Button = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-
-  img {
-    width: 2.75rem;
-    height: 2.75rem;
-  }
-`;

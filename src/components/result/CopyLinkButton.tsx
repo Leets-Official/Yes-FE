@@ -1,15 +1,14 @@
 import { useEffect } from 'react';
 import ClipboardJS from 'clipboard';
-import styled from 'styled-components';
 import copylink from '../../assets/copylink.svg';
 import { toast } from 'react-toastify';
+import { ButtonImg, Container } from './ShareButtonStyle';
 
-const CopyLinkButton = () => {
+const CopyLinkButton = ({ size }: { size: 'small' | 'big' }) => {
   useEffect(() => {
     const clipboard = new ClipboardJS('[data-clipboard-text]');
 
     clipboard.on('success', () => {
-      console.log('복사 성공');
       toast('복사 완료! 친구에게 슝✨');
     });
 
@@ -25,35 +24,17 @@ const CopyLinkButton = () => {
   const invitationId = window.location.pathname.split('/')[2];
 
   return (
-    <Container>
-      <Button data-clipboard-text={`yourevents.site/${invitationId}`} aria-label="링크 복사">
+    <Container size={size}>
+      <ButtonImg
+        size={size}
+        data-clipboard-text={`yourevents.site/${invitationId}`}
+        aria-label="링크 복사"
+      >
         <img src={copylink} alt="링크 복사" />
-      </Button>
+      </ButtonImg>
       <div>URL 복사</div>
     </Container>
   );
 };
 
 export default CopyLinkButton;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.31rem;
-
-  div {
-    font-size: 0.75rem;
-  }
-`;
-
-const Button = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-
-  img {
-    width: 2.75rem;
-    height: 2.75rem;
-  }
-`;

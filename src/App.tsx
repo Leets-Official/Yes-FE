@@ -15,7 +15,7 @@ import ReceiveInvitation from './pages/ReceiveInvitation';
 import { PrivateRoutes } from './routes/PrivateRoutes';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './pages/ErrorFallback';
-import CustomToast from './components/common/customToast';
+import CustomToast from './components/common/CustomToast';
 
 function App() {
   return (

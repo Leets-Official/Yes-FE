@@ -50,7 +50,7 @@ const InvitationDetail = () => {
         fontColor={template[data.templateKey].bg_text_color}
       />
       {/**카카오톡 공유(링크, QR) = isMine인 경우에만...*/}
-      <ShareList imgURL={data.img} />
+      <ShareList imgURL={data.img} size="small" />
       {/**참석자 명단 */}
       <AttendeeList attendees={data.attendees} title="참석자 목록" />
       {/**불참석자 명단 */}
