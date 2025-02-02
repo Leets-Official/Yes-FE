@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import ShareList from '../components/result/ShareList';
 import { MyPageHeader } from '../components/layout/MyPageHeader';
 import InvitationCard from '../components/common/InvitationCard';
-import { template } from '../data/Template';
+// import { template } from '../data/Template';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
