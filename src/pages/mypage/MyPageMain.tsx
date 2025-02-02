@@ -3,12 +3,17 @@ import InvitationStats from '../../components/mypage/InvitationStats';
 import { removeCookie } from '../../utils/cookies';
 import { useNavigate } from 'react-router-dom';
 import { useGetMyPageInfo } from '../../api/useGetMyPageInfo';
+import { useResetRecoilState } from 'recoil';
+import { UserInfo } from '../../atom/UserInfo';
 
 const MyPageMain = () => {
   const { user } = useGetMyPageInfo();
+  const resetUserInfo = useResetRecoilState(UserInfo);
   const navigate = useNavigate();
+
   const handleLogout = () => {
     removeCookie('accessToken');
+    resetUserInfo();
     navigate('/', { replace: true });
   };
 
