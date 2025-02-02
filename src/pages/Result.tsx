@@ -9,7 +9,7 @@ import { InvitationInfo } from '../atom/InvitationInfo';
 
 // 임시 데이터 (서버 응답)
 const data = {
-  id: 0,
+  ownerNickname: '공주',
   thumbnailUrl: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
   templateKey: 'ALIEN',
   title: '연말파티 초대장',
@@ -43,7 +43,7 @@ const Result = () => {
         fontColor="#000"
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
-      <ShareList imgURL={data.thumbnailUrl} size="big" />
+      <ShareList ownerNickname={data.ownerNickname} thumbnailUrl={data.thumbnailUrl} size="big" />
     </Container>
   );
 };

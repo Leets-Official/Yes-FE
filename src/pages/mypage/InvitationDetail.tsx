@@ -24,6 +24,7 @@ const InvitationDetail = () => {
 
   const [invitation] = useState<Invitation>({
     invitationId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    ownerNickname: '닉네임',
     createDate: '2025-01-29T09:02:06.444Z',
     title: '웰컴하우스',
     schedule: '2025-01-29T09:02:06.445Z',
@@ -50,7 +51,7 @@ const InvitationDetail = () => {
         fontColor={template[data.templateKey].bg_text_color}
       />
       {/**카카오톡 공유(링크, QR) = isMine인 경우에만...*/}
-      <ShareList imgURL={data.img} size="small" />
+      <ShareList ownerNickname={invitation.ownerNickname} thumbnailUrl={data.img} size="small" />
       {/**참석자 명단 */}
       <AttendeeList attendees={data.attendees} title="참석자 목록" />
       {/**불참석자 명단 */}
