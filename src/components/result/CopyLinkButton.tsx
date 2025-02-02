@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import ClipboardJS from 'clipboard';
 import styled from 'styled-components';
 import copylink from '../../assets/copylink.svg';
+import { useParams } from 'react-router-dom';
 
 const CopyLinkButton = () => {
   useEffect(() => {
@@ -20,7 +21,7 @@ const CopyLinkButton = () => {
     };
   }, []);
 
-  const invitationId = window.location.pathname.split('/')[2];
+  const { invitationId } = useParams<{ invitationId: string }>();
 
   return (
     <Container>

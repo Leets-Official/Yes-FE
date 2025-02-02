@@ -6,19 +6,32 @@ import { formatDate } from '../../utils/formatDate';
 import { useGetAttendees } from '../../api/useGetAttendees';
 import { useParams } from 'react-router-dom';
 import { useGetInvitation } from '../../api/useGetInvitation';
+import { useEffect, useState } from 'react';
 
 const InvitationDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const { invitation } = useGetInvitation(id || '');
-  if (!invitation) return;
+  const { invitationId } = useParams<{ invitationId: string }>();
+  const { invitation } = useGetInvitation(invitationId || '');
 
-  const { attendingGuests, notAttendingGuests } = id
-    ? useGetAttendees(id)
-    : { attendingGuests: [], notAttendingGuests: [] };
+  // 상태 관리
+  const [attendingGuests, setAttendingGuests] = useState<Guest[]>([]);
+  const [notAttendingGuests, setNotAttendingGuests] = useState<Guest[]>([]);
+
+  // id가 존재할 때만 useGetAttendees 호출
+  const { attendingGuests: fetchedAttending, notAttendingGuests: fetchedNotAttending } =
+    useGetAttendees(invitationId || '');
+
+  useEffect(() => {
+    if (fetchedAttending && fetchedNotAttending) {
+      setAttendingGuests(fetchedAttending);
+      setNotAttendingGuests(fetchedNotAttending);
+    }
+  }, [fetchedAttending, fetchedNotAttending]);
+
+  if (!invitation) return null;
 
   return (
     <Container>
-      {/**플립되는 초대장 */}
+      {/* 플립되는 초대장 */}
       {invitation && (
         <InvitationCard
           title={invitation.title}
@@ -30,11 +43,11 @@ const InvitationDetail = () => {
           fontColor="black"
         />
       )}
-      {/**카카오톡 공유(링크, QR) = isMine인 경우에만...*/}
+      {/* 카카오톡 공유(링크, QR) */}
       <ShareList imgURL={invitation.thumbnailUrl} />
-      {/**참석자 명단 */}
+      {/* 참석자 명단 */}
       <AttendeeList attendees={attendingGuests} title="참석자 목록" />
-      {/**불참석자 명단 */}
+      {/* 불참석자 명단 */}
       <AttendeeList attendees={notAttendingGuests} title="불참석자 목록" />
     </Container>
   );

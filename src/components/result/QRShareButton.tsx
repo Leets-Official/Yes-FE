@@ -5,12 +5,13 @@ import Button from '../common/Button';
 import theme from '../../style/theme';
 import { useCallback, useState } from 'react';
 import useGetQR from '../../api/useGetQR';
+import { useParams } from 'react-router-dom';
 
 const QRShareButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const invitationId = window.location.pathname.split('/')[2];
+  const { invitationId } = useParams<{ invitationId: string }>();
 
-  const { data: QRUrl } = useGetQR(invitationId);
+  const { data: QRUrl } = useGetQR(invitationId as string);
 
   const onClickDownload = useCallback((srcUrl: string | null, name: string) => {
     if (!srcUrl) return;
