@@ -20,6 +20,10 @@ declare global {
     createDate: string;
     remark: string;
   };
+  type Guest = {
+    guestId: string;
+    nickname: string;
+  };
 }
 
 export {};

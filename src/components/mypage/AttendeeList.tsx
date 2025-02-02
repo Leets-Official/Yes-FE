@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const AttendeeList = ({ attendees, title }: { attendees: string[]; title: string }) => {
+const AttendeeList = ({ attendees, title }: { attendees: Guest[]; title: string }) => {
   const [colors, setColors] = useState<string[]>([]);
 
   useEffect(() => {
@@ -24,8 +24,8 @@ const AttendeeList = ({ attendees, title }: { attendees: string[]; title: string
       <Title>{title}</Title>
       <AttendeeBox>
         {attendees.map((attendee, index) => (
-          <AttendeeName key={index} color={colors[index]}>
-            {attendee}
+          <AttendeeName key={attendee.guestId} color={colors[index]}>
+            {attendee.nickname}
           </AttendeeName>
         ))}
       </AttendeeBox>

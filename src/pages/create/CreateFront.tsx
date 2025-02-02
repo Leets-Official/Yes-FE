@@ -65,7 +65,6 @@ const MainContent = styled.div`
   width: 100%;
   flex-grow: 1;
 
-  padding: 0 1.5rem;
   margin-top: 2.25rem;
   gap: 2.25rem;
 `;

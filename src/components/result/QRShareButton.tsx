@@ -4,14 +4,15 @@ import Modal from '../common/Modal';
 import theme from '../../style/theme';
 import { useCallback, useState } from 'react';
 import useGetQR from '../../api/useGetQR';
+import { useParams } from 'react-router-dom';
 import { ButtonImg, Container } from './ShareButtonStyle';
 import Button from '../common/Button';
 
 const QRShareButton = ({ size }: { size: 'small' | 'big' }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const invitationId = window.location.pathname.split('/')[2];
+  const { invitationId } = useParams<{ invitationId: string }>();
 
-  const { data: QRUrl } = useGetQR(invitationId);
+  const { data: QRUrl } = useGetQR(invitationId as string);
 
   const onClickDownload = useCallback((srcUrl: string | null, name: string) => {
     if (!srcUrl) return;

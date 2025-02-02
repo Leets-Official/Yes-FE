@@ -64,7 +64,12 @@ const Content = styled.div`
     width: 5.688rem;
     height: 7.063rem;
     border-radius: 8px;
-    background-color: #d9d9d9;
+    > img {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+    }
   }
 `;
 

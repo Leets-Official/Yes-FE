@@ -3,6 +3,7 @@ import ClipboardJS from 'clipboard';
 import copylink from '../../assets/copylink.svg';
 import { toast } from 'react-toastify';
 import { ButtonImg, Container } from './ShareButtonStyle';
+import { useParams } from 'react-router-dom';
 
 const CopyLinkButton = ({ size }: { size: 'small' | 'big' }) => {
   useEffect(() => {
@@ -21,7 +22,7 @@ const CopyLinkButton = ({ size }: { size: 'small' | 'big' }) => {
     };
   }, []);
 
-  const invitationId = window.location.pathname.split('/')[2];
+  const { invitationId } = useParams<{ invitationId: string }>();
 
   return (
     <Container size={size}>

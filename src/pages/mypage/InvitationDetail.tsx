@@ -1,61 +1,53 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AttendeeList from '../../components/mypage/AttendeeList';
-import { template } from '../../data/Template';
 import ShareList from '../../components/result/ShareList';
 import InvitationCard from '../../components/common/InvitationCard';
 import { formatDate } from '../../utils/formatDate';
-
-const data = {
-  id: 0,
-  img: '/image/Pre_Invi_Princess.png',
-  templateKey: 'PRINCESS' as keyof typeof template,
-  title: '연말파티 초대장',
-  date: '2024.12.25',
-  location: '강남역 어딘가',
-  made_date: '2024.12.14',
-  description: '몸만 와라 친구들아',
-  attendees: ['나얌', '리락이', '쿠마마'],
-  be_attendees: ['하이', '표옹옹'],
-};
+import { useGetAttendees } from '../../api/useGetAttendees';
+import { useParams } from 'react-router-dom';
+import { useGetInvitation } from '../../api/useGetInvitation';
+import { useEffect, useState } from 'react';
 
 const InvitationDetail = () => {
-  //const { id } = useParams<{ id: string }>();
+  const { invitationId } = useParams<{ invitationId: string }>();
+  const { invitation } = useGetInvitation(invitationId || '');
 
-  const [invitation] = useState<Invitation>({
-    invitationId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    ownerNickname: '닉네임',
-    createDate: '2025-01-29T09:02:06.444Z',
-    title: '웰컴하우스',
-    schedule: '2025-01-29T09:02:06.445Z',
-    location: '우리집',
-    thumbnailUrl: 'https://pbs.twimg.com/media/GLwiWDdaoAAP1id.jpg',
-    remark: '와라',
-  });
+  // 상태 관리
+  const [attendingGuests, setAttendingGuests] = useState<Guest[]>([]);
+  const [notAttendingGuests, setNotAttendingGuests] = useState<Guest[]>([]);
+
+  // id가 존재할 때만 useGetAttendees 호출
+  const { attendingGuests: fetchedAttending, notAttendingGuests: fetchedNotAttending } =
+    useGetAttendees(invitationId || '');
 
   useEffect(() => {
-    // 초대장 상세조회 API
-    // (참석자/불참석자 API) - 서버 미구현
-  }, []);
+    if (fetchedAttending && fetchedNotAttending) {
+      setAttendingGuests(fetchedAttending);
+      setNotAttendingGuests(fetchedNotAttending);
+    }
+  }, [fetchedAttending, fetchedNotAttending]);
+
+  if (!invitation) return null;
 
   return (
     <Container>
-      {/**플립되는 초대장 */}
+      {/* 플립되는 초대장 */}
       <InvitationCard
         title={invitation.title}
         imgURL={invitation.thumbnailUrl}
         date={formatDate(invitation.schedule)}
         location={invitation.location}
         description={invitation.remark}
-        backgroundColor={template[data.templateKey].bg_color}
-        fontColor={template[data.templateKey].bg_text_color}
+        backgroundColor="#fff"
+        fontColor="black"
       />
-      {/**카카오톡 공유(링크, QR) = isMine인 경우에만...*/}
-      <ShareList ownerNickname={invitation.ownerNickname} thumbnailUrl={data.img} size="small" />
-      {/**참석자 명단 */}
-      <AttendeeList attendees={data.attendees} title="참석자 목록" />
-      {/**불참석자 명단 */}
-      <AttendeeList attendees={data.be_attendees} title="불참석자 목록" />
+      {/* 카카오톡 공유(링크, QR) */}
+      {/* TODO: ownerNickname 값 수정 필요 */}
+      <ShareList ownerNickname="닉네임" thumbnailUrl={invitation.thumbnailUrl} size="small" />
+      {/* 참석자 명단 */}
+      <AttendeeList attendees={attendingGuests} title="참석자 목록" />
+      {/* 불참석자 명단 */}
+      <AttendeeList attendees={notAttendingGuests} title="불참석자 목록" />
     </Container>
   );
 };
