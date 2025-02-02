@@ -11,28 +11,27 @@ import { template } from '../../data/Template';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { InvitationInfo } from '../../atom/InvitationInfo';
-import useValidation from '../../hooks/useValidation';
 import ErrorPhrase from '../../components/common/ErrorPhrase';
 import DateInput from '../../components/common/DateInput';
+import useCanvas from '../../hooks/useCanvas';
+import { usePostInvitation } from '../../api/usePostInvitation';
+import getISOString from '../../hooks/getISOString';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 const CreateBack = () => {
   const navigate = useNavigate();
-  const {
-    value: title,
-    isValid: isTitleValid,
-    handleInputChange: handleTitleChange,
-    validate: validateTitle,
-  } = useValidation('');
-  const {
-    value: location,
-    isValid: isLocationValid,
-    handleInputChange: handleLocationChange,
-    validate: validateLocation,
-  } = useValidation('');
-  const { value: description, handleInputChange: handleDescriptionChange } = useValidation('');
+
+  const [backgroundColor, setBackgroundColor] = useState('#fff');
+  const [fontColor, setFontColor] = useState('#000');
+  const [invitation] = useRecoilState(InvitationInfo);
+
   const [isDateValid, setIsDateValid] = useState(false);
+  const [isVisible, setIsVisible] = useState({
+    title: false,
+    date: false,
+    location: false,
+  });
   const [date, setDate] = useState({
     year: '',
     month: '',
@@ -40,18 +39,85 @@ const CreateBack = () => {
     hour: '',
     minute: '',
   });
-  const [backgroundColor, setBackgroundColor] = useState('#fff');
-  const [fontColor, setFontColor] = useState('#000');
-  const [invitation, setInvitation] = useRecoilState(InvitationInfo);
+  const [formattedDate, setFormattedDate] = useState<string>('');
+  const [invitationData, setInvitationData] = useState({
+    ownerNickname: invitation.nickname || '',
+    thumbnailUrl: '',
+    title: '',
+    schedule: '',
+    location: '',
+    remark: '',
+  });
 
-  const invitationId = 'invitationId'; // 초대장 임시 아이디
+  const { canvasRef, uploadCanvasImage } = useCanvas(
+    invitation.templateKey,
+    invitation.contents || [],
+  );
+  const { postInvitation } = usePostInvitation();
 
   useEffect(() => {
-    if (date.year && date.month && date.day && date.hour && date.minute) {
-      setIsDateValid(true);
+    const isInputStarted = date.year || date.month || date.day || date.hour || date.minute;
+
+    if (isInputStarted) {
+      setIsVisible((prev) => ({
+        ...prev,
+        date: true,
+      }));
     }
-    setIsDateValid(false);
+
+    setIsDateValid(!!(date.year && date.month && date.day && date.hour && date.minute));
+
+    setFormattedDate(
+      [
+        date.year && `${date.year}년`,
+        date.month && `${date.month}월`,
+        date.day && `${date.day}일`,
+        date.hour && `${date.hour}시`,
+        date.minute && `${date.minute}분`,
+      ]
+        .filter(Boolean)
+        .join(' '),
+    );
+
+    const ISOschedule: string = getISOString(date) || '';
+
+    setInvitationData((prev) => ({
+      ...prev,
+      schedule: ISOschedule,
+    }));
   }, [date]);
+
+  useEffect(() => {
+    const isInputStarted = invitationData.title;
+
+    if (isInputStarted) {
+      setIsVisible((prev) => ({
+        ...prev,
+        title: true,
+      }));
+    }
+  }, [invitationData.title]);
+
+  useEffect(() => {
+    const isInputStarted = invitationData.location;
+
+    if (isInputStarted) {
+      setIsVisible((prev) => ({
+        ...prev,
+        location: true,
+      }));
+    }
+  }, [invitationData.location]);
+
+  const onChange =
+    (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { value } = e.target;
+
+      setInvitationData({
+        ...invitationData,
+        [key]: value,
+      });
+    };
 
   useEffect(() => {
     const templateKey = invitation.templateKey || 'null';
@@ -66,16 +132,6 @@ const CreateBack = () => {
     }
   }, [invitation.templateKey]);
 
-  const formattedDate = [
-    date.year && `${date.year}년`,
-    date.month && `${date.month}월`,
-    date.day && `${date.day}일`,
-    date.hour && `${date.hour}시`,
-    date.minute && `${date.minute}분`,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   const handleDateChange = (field: DateField) => (value: string | number) => {
     setDate((prev) => ({
       ...prev,
@@ -83,27 +139,24 @@ const CreateBack = () => {
     }));
   };
 
-  const handleCreateInvitation = () => {
-    const isTitleValidated = validateTitle();
-    const isLocationValidated = validateLocation();
+  const handleCreateInvitation = async () => {
+    if (!invitationData.title || !invitationData.location || !invitationData.schedule) return; // presigned URL 요청 & 파일 업로드
 
-    if (isTitleValidated && isLocationValidated && isDateValid) {
-      // API 호출 및 상태 업데이트
-      setInvitation((prev) => ({
-        ...prev,
-        title,
-        location,
-        description,
-        step: 0,
-      }));
-      navigate(`/result/${invitationId}`);
-    }
+    const presignedUrl = await uploadCanvasImage();
+    if (!presignedUrl) return;
+    // 초대장 생성하기 API 요청
+    const response = await postInvitation({
+      ...invitationData,
+      thumbnailUrl: presignedUrl.slice(0, presignedUrl.indexOf('?')),
+    });
+    navigate(`/result/${response.invitation.invitationId}`, { state: invitationData });
   };
 
   useResetStepState();
 
   return (
     <Container>
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
       <InvitationHeader />
       <b>
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
@@ -123,9 +176,9 @@ const CreateBack = () => {
         <InvitationBack
           isInput
           size="small"
-          title={title}
-          location={location}
-          description={description}
+          title={invitationData.title}
+          location={invitationData.location}
+          description={invitationData.remark}
           date={formattedDate}
           backgroundColor={backgroundColor}
           fontColor={fontColor}
@@ -135,8 +188,10 @@ const CreateBack = () => {
             <label>
               제목 <span>*</span>
             </label>
-            <Input value={title} onChange={handleTitleChange} />
-            {isTitleValid === 0 && <ErrorPhrase message="제목을 입력해주세요" />}
+            <Input value={invitationData.title} onChange={onChange('title')} />
+            {!invitationData.title && isVisible.title && (
+              <ErrorPhrase message="제목을 입력해주세요" />
+            )}
           </Field>
 
           <Field>
@@ -169,20 +224,22 @@ const CreateBack = () => {
               />
               분
             </DateInputWrapper>
-            {!isDateValid && <ErrorPhrase message="일정을 입력해주세요" />}
+            {!isDateValid && isVisible.date && <ErrorPhrase message="일정을 입력해주세요" />}
           </Field>
 
           <Field>
             <label>
               장소 <span>*</span>
             </label>
-            <Input value={location} onChange={handleLocationChange} />
-            {isLocationValid === 0 && <ErrorPhrase message="장소를 입력해주세요" />}
+            <Input value={invitationData.location} onChange={onChange('location')} />
+            {!invitationData.location && isVisible.location && (
+              <ErrorPhrase message="장소를 입력해주세요" />
+            )}
           </Field>
 
           <DescriptionField>
             <label>문구</label>
-            <TextArea value={description} onChange={handleDescriptionChange} />
+            <TextArea value={invitationData.remark} onChange={onChange('remark')} />
           </DescriptionField>
         </Gap>
       </AlignCenter>

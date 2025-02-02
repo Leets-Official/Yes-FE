@@ -23,8 +23,6 @@ const QRShareButton = () => {
     a.remove();
   }, []);
 
-  console.log(QRUrl);
-
   return (
     <Container>
       {isModalOpen && (
