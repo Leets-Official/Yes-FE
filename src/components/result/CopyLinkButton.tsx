@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import ClipboardJS from 'clipboard';
 import styled from 'styled-components';
 import copylink from '../../assets/copylink.svg';
+import { toast } from 'react-toastify';
 
 const CopyLinkButton = () => {
   useEffect(() => {
@@ -9,6 +10,7 @@ const CopyLinkButton = () => {
 
     clipboard.on('success', () => {
       console.log('복사 성공');
+      toast('복사 완료! 친구에게 슝✨');
     });
 
     clipboard.on('error', () => {
