@@ -143,8 +143,9 @@ const CreateBack = () => {
   };
 
   const handleCreateInvitation = async () => {
-    if (!invitationData.title || !invitationData.location || !invitationData.schedule) return; // presigned URL 요청 & 파일 업로드
+    if (!invitationData.title || !invitationData.location || !invitationData.schedule) return;
 
+    // presigned URL 요청 & 파일 업로드
     const presignedUrl = await uploadCanvasImage();
     if (!presignedUrl) return;
     // 초대장 생성하기 API 요청

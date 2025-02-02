@@ -8,16 +8,8 @@ import styled from 'styled-components';
 import speachBubble from '../assets/speachBubble.svg';
 import { useState } from 'react';
 import dayjs from 'dayjs';
-
-// 임시 데이터
-const data = {
-  id: 0,
-  thumbnailUrl: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
-  title: '연말파티 초대장',
-  schedule: '2020-01-01T01:01:00.000',
-  location: '강남역 어딘가',
-  remark: '몸만 와라 친구들아',
-};
+import { useGetInvitation } from '../api/useGetInvitation';
+import { useParams } from 'react-router-dom';
 
 const calculateDDay = (targetDate: string) => {
   const today = dayjs();
@@ -37,6 +29,9 @@ const calculateDDay = (targetDate: string) => {
 const ReceiveInvitation = () => {
   const [nickname, setNickname] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(true);
+
+  const { invitationId } = useParams<{ invitationId: string }>();
+  const { invitation } = useGetInvitation(invitationId || '');
 
   // 조건부 렌더링 테스트용 데이터
   const isAuth = true;
@@ -79,7 +74,7 @@ const ReceiveInvitation = () => {
           <Bubble>
             <D_Day>
               <div>일정까지</div>
-              <b>{calculateDDay(data.schedule)}</b>
+              <b>{calculateDDay(invitation?.schedule || '')}</b>
             </D_Day>
             <img src={speachBubble} alt="speachBubble" />
           </Bubble>
@@ -87,11 +82,11 @@ const ReceiveInvitation = () => {
       )}
 
       <InvitationCard
-        title={data.title}
-        imgURL={data.thumbnailUrl}
-        date={data.schedule}
-        location={data.location}
-        description={data.remark}
+        title={invitation?.title || ''}
+        imgURL={invitation?.thumbnailUrl || ''}
+        date={invitation?.schedule || ''}
+        location={invitation?.location || ''}
+        description={invitation?.remark || ''}
         // TODO: 컬러 값 수정 필요
         backgroundColor="#fff"
         fontColor="#000"
