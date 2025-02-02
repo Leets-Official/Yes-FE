@@ -157,7 +157,12 @@ const Description = styled.div`
 
 const Bubble = styled.div`
   margin-top: 0.81rem;
+  margin-bottom: 0.5rem;
   position: relative;
+
+  img {
+    filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.25));
+  }
 `;
 
 const D_Day = styled.div`
@@ -172,6 +177,7 @@ const D_Day = styled.div`
   font-weight: 600;
   gap: 0.38rem;
   width: 8.5855rem;
+  z-index: 1;
 
   b {
     font-size: 1.125rem;
