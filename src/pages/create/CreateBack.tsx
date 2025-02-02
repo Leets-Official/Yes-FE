@@ -64,8 +64,11 @@ const CreateBack = () => {
         date: true,
       }));
     }
+    console.log(date);
 
-    setIsDateValid(!!(date.year && date.month && date.day && date.hour && date.minute));
+    setIsDateValid(
+      !!(date.year && date.month && date.day && date.hour !== '' && date.minute !== ''),
+    );
 
     setFormattedDate(
       [
