@@ -9,18 +9,16 @@ export const usePatchRespond = () => {
   const resetUserInfo = useResetRecoilState(UserInfo);
   const { showBoundary } = useErrorBoundary();
 
-  const patchRespond = async (
-    attendanceStatus: { nickname: string; invitationId: string },
-    attendance: boolean,
-  ) => {
+  const patchRespond = async (attendanceStatus: {
+    nickname: string;
+    invitationId: string;
+    attendance: boolean;
+  }) => {
     setLoading(true);
 
-    console.log('invitationData', attendanceStatus);
+    console.log('attendanceStatus', attendanceStatus);
     try {
-      const response = await privateAxios(resetUserInfo).patch(`/guest/respond`, {
-        ...attendanceStatus,
-        attendance: attendance,
-      });
+      const response = await privateAxios(resetUserInfo).patch(`/guest/respond`, attendanceStatus);
 
       return response.data.result;
     } catch (error: any) {
