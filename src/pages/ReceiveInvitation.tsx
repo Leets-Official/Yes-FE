@@ -10,6 +10,8 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import { useGetInvitation } from '../api/useGetInvitation';
 import { useParams } from 'react-router-dom';
+import { isAccessToken } from '../utils/isAccessToken';
+import { usePatchRespond } from '../api/patchRespond';
 
 const calculateDDay = (targetDate: string) => {
   const today = dayjs();
@@ -27,15 +29,20 @@ const calculateDDay = (targetDate: string) => {
 };
 
 const ReceiveInvitation = () => {
-  const [nickname, setNickname] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const { invitationId } = useParams<{ invitationId: string }>();
   const { invitation } = useGetInvitation(invitationId || '');
+  const { patchRespond } = usePatchRespond();
 
-  // 조건부 렌더링 테스트용 데이터
-  const isAuth = true;
-  const myResponse = 'ㄴㅇㄹ';
+  const [attendanceStatus, setAttendanceStatus] = useState({
+    nickname: '',
+    invitationId: invitationId || '',
+  });
+
+  const isAuth = isAccessToken();
+
+  const myResponse = null;
 
   return (
     <Container>
@@ -44,14 +51,21 @@ const ReceiveInvitation = () => {
           <div>초대장 확인을 위해서 닉네임을 입력해주세요</div>
           <Input
             width="14.1875rem"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
+            value={attendanceStatus.nickname}
+            onChange={(e) =>
+              setAttendanceStatus({
+                ...attendanceStatus,
+                nickname: e.target.value,
+              })
+            }
           />
+          {/* TODO: 입력되지 않은 상태로 버튼을 눌렀을 때 UI 추가 필요 */}
           <ConfirmButton
             size="small"
             color={theme.color.main}
             textColor="#fff"
             onClick={() => {
+              if (attendanceStatus.nickname === '') return;
               setIsModalOpen(false);
             }}
           >
@@ -62,11 +76,15 @@ const ReceiveInvitation = () => {
 
       <MyPageHeader />
 
-      {/* 응답 존재 여부에 따라 변경 */}
+      {/* 응답 존재 여부에 따라 텍스트 변경 */}
       {myResponse === null ? (
         <>
-          <Title>*닉네임*님의 초대를 받았습니다</Title>
-          <Description>참석여부를 위해 로그인 해주세요!</Description>
+          <Title>{invitation?.ownerNickname}님의 초대를 받았습니다</Title>
+          {isAuth ? (
+            <Description>초대장을 확인하고 참석여부를 체크해주세요!</Description>
+          ) : (
+            <Description>참석여부를 위해 로그인 해주세요!</Description>
+          )}
         </>
       ) : (
         <>
@@ -94,6 +112,7 @@ const ReceiveInvitation = () => {
       <TouchMessage>초대장을 터치해보세요</TouchMessage>
 
       {!isAuth && (
+        // TODO: 카카오 로그인 함수 추가 필요
         <LoginButton size="medium" color={theme.color.kakao} onClick={() => {}}>
           카카오로 로그인
         </LoginButton>
@@ -112,10 +131,24 @@ const ReceiveInvitation = () => {
       {/* 응답이 존재하지 않을 경우 */}
       {isAuth && myResponse === null && (
         <ButtonList>
-          <SelectButton size="medium" color="#E6E6E6" textColor="#000" onClick={() => {}}>
+          <SelectButton
+            size="medium"
+            color="#E6E6E6"
+            textColor="#000"
+            onClick={() => {
+              patchRespond(attendanceStatus, false);
+            }}
+          >
             거절
           </SelectButton>
-          <SelectButton size="medium" color={theme.color.main} textColor="#fff" onClick={() => {}}>
+          <SelectButton
+            size="medium"
+            color={theme.color.main}
+            textColor="#fff"
+            onClick={() => {
+              patchRespond(attendanceStatus, true);
+            }}
+          >
             yes!
           </SelectButton>
         </ButtonList>

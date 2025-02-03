@@ -6,7 +6,7 @@ import InvitationCard from '../components/common/InvitationCard';
 import { useEffect } from 'react';
 import { useResetRecoilState } from 'recoil';
 import { InvitationInfo } from '../atom/InvitationInfo';
-import { useParams, data } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useGetInvitation } from '../api/useGetInvitation';
 
 const Result = () => {
