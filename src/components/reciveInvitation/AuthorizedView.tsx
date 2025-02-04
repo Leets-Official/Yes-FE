@@ -13,8 +13,8 @@ import RespondButton from '../common/ResondButton';
 import useGetMyAttendance from '../../api/useGetMyAttendance';
 
 const calculateDDay = (targetDate: string) => {
-  const today = dayjs();
-  const target = dayjs(targetDate);
+  const today = dayjs().startOf('day');
+  const target = dayjs(targetDate).startOf('day');
 
   const diff = target.diff(today, 'day');
 
