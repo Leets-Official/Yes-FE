@@ -11,6 +11,7 @@ import InvitationCard from '../common/InvitationCard';
 import Modal from '../common/Modal';
 import RespondButton from '../common/ResondButton';
 import useGetMyAttendance from '../../api/useGetMyAttendance';
+import ErrorPhrase from '../common/ErrorPhrase';
 
 const calculateDDay = (targetDate: string) => {
   const today = dayjs().startOf('day');
@@ -46,7 +47,7 @@ const AuthorizedView = () => {
 
   const [attendanceStatus, setAttendanceStatus] = useState({
     //TODO: 닉네임값 서버로부터 받아 수정
-    nickname: '이름 없음',
+    nickname: '',
     invitationId: invitationId || '',
   });
 
@@ -55,17 +56,23 @@ const AuthorizedView = () => {
       {myAttendance === null && isModalOpen && (
         <Modal width={14.1825} hasCloseButton={false}>
           <div>초대장 확인을 위해서 닉네임을 입력해주세요</div>
-          <Input
-            width="14.1875rem"
-            value={attendanceStatus.nickname}
-            onChange={(e: any) =>
-              setAttendanceStatus({
-                ...attendanceStatus,
-                nickname: e.target.value,
-              })
-            }
-          />
-          {/* TODO: 입력되지 않은 상태로 버튼을 눌렀을 때 UI 추가 필요 */}
+          <NoGap>
+            <Input
+              width="14.1875rem"
+              value={attendanceStatus.nickname}
+              onChange={(e: any) =>
+                setAttendanceStatus({
+                  ...attendanceStatus,
+                  nickname: e.target.value,
+                })
+              }
+            />
+            {attendanceStatus.nickname == '' ? (
+              <SmallErrorPhrase message="닉네임을 입력해주세요" />
+            ) : (
+              <Space />
+            )}
+          </NoGap>
           <ConfirmButton
             size="small"
             color={theme.color.main}
@@ -228,6 +235,21 @@ const MyAnswer = styled.div`
   border-radius: 0.5rem;
   color: #787878;
   font-weight: 600;
+`;
+
+const Space = styled.div`
+  height: 0.8125rem;
+`;
+
+const NoGap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.31rem;
+`;
+
+const SmallErrorPhrase = styled(ErrorPhrase)`
+  font-size: 0.625rem;
+  display: flex;
 `;
 
 const ButtonList = styled.div`
