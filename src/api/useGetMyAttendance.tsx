@@ -1,40 +1,45 @@
-import { useEffect, useState } from 'react';
 import { privateAxios } from '../utils/customAxios';
 import { useErrorBoundary } from 'react-error-boundary';
 import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../atom/UserInfo';
+import { useEffect, useState } from 'react';
+
+export const fetchMyAttendance = async (invitationId: string) => {
+  if (!invitationId) return null;
+
+  const resetUserInfo = useResetRecoilState(UserInfo);
+  const { showBoundary } = useErrorBoundary();
+
+  try {
+    const response = await privateAxios(resetUserInfo).get(
+      `/invitation/${invitationId}/attendance`,
+    );
+    return response.data.result;
+  } catch (error: any) {
+    if (error.name !== 'GENERAL') {
+      showBoundary(error);
+    } else {
+      console.log(error.message);
+    }
+    return null;
+  }
+};
 
 export const useGetMyAttendance = (invitationId: string) => {
-  const [data, setData] = useState<boolean | null>(null);
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { showBoundary } = useErrorBoundary();
-  const resetUserInfo = useResetRecoilState(UserInfo);
+  const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    if (!invitationId) return;
-
-    const fetchData = async () => {
-      try {
-        // setIsLoading(true);
-        const response = await privateAxios(resetUserInfo).get(
-          `/invitation/${invitationId}/attendance`,
-        );
-        setData(response.data.result.attendance);
-      } catch (error: any) {
-        if (error.name !== 'GENERAL') {
-          showBoundary(error);
-        } else {
-          console.log(error.message);
-        }
-      } finally {
-        // setIsLoading(false);
-      }
+    const loadAttendance = async () => {
+      const result = await fetchMyAttendance(invitationId);
+      setData(result);
     };
 
-    fetchData();
+    if (invitationId) {
+      loadAttendance();
+    }
   }, [invitationId]);
 
-  return { data };
+  return { data, refetch: () => fetchMyAttendance(invitationId) };
 };
 
 export default useGetMyAttendance;

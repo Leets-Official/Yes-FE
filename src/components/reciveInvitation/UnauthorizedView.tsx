@@ -5,7 +5,7 @@ import Button from '../common/Button';
 import InvitationCard from '../common/InvitationCard';
 import { useGetInvitation } from '../../api/useGetInvitation';
 
-const UnauthorizedView = () => {
+const UnAuthorizedView = () => {
   const { invitationId } = useParams<{ invitationId: string }>();
   const { invitation } = useGetInvitation(invitationId || '');
 
@@ -47,7 +47,7 @@ const UnauthorizedView = () => {
   );
 };
 
-export default UnauthorizedView;
+export default UnAuthorizedView;
 
 const Container = styled.div`
   display: flex;

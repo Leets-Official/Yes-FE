@@ -1,14 +1,16 @@
-import Button from '../components/common/Button';
-import { MyPageHeader } from '../components/layout/MyPageHeader';
-import theme from '../style/theme';
-import styled from 'styled-components';
-import { useState } from 'react';
 import dayjs from 'dayjs';
-import { useGetInvitation } from '../api/useGetInvitation';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { isAccessToken } from '../utils/isAccessToken';
-import AuthorizedView from '../components/reciveInvitation/AuthorizedView';
-import UnAuthorizedView from '../components/reciveInvitation/UnauthorizedView';
+import speachBubble from '../../assets/speachBubble.svg';
+import styled from 'styled-components';
+import { useGetInvitation } from '../../api/useGetInvitation';
+import theme from '../../style/theme';
+import Button from '../common/Button';
+import Input from '../common/Input';
+import InvitationCard from '../common/InvitationCard';
+import Modal from '../common/Modal';
+import RespondButton from '../common/ResondButton';
+import useGetMyAttendance from '../../api/useGetMyAttendance';
 
 const calculateDDay = (targetDate: string) => {
   const today = dayjs();
@@ -25,26 +27,46 @@ const calculateDDay = (targetDate: string) => {
   }
 };
 
-const ReceiveInvitation = () => {
-  const isAuth = isAccessToken();
+const AuthorizedView = () => {
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const { invitationId } = useParams<{ invitationId: string }>();
+  const { invitation } = useGetInvitation(invitationId || '');
+  const { data } = useGetMyAttendance(invitationId || '');
+  const [myAttendance, setMyAttendance] = useState(data?.attendance || true);
+
+  // 데이터가 변경될 때 상태 업데이트
+  useEffect(() => {
+    if (data && data.attendance !== undefined) {
+      setMyAttendance(data.attendance);
+      console.log(myAttendance);
+    }
+  }, [data]);
+
+  const [attendanceStatus, setAttendanceStatus] = useState({
+    //TODO: 닉네임값 서버로부터 받아 수정
+    nickname: '이름 없음',
+    invitationId: invitationId || '',
+  });
 
   return (
     <Container>
-      {/* {isAuth && myAttendance === null && isModalOpen && (
+      {myAttendance === null && isModalOpen && (
         <Modal width={14.1825} hasCloseButton={false}>
           <div>초대장 확인을 위해서 닉네임을 입력해주세요</div>
           <Input
             width="14.1875rem"
             value={attendanceStatus.nickname}
-            onChange={(e) =>
+            onChange={(e: any) =>
               setAttendanceStatus({
                 ...attendanceStatus,
                 nickname: e.target.value,
               })
             }
-          /> */}
-      {/* TODO: 입력되지 않은 상태로 버튼을 눌렀을 때 UI 추가 필요 */}
-      {/* <ConfirmButton
+          />
+          {/* TODO: 입력되지 않은 상태로 버튼을 눌렀을 때 UI 추가 필요 */}
+          <ConfirmButton
             size="small"
             color={theme.color.main}
             textColor="#fff"
@@ -56,20 +78,13 @@ const ReceiveInvitation = () => {
             확인
           </ConfirmButton>
         </Modal>
-      )} */}
-
-      <MyPageHeader />
-      {isAuth ? <AuthorizedView /> : <UnAuthorizedView />}
+      )}
 
       {/* 응답 존재 여부에 따라 텍스트 변경 */}
-      {/* {myAttendance === null ? (
+      {myAttendance === null ? (
         <>
           <Title>{invitation?.ownerNickname}님의 초대를 받았습니다</Title>
-          {isAuth ? (
-            <Description>초대장을 확인하고 참석여부를 체크해주세요!</Description>
-          ) : (
-            <Description>참석여부를 위해 로그인 해주세요!</Description>
-          )}
+          <Description>초대장을 확인하고 참석여부를 체크해주세요!</Description>
         </>
       ) : (
         <>
@@ -82,8 +97,8 @@ const ReceiveInvitation = () => {
             <img src={speachBubble} alt="speachBubble" />
           </Bubble>
         </>
-      )} */}
-      {/* 
+      )}
+
       <InvitationCard
         title={invitation?.title || ''}
         imgURL={invitation?.thumbnailUrl || ''}
@@ -96,15 +111,8 @@ const ReceiveInvitation = () => {
       />
       <TouchMessage>초대장을 터치해보세요</TouchMessage>
 
-      {!isAuth && (
-        // TODO: 카카오 로그인 함수 추가 필요
-        <LoginButton size="medium" color={theme.color.kakao} onClick={() => {}}>
-          카카오로 로그인
-        </LoginButton>
-      )} */}
-
       {/* 응답이 존재할 경우 */}
-      {/* {isAuth && myAttendance !== null && (
+      {myAttendance !== null && (
         <ButtonList>
           {isEdit ? (
             <>
@@ -131,22 +139,22 @@ const ReceiveInvitation = () => {
             </>
           )}
         </ButtonList>
-      )} */}
+      )}
 
       {/* 응답이 존재하지 않을 경우 */}
-      {/* {isAuth && myAttendance === null && (
+      {myAttendance === null && (
         <RespondButton
           attendanceStatus={attendanceStatus}
           changeEditMode={() => {
             setIsEdit(false);
           }}
         />
-      )} */}
+      )}
     </Container>
   );
 };
 
-export default ReceiveInvitation;
+export default AuthorizedView;
 
 const Container = styled.div`
   display: flex;
@@ -230,11 +238,6 @@ const ButtonList = styled.div`
 const ConfirmButton = styled(Button)`
   width: 5.5625rem;
   padding: 0.5rem 0;
-`;
-
-const LoginButton = styled(Button)`
-  width: 90%;
-  margin-bottom: 2.625rem;
 `;
 
 const SelectButton = styled(Button)`
