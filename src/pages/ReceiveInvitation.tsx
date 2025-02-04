@@ -2,7 +2,7 @@ import { MyPageHeader } from '../components/layout/MyPageHeader';
 import styled from 'styled-components';
 import { isAccessToken } from '../utils/isAccessToken';
 import AuthorizedView from '../components/reciveInvitation/AuthorizedView';
-import UnAuthorizedView from '../components/reciveInvitation/UnauthorizedView';
+import UnAuthorizedView from '../components/reciveInvitation/UnAuthorizedView';
 
 const ReceiveInvitation = () => {
   const isAuth = isAccessToken();

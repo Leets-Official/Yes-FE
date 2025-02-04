@@ -1,45 +1,46 @@
+import { useEffect, useState } from 'react';
 import { privateAxios } from '../utils/customAxios';
 import { useErrorBoundary } from 'react-error-boundary';
 import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../atom/UserInfo';
-import { useEffect, useState } from 'react';
-
-export const fetchMyAttendance = async (invitationId: string) => {
-  if (!invitationId) return null;
-
-  const resetUserInfo = useResetRecoilState(UserInfo);
-  const { showBoundary } = useErrorBoundary();
-
-  try {
-    const response = await privateAxios(resetUserInfo).get(
-      `/invitation/${invitationId}/attendance`,
-    );
-    return response.data.result;
-  } catch (error: any) {
-    if (error.name !== 'GENERAL') {
-      showBoundary(error);
-    } else {
-      console.log(error.message);
-    }
-    return null;
-  }
-};
 
 export const useGetMyAttendance = (invitationId: string) => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<{
+    attendance: boolean | null;
+    nickname: string;
+    invitationId: string;
+  }>({
+    attendance: null,
+    nickname: '',
+    invitationId: '',
+  });
+
+  const { showBoundary } = useErrorBoundary();
+  const resetUserInfo = useResetRecoilState(UserInfo);
 
   useEffect(() => {
-    const loadAttendance = async () => {
-      const result = await fetchMyAttendance(invitationId);
-      setData(result);
+    if (!invitationId) return;
+
+    const fetchData = async () => {
+      try {
+        const response = await privateAxios(resetUserInfo).get(
+          `/invitation/${invitationId}/attendance`,
+        );
+
+        setData(response.data.result);
+      } catch (error: any) {
+        if (error.name !== 'GENERAL') {
+          showBoundary(error);
+        } else {
+          console.log(error.message);
+        }
+      }
     };
 
-    if (invitationId) {
-      loadAttendance();
-    }
+    fetchData();
   }, [invitationId]);
 
-  return { data, refetch: () => fetchMyAttendance(invitationId) };
+  return { data };
 };
 
 export default useGetMyAttendance;

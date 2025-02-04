@@ -35,7 +35,7 @@ const AuthorizedView = () => {
   const { invitationId } = useParams<{ invitationId: string }>();
   const { invitation } = useGetInvitation(invitationId || '');
   const { data } = useGetMyAttendance(invitationId || '');
-  const [myAttendance, setMyAttendance] = useState(data?.attendance || true);
+  const [myAttendance, setMyAttendance] = useState<boolean | null>(data?.attendance || null);
 
   // 데이터가 변경될 때 상태 업데이트
   useEffect(() => {
@@ -47,8 +47,9 @@ const AuthorizedView = () => {
 
   const [attendanceStatus, setAttendanceStatus] = useState({
     //TODO: 닉네임값 서버로부터 받아 수정
-    nickname: '',
+    nickname: '이름 없음',
     invitationId: invitationId || '',
+    attendance: null,
   });
 
   return (
@@ -132,7 +133,9 @@ const AuthorizedView = () => {
             </>
           ) : (
             <>
-              <MyAnswer>내 응답: {myAttendance ? 'yes!' : '거절'}</MyAnswer>
+              <MyAnswer key={String(myAttendance)}>
+                내 응답: {myAttendance ? 'yes!' : '거절'}
+              </MyAnswer>
               <SelectButton
                 size="medium"
                 color={theme.color.main}

@@ -2,7 +2,6 @@ import theme from '../../style/theme';
 import styled from 'styled-components';
 import Button from './Button';
 import { usePatchRespond } from '../../api/patchRespond';
-import useGetMyAttendance from '../../api/useGetMyAttendance';
 
 const RespondButton = ({
   attendanceStatus,
@@ -12,7 +11,6 @@ const RespondButton = ({
   changeEditMode: () => void;
 }) => {
   const { patchRespond } = usePatchRespond();
-  const { refetch } = useGetMyAttendance(attendanceStatus.invitationId);
 
   return (
     <ButtonList>
@@ -20,8 +18,8 @@ const RespondButton = ({
         size="medium"
         color="#E6E6E6"
         textColor="#000"
-        onClick={() => {
-          patchRespond({ ...attendanceStatus, attendance: false });
+        onClick={async () => {
+          await patchRespond({ ...attendanceStatus, attendance: false });
           changeEditMode();
         }}
       >
@@ -33,7 +31,6 @@ const RespondButton = ({
         textColor="#fff"
         onClick={async () => {
           await patchRespond({ ...attendanceStatus, attendance: true });
-          refetch();
           changeEditMode();
         }}
       >
