@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { isAccessToken } from '../utils/isAccessToken';
 import RespondButton from '../components/common/ResondButton';
 import useGetMyAttendance from '../api/useGetMyAttendance';
+import UnauthorizedView from '../components/reciveInvitation/UnauthorizedView';
 
 const calculateDDay = (targetDate: string) => {
   const today = dayjs();
@@ -55,7 +56,7 @@ const ReceiveInvitation = () => {
 
   return (
     <Container>
-      {isAuth && myAttendance === null && isModalOpen && (
+      {/* {isAuth && myAttendance === null && isModalOpen && (
         <Modal width={14.1825} hasCloseButton={false}>
           <div>초대장 확인을 위해서 닉네임을 입력해주세요</div>
           <Input
@@ -67,9 +68,9 @@ const ReceiveInvitation = () => {
                 nickname: e.target.value,
               })
             }
-          />
-          {/* TODO: 입력되지 않은 상태로 버튼을 눌렀을 때 UI 추가 필요 */}
-          <ConfirmButton
+          /> */}
+      {/* TODO: 입력되지 않은 상태로 버튼을 눌렀을 때 UI 추가 필요 */}
+      {/* <ConfirmButton
             size="small"
             color={theme.color.main}
             textColor="#fff"
@@ -81,12 +82,13 @@ const ReceiveInvitation = () => {
             확인
           </ConfirmButton>
         </Modal>
-      )}
+      )} */}
 
       <MyPageHeader />
+      <UnauthorizedView />
 
       {/* 응답 존재 여부에 따라 텍스트 변경 */}
-      {myAttendance === null ? (
+      {/* {myAttendance === null ? (
         <>
           <Title>{invitation?.ownerNickname}님의 초대를 받았습니다</Title>
           {isAuth ? (
@@ -106,8 +108,8 @@ const ReceiveInvitation = () => {
             <img src={speachBubble} alt="speachBubble" />
           </Bubble>
         </>
-      )}
-
+      )} */}
+      {/* 
       <InvitationCard
         title={invitation?.title || ''}
         imgURL={invitation?.thumbnailUrl || ''}
@@ -125,10 +127,10 @@ const ReceiveInvitation = () => {
         <LoginButton size="medium" color={theme.color.kakao} onClick={() => {}}>
           카카오로 로그인
         </LoginButton>
-      )}
+      )} */}
 
       {/* 응답이 존재할 경우 */}
-      {isAuth && myAttendance !== null && (
+      {/* {isAuth && myAttendance !== null && (
         <ButtonList>
           {isEdit ? (
             <>
@@ -155,17 +157,17 @@ const ReceiveInvitation = () => {
             </>
           )}
         </ButtonList>
-      )}
+      )} */}
 
       {/* 응답이 존재하지 않을 경우 */}
-      {isAuth && myAttendance === null && (
+      {/* {isAuth && myAttendance === null && (
         <RespondButton
           attendanceStatus={attendanceStatus}
           changeEditMode={() => {
             setIsEdit(false);
           }}
         />
-      )}
+      )} */}
     </Container>
   );
 };
