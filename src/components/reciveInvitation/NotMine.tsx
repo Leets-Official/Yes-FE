@@ -44,11 +44,13 @@ const NotMine = () => {
 
   // 데이터가 변경될 때 상태 업데이트
   useEffect(() => {
+    console.log('myAttendance222', myAttendance);
+
     if (data && data.attendance !== undefined) {
       setMyAttendance(data.attendance);
-      console.log(myAttendance);
+      console.log('myAttendance', myAttendance);
     }
-  }, [data]);
+  }, [data.attendance]);
 
   const [attendanceStatus, setAttendanceStatus] = useState({
     nickname: data.nickname || '',

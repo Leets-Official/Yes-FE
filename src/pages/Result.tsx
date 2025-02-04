@@ -37,8 +37,11 @@ const Result = () => {
         fontColor="#000"
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
-      {/* TODO: 닉네임 값 수정 필요 -> invitation.ownerNickname */}
-      <ShareList ownerNickname="닉네임" thumbnailUrl={invitation?.thumbnailUrl || ''} size="big" />
+      <ShareList
+        ownerNickname={invitation?.ownerNickname || ''}
+        thumbnailUrl={invitation?.thumbnailUrl || ''}
+        size="big"
+      />
     </Container>
   );
 };
