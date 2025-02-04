@@ -13,7 +13,6 @@ import RespondButton from '../common/ResondButton';
 import useGetMyAttendance from '../../api/useGetMyAttendance';
 import ErrorPhrase from '../common/ErrorPhrase';
 import AttendeeList from '../common/AttendeeList';
-import useGetIsMine from '../../api/useGetIsMine';
 
 const calculateDDay = (targetDate: string) => {
   const today = dayjs().startOf('day');
@@ -31,37 +30,38 @@ const calculateDDay = (targetDate: string) => {
 };
 
 const NotMine = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
-  const [isEdit, setIsEdit] = useState(false);
-
   const { invitationId } = useParams<{ invitationId: string }>();
   const { invitation } = useGetInvitation(invitationId || '');
-  const { data: isMine } = useGetIsMine(invitationId || '');
-  console.log('ismine', isMine);
-
   const { data } = useGetMyAttendance(invitationId || '');
-  const [myAttendance, setMyAttendance] = useState<boolean | null>(data?.attendance || null);
 
-  // 데이터가 변경될 때 상태 업데이트
-  useEffect(() => {
-    console.log('myAttendance222', myAttendance);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
+  const [myAttendance, setMyAttendance] = useState<string>('');
 
-    if (data && data.attendance !== undefined) {
-      setMyAttendance(data.attendance);
-      console.log('myAttendance', myAttendance);
-    }
-  }, [data.attendance]);
-
-  const [attendanceStatus, setAttendanceStatus] = useState({
-    nickname: data.nickname || '',
+  const [attendanceStatus, setAttendanceStatus] = useState<{
+    nickname: string;
+    invitationId: string;
+    attendance: boolean | null;
+  }>({
+    nickname: '',
     invitationId: invitationId || '',
     attendance: null,
   });
-  console.log(attendanceStatus);
+
+  // 초기값 세팅
+  useEffect(() => {
+    setAttendanceStatus({
+      ...attendanceStatus,
+      nickname: data.nickname || '',
+    }),
+      setMyAttendance(data.attendance ? 'yes!' : '거절');
+  }, []);
+
+  useEffect(() => {}, []);
 
   return (
     <Container>
-      {myAttendance === null && isModalOpen && (
+      {data.attendance === null && isModalOpen && (
         <Modal width={14.1825} hasCloseButton={false}>
           <div>초대장 확인을 위해서 닉네임을 입력해주세요</div>
           <NoGap>
@@ -96,7 +96,7 @@ const NotMine = () => {
       )}
 
       {/* 응답 존재 여부에 따라 텍스트 변경 */}
-      {myAttendance === null ? (
+      {data.attendance === null ? (
         <>
           <Title>{invitation?.ownerNickname}님의 초대를 받았습니다</Title>
           <Description>초대장을 확인하고 참석여부를 체크해주세요!</Description>
@@ -127,22 +127,22 @@ const NotMine = () => {
       <TouchMessage>초대장을 터치해보세요</TouchMessage>
 
       {/* 응답이 존재할 경우 */}
-      {myAttendance !== null && (
+      {data.attendance !== null && (
         <ButtonList>
           {isEdit ? (
             <>
               <RespondButton
                 attendanceStatus={attendanceStatus}
+                setAttendanceStatus={setAttendanceStatus}
+                setMyAttendance={setMyAttendance}
                 changeEditMode={() => {
-                  setIsEdit(true);
+                  setIsEdit(false);
                 }}
               />
             </>
           ) : (
             <>
-              <MyAnswer key={String(myAttendance)}>
-                내 응답: {myAttendance ? 'yes!' : '거절'}
-              </MyAnswer>
+              <MyAnswer key={String(data.attendance)}>내 응답: {myAttendance}</MyAnswer>
               <SelectButton
                 size="medium"
                 color={theme.color.main}
@@ -159,11 +159,13 @@ const NotMine = () => {
       )}
 
       {/* 응답이 존재하지 않을 경우 */}
-      {myAttendance === null && (
+      {data.attendance === null && (
         <RespondButton
           attendanceStatus={attendanceStatus}
+          setAttendanceStatus={setAttendanceStatus}
+          setMyAttendance={setMyAttendance}
           changeEditMode={() => {
-            setIsEdit(true);
+            setIsEdit(false);
           }}
         />
       )}

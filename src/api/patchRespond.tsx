@@ -16,7 +16,6 @@ export const usePatchRespond = () => {
   }) => {
     setLoading(true);
 
-    console.log('attendanceStatus', attendanceStatus);
     try {
       const response = await privateAxios(resetUserInfo).patch(`/guest/respond`, attendanceStatus);
 

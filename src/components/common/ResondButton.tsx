@@ -6,9 +6,15 @@ import { usePatchRespond } from '../../api/patchRespond';
 const RespondButton = ({
   attendanceStatus,
   changeEditMode,
+  setAttendanceStatus,
+  setMyAttendance,
 }: {
   attendanceStatus: { nickname: string; invitationId: string };
   changeEditMode: () => void;
+  setAttendanceStatus: React.Dispatch<
+    React.SetStateAction<{ nickname: string; invitationId: string; attendance: boolean | null }>
+  >;
+  setMyAttendance: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const { patchRespond } = usePatchRespond();
 
@@ -20,6 +26,12 @@ const RespondButton = ({
         textColor="#000"
         onClick={async () => {
           await patchRespond({ ...attendanceStatus, attendance: false });
+          setAttendanceStatus({
+            nickname: attendanceStatus.nickname,
+            invitationId: attendanceStatus.invitationId,
+            attendance: false,
+          });
+          setMyAttendance('거절');
           changeEditMode();
         }}
       >
@@ -31,6 +43,12 @@ const RespondButton = ({
         textColor="#fff"
         onClick={async () => {
           await patchRespond({ ...attendanceStatus, attendance: true });
+          setAttendanceStatus({
+            nickname: attendanceStatus.nickname,
+            invitationId: attendanceStatus.invitationId,
+            attendance: true,
+          });
+          setMyAttendance('yes!');
           changeEditMode();
         }}
       >
