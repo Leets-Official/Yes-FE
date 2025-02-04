@@ -13,7 +13,6 @@ toast() -> default, 현재 디자인 된 부분
 export const CustomToast = () => {
   return (
     <StyledToastConatiner
-      style={{ maxWidth: '300px' }}
       position="bottom-center" // 토스트 메시지 위치 설정
       autoClose={500} // 자동 닫힘 시간 (밀리초)
       limit={1}
@@ -31,12 +30,12 @@ const StyledToastConatiner = styled(ToastContainer)`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 8.25rem;
+    width: auto;
     height: 1.6875rem;
     min-height: 1.6875rem;
     max-height: 1.6875rem;
     margin-bottom: 4.87rem;
-    padding: 0;
+    padding: 1rem;
 
     background: ${theme.color.main};
     border-radius: 0.22919rem;
@@ -56,6 +55,9 @@ const StyledToastConatiner = styled(ToastContainer)`
 
   .Toastify__toast--error {
     // error 토스트 디자인
+    margin-top: 2rem;
+    padding: 2rem 1rem;
+    font-size: 0.8rem;
   }
 
   .Toastify__toast--info {

@@ -3,19 +3,6 @@ import axios from 'axios';
 import { getCookie, removeCookie } from './cookies';
 import { toast } from 'react-toastify';
 
-let isToastVisible = false; // 전역 플래그 변수
-
-// 토스트 메시지 표시 함수
-const showToast = (message: string) => {
-  if (!isToastVisible) {
-    isToastVisible = true;
-    toast.error(message);
-    setTimeout(() => {
-      isToastVisible = false;
-    }, 2000);
-  }
-};
-
 const redirectToLoginPage = () => {
   window.location.href = `http://localhost:3000/`; // 임시
 };
@@ -50,7 +37,10 @@ const createPrivateAxios = (resetUserInfo: () => void) => {
     async (error) => {
       console.log(error.response.data);
       if (error.response && error.response.data.status === 401) {
-        showToast('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+        toast.error('로그인이 필요합니다. 로그인 페이지로 이동합니다.', {
+          position: 'top-center',
+          autoClose: 2000,
+        });
         // 토큰 만료 또는 토큰 이상 시 재로그인 필요 (only error toast + redirect)
         resetUserInfo(); // 회원정보 초기화
         removeCookie('accessToken'); // 쿠키에서 accessToken 제거
@@ -64,7 +54,7 @@ const createPrivateAxios = (resetUserInfo: () => void) => {
         // 일반 에러 처리 (only error toast)
         const errorMessage = error.response.data.message;
         if (errorMessage) {
-          showToast(errorMessage);
+          toast.error(errorMessage);
         }
         let err = new Error(errorMessage);
         err.name = 'GENERAL';
