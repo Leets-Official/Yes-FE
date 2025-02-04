@@ -51,11 +51,11 @@ const NotMine = () => {
   }, [data]);
 
   const [attendanceStatus, setAttendanceStatus] = useState({
-    //TODO: 닉네임값 서버로부터 받아 수정
-    nickname: '이름 없음',
+    nickname: data.nickname || '',
     invitationId: invitationId || '',
     attendance: null,
   });
+  console.log(attendanceStatus);
 
   return (
     <Container>
