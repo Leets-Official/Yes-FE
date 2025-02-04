@@ -35,16 +35,19 @@ const ReceiveInvitation = () => {
 
   const { invitationId } = useParams<{ invitationId: string }>();
   const { invitation } = useGetInvitation(invitationId || '');
-  const { data } = useGetMyAttendance(invitationId || '');
-  const [myAttendance, setMyAttendance] = useState(data);
+  // const { data } = useGetMyAttendance(invitationId || '');
+  // const [myAttendance, setMyAttendance] = useState(data);
 
   // 데이터가 변경될 때 상태 업데이트
-  useEffect(() => {
-    setMyAttendance(data);
-  }, [data]);
+  // useEffect(() => {
+  //   setMyAttendance(data);
+  // }, [data]);
+
+  const myAttendance = null;
 
   const [attendanceStatus, setAttendanceStatus] = useState({
-    nickname: '',
+    //TODO: 닉네임값 서버로부터 받아 수정
+    nickname: '이름 없음',
     invitationId: invitationId || '',
   });
 
