@@ -6,20 +6,14 @@ import InvitationCard from '../components/common/InvitationCard';
 import { useEffect } from 'react';
 import { useResetRecoilState } from 'recoil';
 import { InvitationInfo } from '../atom/InvitationInfo';
-
-// 임시 데이터 (서버 응답)
-const data = {
-  ownerNickname: '공주',
-  thumbnailUrl: 'https://i.pinimg.com/736x/f9/d2/e5/f9d2e5eecb3109652fe71ca4cb0a2cd6.jpg',
-  templateKey: 'ALIEN',
-  title: '연말파티 초대장',
-  schedule: '2020-01-01T01:01:00.000',
-  location: '강남역 어딘가',
-  remark: '몸만 와라 친구들아',
-};
+import { useParams } from 'react-router-dom';
+import { useGetInvitation } from '../api/useGetInvitation';
 
 const Result = () => {
   const resetInvitationInfo = useResetRecoilState(InvitationInfo);
+
+  const { invitationId } = useParams<{ invitationId: string }>();
+  const { invitation } = useGetInvitation(invitationId || '');
 
   useEffect(() => {
     sessionStorage.removeItem('invitationPersist');
@@ -31,11 +25,11 @@ const Result = () => {
       <MyPageHeader />
       <Title>초대장 생성 완료!</Title>
       <InvitationCard
-        imgURL={data.thumbnailUrl}
-        title={data.title}
-        date={data.schedule}
-        location={data.location}
-        description={data.remark}
+        imgURL={invitation?.thumbnailUrl || ''}
+        title={invitation?.title || ''}
+        date={invitation?.schedule || ''}
+        location={invitation?.location || ''}
+        description={invitation?.remark || ''}
         // TODO: 템플릿 값으로 수정 필요
         // backgroundColor={template[data.templateKey].bg_color}
         // fontColor={template[data.templateKey].bg_text_color}
@@ -43,7 +37,11 @@ const Result = () => {
         fontColor="#000"
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
-      <ShareList ownerNickname={data.ownerNickname} thumbnailUrl={data.thumbnailUrl} size="big" />
+      <ShareList
+        ownerNickname={invitation?.ownerNickname || ''}
+        thumbnailUrl={invitation?.thumbnailUrl || ''}
+        size="big"
+      />
     </Container>
   );
 };

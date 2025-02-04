@@ -4,26 +4,20 @@ import { useErrorBoundary } from 'react-error-boundary';
 import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../atom/UserInfo';
 
-type InvitationType = {
-  ownerNickname: string;
-  thumbnailUrl: string;
-  title: string;
-  schedule: string;
-  location: string;
-  remark: string;
-};
-
-export const usePostInvitation = () => {
+export const usePatchRespond = () => {
   const [loading, setLoading] = useState(false);
   const resetUserInfo = useResetRecoilState(UserInfo);
   const { showBoundary } = useErrorBoundary();
 
-  const postInvitation = async (invitationData: InvitationType) => {
+  const patchRespond = async (attendanceStatus: {
+    nickname: string;
+    invitationId: string;
+    attendance: boolean;
+  }) => {
     setLoading(true);
 
-    console.log('invitationData', invitationData);
     try {
-      const response = await privateAxios(resetUserInfo).post(`/invitation`, invitationData);
+      const response = await privateAxios(resetUserInfo).patch(`/guest/respond`, attendanceStatus);
 
       return response.data.result;
     } catch (error: any) {
@@ -38,5 +32,5 @@ export const usePostInvitation = () => {
     }
   };
 
-  return { postInvitation, loading };
+  return { patchRespond, loading };
 };

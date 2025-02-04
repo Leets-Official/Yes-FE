@@ -1,9 +1,9 @@
 import { IoAlertCircleOutline } from 'react-icons/io5';
 import styled from 'styled-components';
 
-const ErrorPhrase = ({ message }: { message: string }) => {
+const ErrorPhrase = ({ message, ...props }: { message: string }) => {
   return (
-    <Container>
+    <Container {...props}>
       <IoAlertCircleOutline size={13} />
       <div>{message}</div>
     </Container>

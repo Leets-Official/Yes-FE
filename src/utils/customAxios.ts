@@ -4,11 +4,16 @@ import { getCookie, removeCookie } from './cookies';
 import { toast } from 'react-toastify';
 
 const redirectToLoginPage = () => {
-  window.location.href = `https://localhost:3000/login`; // 임시
+  window.location.href = `http://localhost:3000/`; // 임시
 };
 
 const ADDRESS = import.meta.env.VITE_SERVER_URL;
-
+const createPublicAxios = () => {
+  return axios.create({
+    baseURL: `${ADDRESS}`,
+  });
+};
+const publicAxios = createPublicAxios();
 const createPrivateAxios = (resetUserInfo: () => void) => {
   const instance = axios.create({
     baseURL: `${ADDRESS}`,
@@ -64,5 +69,4 @@ const createPrivateAxios = (resetUserInfo: () => void) => {
 
 // 로그인유저정보 Reset함수 매개변수 전달
 const privateAxios = (resetUserInfo: () => void) => createPrivateAxios(resetUserInfo);
-
-export { privateAxios };
+export { privateAxios, publicAxios };
