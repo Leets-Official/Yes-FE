@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const AttendeeList = ({ attendees, title }: { attendees: Guest[]; title: string }) => {
+const AttendeeItem = ({ attendees, title }: { attendees: Guest[]; title: string }) => {
   const [colors, setColors] = useState<string[]>([]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const AttendeeList = ({ attendees, title }: { attendees: Guest[]; title: string 
   );
 };
 
-export default AttendeeList;
+export default AttendeeItem;
 
 const Container = styled.div`
   display: flex;

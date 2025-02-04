@@ -12,6 +12,7 @@ import Modal from '../common/Modal';
 import RespondButton from '../common/ResondButton';
 import useGetMyAttendance from '../../api/useGetMyAttendance';
 import ErrorPhrase from '../common/ErrorPhrase';
+import AttendeeList from '../common/AttendeeList';
 
 const calculateDDay = (targetDate: string) => {
   const today = dayjs().startOf('day');
@@ -127,7 +128,7 @@ const AuthorizedView = () => {
               <RespondButton
                 attendanceStatus={attendanceStatus}
                 changeEditMode={() => {
-                  setIsEdit(false);
+                  setIsEdit(true);
                 }}
               />
             </>
@@ -156,10 +157,11 @@ const AuthorizedView = () => {
         <RespondButton
           attendanceStatus={attendanceStatus}
           changeEditMode={() => {
-            setIsEdit(false);
+            setIsEdit(true);
           }}
         />
       )}
+      <AttendeeList />
     </Container>
   );
 };
