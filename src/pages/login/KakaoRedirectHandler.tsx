@@ -29,7 +29,9 @@ const KakaoRedirectHandler = () => {
           maxAge: 24 * 60 * 60, // 하루
         });
         // 로그인 성공 후, 랜딩페이지 이동
-        navigate('/home', { replace: true });
+        const redirectUrl = localStorage.getItem('redirectUrl') || '/home';
+        navigate(redirectUrl, { replace: true });
+        localStorage.removeItem('redirectUrl'); // 사용 후 저장된 URL 삭제
       })
       .catch((err) => {
         console.error('로그인 처리 중 에러 발생 : ' + err.response);
