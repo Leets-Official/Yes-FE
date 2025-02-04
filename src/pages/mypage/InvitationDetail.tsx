@@ -42,7 +42,8 @@ const InvitationDetail = () => {
         fontColor="black"
       />
       {/* 카카오톡 공유(링크, QR) */}
-      <ShareList imgURL={invitation.thumbnailUrl} />
+      {/* TODO: ownerNickname 값 수정 필요 */}
+      <ShareList ownerNickname="닉네임" thumbnailUrl={invitation.thumbnailUrl} size="small" />
       {/* 참석자 명단 */}
       <AttendeeList attendees={attendingGuests} title="참석자 목록" />
       {/* 불참석자 명단 */}

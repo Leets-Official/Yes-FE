@@ -1,10 +1,27 @@
-import styled from 'styled-components';
 import kakaoshare from '../../assets/kakaoshare.svg';
 import { useEffect } from 'react';
+import { Container, ButtonImg } from './ShareButtonStyle';
 
-const nickname = '공주';
+const checkName = (name: string) => {
+  //name의 마지막 음절의 유니코드(UTF-16)
+  const charCode = name.charCodeAt(name.length - 1);
+  const consonantCode = (charCode - 44032) % 28;
 
-const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
+  if (consonantCode === 0) {
+    return `${name}로`;
+  }
+  return `${name}으로`;
+};
+
+const KakaoShareButton = ({
+  ownerNickname,
+  thumbnailUrl,
+  size,
+}: {
+  ownerNickname: string;
+  thumbnailUrl: string;
+  size: 'small' | 'big';
+}) => {
   const invitationURL = 'https://yourevents.site/' + window.location.pathname.split('/')[2];
 
   useEffect(() => {
@@ -12,8 +29,6 @@ const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
       console.error('Kakao SDK is not loaded.');
       return;
     }
-
-    console.log('Kakao object exists:', window.Kakao);
 
     if (window.Kakao.isInitialized()) {
       console.log('Kakao SDK is already initialized');
@@ -32,15 +47,15 @@ const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
     window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: `${nickname}로부터 초대장이 도착했어요!`,
-        imageUrl: imgURL,
+        title: `${checkName(ownerNickname)}부터 초대장이 도착했어요!`,
+        imageUrl: thumbnailUrl,
         link: {
           webUrl: invitationURL,
         },
       },
       buttons: [
         {
-          title: '웹으로 보기',
+          title: '초대장 확인하기',
           link: {
             webUrl: invitationURL,
           },
@@ -50,35 +65,13 @@ const KakaoShareButton = ({ imgURL }: { imgURL: string }) => {
   };
 
   return (
-    <Container>
-      <Button onClick={shareToKakao}>
+    <Container size={size}>
+      <ButtonImg size={size} onClick={shareToKakao}>
         <img src={kakaoshare} alt="카카오" />
-      </Button>
+      </ButtonImg>
       <div>카카오톡 공유</div>
     </Container>
   );
 };
 
 export default KakaoShareButton;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.31rem;
-
-  div {
-    font-size: 0.75rem;
-  }
-`;
-
-const Button = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-
-  img {
-    width: 2.75rem;
-    height: 2.75rem;
-  }
-`;

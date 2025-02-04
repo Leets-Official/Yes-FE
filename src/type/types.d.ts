@@ -11,6 +11,7 @@ declare global {
     [key: string]: Template;
   };
   type Invitation = {
+    ownerNickname: string;
     invitationId: string;
     thumbnailUrl: string;
     title: string;

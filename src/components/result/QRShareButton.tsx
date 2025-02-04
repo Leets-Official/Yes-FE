@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import QRshare from '../../assets/QRsahre.svg';
 import Modal from '../common/Modal';
-import Button from '../common/Button';
 import theme from '../../style/theme';
 import { useCallback, useState } from 'react';
 import useGetQR from '../../api/useGetQR';
 import { useParams } from 'react-router-dom';
+import { ButtonImg, Container } from './ShareButtonStyle';
+import Button from '../common/Button';
 
-const QRShareButton = () => {
+const QRShareButton = ({ size }: { size: 'small' | 'big' }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { invitationId } = useParams<{ invitationId: string }>();
 
@@ -25,7 +26,7 @@ const QRShareButton = () => {
   }, []);
 
   return (
-    <Container>
+    <Container size={size}>
       {isModalOpen && (
         <Modal width={10.37} hasCloseButton onClose={() => setIsModalOpen(false)}>
           <QR src={QRUrl ?? ''} alt="QR" />
@@ -39,40 +40,19 @@ const QRShareButton = () => {
           </DownloadButton>
         </Modal>
       )}
-      <QRButton
+      <ButtonImg
+        size={size}
         onClick={() => {
           setIsModalOpen(true);
         }}
       >
         <img src={QRshare} alt="QR" />
-      </QRButton>
+      </ButtonImg>
       <div>QR 코드</div>
     </Container>
   );
 };
 export default QRShareButton;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.31rem;
-
-  div {
-    font-size: 0.75rem;
-  }
-`;
-
-const QRButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-
-  img {
-    width: 2.75rem;
-    height: 2.75rem;
-  }
-`;
 
 const DownloadButton = styled(Button)`
   width: 5.5625rem;
