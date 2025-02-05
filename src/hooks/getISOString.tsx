@@ -14,12 +14,13 @@ const getISOString = (date: {
 }) => {
   const { year, month, day, hour, minute } = date;
 
-  if (year && month && day && hour && minute) {
+  // 값이 존재하면서 0이 아닌지 체크
+  if (year && Number(month) > 0 && Number(day) > 0 && Number(hour) >= 0 && Number(minute) >= 0) {
     const kstDate = dayjs(`${year}-${month}-${day} ${hour}:${minute}`).tz('Asia/Seoul', true);
-
+    if (!kstDate.isValid()) {
+      return null;
+    }
     const isoDate = kstDate.format('YYYY-MM-DDTHH:mm:ss.SSS');
-
-    console.log('ISO 8601 (KST):', isoDate);
     return isoDate;
   } else {
     return null;
