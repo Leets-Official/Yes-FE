@@ -150,7 +150,7 @@ const CreateBack = () => {
     let presignedUrl = '';
     if (invitation.isTemplate) {
       // 템플릿이 있을 경우, uploadCanvasImage() 호출
-      presignedUrl = (await uploadCanvasImage()) || '';
+      presignedUrl = await uploadCanvasImage();
     } else {
       // 템플릿이 없을 경우, uploadImage 호출
       presignedUrl = await uploadImage(invitation.imageFile!);
