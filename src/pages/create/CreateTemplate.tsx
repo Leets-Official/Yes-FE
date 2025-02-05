@@ -37,9 +37,15 @@ const CreateTemplate = () => {
       setImageUrl(url);
       // 3. 선택된 템플릿 > 사용자 이미지
       setIsTemplate(false);
+      setInvitation((prev) => ({
+        ...prev,
+        imageFile: file,
+        templateKey: null,
+        imageUrl: url,
+        isTemplate: false,
+      }));
     }
   };
-
   // 다음 단계로
   const handleNextButtonClick = () => {
     if (isTemplate) {
@@ -49,7 +55,7 @@ const CreateTemplate = () => {
           ...prev,
           isTemplate: true,
           templateKey: selectedTemplate,
-          imageFile: undefined,
+          imageFile: null,
           imageUrl: '',
           step: 2,
         };
@@ -61,8 +67,8 @@ const CreateTemplate = () => {
         const updatedState: InvitationState = {
           ...prev,
           isTemplate: false,
-          templateKey: '',
-          imageFile: imageFile!,
+          templateKey: null,
+          imageFile: imageFile! as File,
           imageUrl: imageUrl!,
           step: 3,
         };
@@ -70,8 +76,9 @@ const CreateTemplate = () => {
       });
     } else {
       console.error('유효한 템플릿 또는 이미지를 선택해주세요.');
+      return;
     }
-    console.log('Updated Invitation State:', invitation); // 확인용
+    console.log('업데이트 상태:', invitation); // 확인용
   };
 
   useResetStepState();
