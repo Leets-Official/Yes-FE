@@ -6,6 +6,7 @@ import { UserInfo } from '../atom/UserInfo';
 
 type InvitationType = {
   ownerNickname: string;
+  templateKey: string | null;
   thumbnailUrl: string;
   title: string;
   schedule: string;

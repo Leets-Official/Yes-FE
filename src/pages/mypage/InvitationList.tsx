@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import Modal from '../../components/common/Modal';
 import theme from '../../style/theme';
 import Button from '../../components/common/Button';
-import { formatDate } from '../../utils/formatDate';
 import { useGetInvitationList } from '../../api/useGetInvitationList';
 import { useDeleteInvitation } from '../../api/useDeleteInvitation';
+import dayjs from 'dayjs';
 
 const InvitationList = ({ type }: { type: string }) => {
   const { invitations, isLoading } = useGetInvitationList(type);
@@ -34,7 +34,7 @@ const InvitationList = ({ type }: { type: string }) => {
       // 만들어진 날짜별로 초대장 그룹화.
       const grouped = sortedInvitationList.reduce(
         (acc, invitation) => {
-          const formattedDate = formatDate(invitation.createDate);
+          const formattedDate = dayjs(invitation.createDate).format('YYYY년 M월 D일');
           if (!acc[formattedDate]) {
             acc[formattedDate] = [];
           }
