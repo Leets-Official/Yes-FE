@@ -36,7 +36,13 @@ const useCanvas = (templateKey: string | null, textValues: string[]) => {
           ctx.textAlign = 'center';
           ctx.fillStyle = fontColor;
 
-          ctx.fillText(textValues[index] || '', x, y);
+          const text = textValues[index] || '';
+          const lines = text.split('\n');
+          const lineHeight = fontSize * 12;
+
+          lines.forEach((line, i) => {
+            ctx.fillText(line, x, y + i * lineHeight);
+          });
         });
       };
     };
