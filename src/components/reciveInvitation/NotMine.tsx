@@ -13,6 +13,7 @@ import RespondButton from '../common/ResondButton';
 import useGetMyAttendance from '../../api/useGetMyAttendance';
 import ErrorPhrase from '../common/ErrorPhrase';
 import AttendeeList from '../common/AttendeeList';
+import { template } from '../../data/Template';
 
 const calculateDDay = (targetDate: string) => {
   const today = dayjs().startOf('day');
@@ -36,7 +37,7 @@ const NotMine = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
-  const [myAttendance, setMyAttendance] = useState<string>('');
+  const [myAttendance, setMyAttendance] = useState<string>(data.attendance ? 'yes!' : '거절');
 
   const [attendanceStatus, setAttendanceStatus] = useState<{
     nickname: string;
@@ -57,7 +58,7 @@ const NotMine = () => {
       setMyAttendance(data.attendance ? 'yes!' : '거절');
   }, []);
 
-  useEffect(() => {}, []);
+  if (!invitation) return;
 
   return (
     <Container>
@@ -121,8 +122,8 @@ const NotMine = () => {
         location={invitation?.location || ''}
         description={invitation?.remark || ''}
         // TODO: 컬러 값 수정 필요
-        backgroundColor="#fff"
-        fontColor="#000"
+        backgroundColor={template[invitation.templateKey]?.bg_color || 'white'}
+        fontColor={template[invitation.templateKey]?.bg_text_color || 'black'}
       />
       <TouchMessage>초대장을 터치해보세요</TouchMessage>
 

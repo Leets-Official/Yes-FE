@@ -4,6 +4,7 @@ import theme from '../../style/theme';
 import Button from '../common/Button';
 import InvitationCard from '../common/InvitationCard';
 import { useGetInvitation } from '../../api/useGetInvitation';
+import { template } from '../../data/Template';
 
 const UnAuthorizedView = () => {
   const { invitationId } = useParams<{ invitationId: string }>();
@@ -14,6 +15,8 @@ const UnAuthorizedView = () => {
   const handleLogin = () => {
     window.location.href = kakaoURL;
   };
+
+  if (!invitation) return;
 
   return (
     <Container>
@@ -27,8 +30,8 @@ const UnAuthorizedView = () => {
         location={invitation?.location || ''}
         description={invitation?.remark || ''}
         // TODO: 컬러 값 수정 필요
-        backgroundColor="#fff"
-        fontColor="#000"
+        backgroundColor={template[invitation.templateKey]?.bg_color || 'white'}
+        fontColor={template[invitation.templateKey]?.bg_text_color || 'black'}
       />
 
       <TouchMessage>초대장을 터치해보세요</TouchMessage>
