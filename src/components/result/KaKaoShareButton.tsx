@@ -24,7 +24,7 @@ const KakaoShareButton = ({
   size: 'small' | 'big';
 }) => {
   const { invitationId } = useParams<{ invitationId: string }>();
-  const invitationURL = 'https://yourevents.site/' + `invitation/${invitationId}`;
+  const invitationURL = 'https://yourevents.site' + `/invitation/${invitationId}`;
 
   useEffect(() => {
     if (!window.Kakao) {
