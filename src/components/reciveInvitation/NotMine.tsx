@@ -39,6 +39,8 @@ const NotMine = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [myAttendance, setMyAttendance] = useState<string>('');
 
+  const [key, setKey] = useState(0);
+
   const [attendanceStatus, setAttendanceStatus] = useState<{
     nickname: string;
     invitationId: string;
@@ -54,6 +56,10 @@ const NotMine = () => {
   // console.log('attendanceStatus', attendanceStatus);
   // console.log('data', data);
 
+  useEffect(() => {
+    setKey((prev) => prev + 1);
+  }, [attendanceStatus.attendance]);
+
   // 초기값 세팅
   useEffect(() => {
     setAttendanceStatus({
@@ -63,6 +69,8 @@ const NotMine = () => {
     }),
       setMyAttendance(data.attendance === true ? 'yes!' : data.attendance === false ? '거절' : '');
   }, [data]);
+
+  useEffect(() => {}, [attendanceStatus.attendance]);
 
   if (!invitation) return;
 
@@ -177,7 +185,7 @@ const NotMine = () => {
           }}
         />
       )}
-      <AttendeeList />
+      <AttendeeList key={key} />
     </Container>
   );
 };
