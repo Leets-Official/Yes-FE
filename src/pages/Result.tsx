@@ -8,6 +8,7 @@ import { useResetRecoilState } from 'recoil';
 import { InvitationInfo } from '../atom/InvitationInfo';
 import { useParams } from 'react-router-dom';
 import { useGetInvitation } from '../api/useGetInvitation';
+import { template } from '../data/Template';
 
 const Result = () => {
   const resetInvitationInfo = useResetRecoilState(InvitationInfo);
@@ -20,6 +21,7 @@ const Result = () => {
     resetInvitationInfo();
   }, []);
 
+  if (!invitation) return;
   return (
     <Container>
       <MyPageHeader />
@@ -33,8 +35,8 @@ const Result = () => {
         // TODO: 템플릿 값으로 수정 필요
         // backgroundColor={template[data.templateKey].bg_color}
         // fontColor={template[data.templateKey].bg_text_color}
-        backgroundColor="#fff"
-        fontColor="#000"
+        backgroundColor={template[invitation?.templateKey]?.bg_color || 'white'}
+        fontColor={template[invitation?.templateKey]?.bg_text_color || 'black'}
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
       <ShareList

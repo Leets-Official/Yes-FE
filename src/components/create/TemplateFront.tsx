@@ -44,8 +44,8 @@ const TemplateFront: React.FC<TemplateFrontProps> = ({
     const heightInPixels = height;
 
     // 한 글자의 평균 너비와 한 줄의 높이를 fontSize를 기준으로 계산
-    const charsPerLine = Math.floor(widthInPixels / (fontSize * 1)); // 글자당 1배의 공간을 가정
-    const linesPerArea = Math.floor(heightInPixels / (fontSize * 1.2)); // 줄 높이 1.2배로 가정
+    const charsPerLine = Math.floor(widthInPixels / (fontSize * 0.6)); // 글자당 0.6배의 공간을 가정
+    const linesPerArea = Math.floor(heightInPixels / (fontSize * 1.1)); // 줄 높이 1.1배로 가정
 
     return charsPerLine * linesPerArea;
   };
