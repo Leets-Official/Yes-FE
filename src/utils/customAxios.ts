@@ -4,7 +4,8 @@ import { getCookie, removeCookie } from './cookies';
 import { toast } from 'react-toastify';
 
 const redirectToLoginPage = () => {
-  window.location.href = `http://localhost:3000/`; // 임시
+  const { protocol, hostname, port } = window.location;
+  window.location.href = `${protocol}//${hostname}${port ? ':' + port : ''}`;
 };
 
 const ADDRESS = import.meta.env.VITE_SERVER_URL;
