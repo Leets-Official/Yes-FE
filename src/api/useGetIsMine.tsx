@@ -6,7 +6,7 @@ import { UserInfo } from '../atom/UserInfo';
 
 export const useGetIsMine = (invitationId: string) => {
   const [data, setData] = useState<string | null>(null);
-
+  const [loading, setLoading] = useState<boolean>(false); // New loading state
   const { showBoundary } = useErrorBoundary();
   const resetUserInfo = useResetRecoilState(UserInfo);
 
@@ -14,6 +14,7 @@ export const useGetIsMine = (invitationId: string) => {
     if (!invitationId) return;
 
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await privateAxios(resetUserInfo).get(
           `/invitation/${invitationId}/verify-sender`,
@@ -26,13 +27,15 @@ export const useGetIsMine = (invitationId: string) => {
         } else {
           console.log(error.message);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [invitationId]);
 
-  return { data };
+  return { data, loading };
 };
 
 export default useGetIsMine;
