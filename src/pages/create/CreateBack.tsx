@@ -42,6 +42,7 @@ const CreateBack = () => {
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [invitationData, setInvitationData] = useState({
     ownerNickname: invitation.nickname || '',
+    templateKey: '',
     thumbnailUrl: '',
     title: '',
     schedule: '',
@@ -49,7 +50,7 @@ const CreateBack = () => {
     remark: '',
   });
 
-  const { canvasRef, uploadCanvasImage } = useCanvas(
+  const { canvasRef, uploadCanvasImage, uploadImage } = useCanvas(
     invitation.templateKey,
     invitation.contents || [],
   );
@@ -123,7 +124,7 @@ const CreateBack = () => {
     };
 
   useEffect(() => {
-    const templateKey = invitation.templateKey || 'null';
+    const templateKey = invitation.templateKey || null;
     const isTemplate = !!invitation.templateKey;
 
     if (isTemplate) {
@@ -146,14 +147,23 @@ const CreateBack = () => {
     if (!invitationData.title || !invitationData.location || !invitationData.schedule) return;
 
     // presigned URL 요청 & 파일 업로드
-    const presignedUrl = await uploadCanvasImage();
+    let presignedUrl = '';
+    if (invitation.isTemplate) {
+      // 템플릿이 있을 경우, uploadCanvasImage() 호출
+      presignedUrl = (await uploadCanvasImage()) || '';
+    } else {
+      // 템플릿이 없을 경우, uploadImage 호출
+      presignedUrl = await uploadImage(invitation.imageFile!);
+    }
     if (!presignedUrl) return;
+
     // 초대장 생성하기 API 요청
     const response = await postInvitation({
       ...invitationData,
+      templateKey: invitation.isTemplate ? invitation.templateKey : null,
       thumbnailUrl: presignedUrl.slice(0, presignedUrl.indexOf('?')),
     });
-    navigate(`/result/${response.invitation.invitationId}`, { state: invitationData });
+    navigate(`/result/${response}`, { replace: true });
   };
 
   useResetStepState();
