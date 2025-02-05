@@ -10,7 +10,11 @@ export const InvitationHeader = () => {
   const [invitation, setInvitation] = useRecoilState(InvitationInfo);
 
   const handleInvitationBack = () => {
-    setInvitation((prev) => ({ ...prev, step: invitation.step - 1 }));
+    if (!invitation.isTemplate && invitation.step === 3) {
+      setInvitation((prev) => ({ ...prev, step: invitation.step - 2 }));
+    } else {
+      setInvitation((prev) => ({ ...prev, step: invitation.step - 1 }));
+    }
   };
 
   const handleInvitationReset = () => {
