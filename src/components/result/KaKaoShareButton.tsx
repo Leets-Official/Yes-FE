@@ -61,6 +61,7 @@ const KakaoShareButton = ({
         imageUrl: thumbnailUrl,
         link: {
           webUrl: invitationURL,
+          mobileWebUrl: invitationURL,
         },
       },
       buttons: [
@@ -68,6 +69,7 @@ const KakaoShareButton = ({
           title: '초대장 확인하기',
           link: {
             webUrl: invitationURL,
+            mobileWebUrl: invitationURL,
           },
         },
       ],
