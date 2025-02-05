@@ -28,7 +28,7 @@ const CopyLinkButton = ({ size }: { size: 'small' | 'big' }) => {
     <Container size={size}>
       <ButtonImg
         size={size}
-        data-clipboard-text={`yourevents.site/${invitationId}`}
+        data-clipboard-text={`yourevents.site/invitation/${invitationId}`}
         aria-label="링크 복사"
       >
         <img src={copylink} alt="링크 복사" />

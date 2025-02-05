@@ -1,6 +1,7 @@
 import kakaoshare from '../../assets/kakaoshare.svg';
 import { useEffect } from 'react';
 import { Container, ButtonImg } from './ShareButtonStyle';
+import { useParams } from 'react-router-dom';
 
 const checkName = (name: string) => {
   //name의 마지막 음절의 유니코드(UTF-16)
@@ -22,7 +23,8 @@ const KakaoShareButton = ({
   thumbnailUrl: string;
   size: 'small' | 'big';
 }) => {
-  const invitationURL = 'https://yourevents.site/' + window.location.pathname.split('/')[2];
+  const { invitationId } = useParams<{ invitationId: string }>();
+  const invitationURL = 'https://yourevents.site/' + `invitation/${invitationId}`;
 
   useEffect(() => {
     if (!window.Kakao) {
