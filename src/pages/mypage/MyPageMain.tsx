@@ -12,7 +12,7 @@ const MyPageMain = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    removeCookie('accessToken');
+    removeCookie('accessToken', { path: '/' });
     resetUserInfo();
     navigate('/', { replace: true });
   };

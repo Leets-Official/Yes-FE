@@ -43,7 +43,7 @@ const createPrivateAxios = (resetUserInfo: () => void) => {
         });
         // 토큰 만료 또는 토큰 이상 시 재로그인 필요 (only error toast + redirect)
         resetUserInfo(); // 회원정보 초기화
-        removeCookie('accessToken'); // 쿠키에서 accessToken 제거
+        removeCookie('accessToken', { path: '/' }); // 쿠키에서 accessToken 제거
         redirectToLoginPage(); // 로그인 페이지로 리다이렉트
       } else if (error.response.data.status === 500) {
         // 서버 에러 (only error 페이지)
