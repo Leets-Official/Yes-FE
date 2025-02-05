@@ -25,6 +25,7 @@ const CreateBack = () => {
   const [backgroundColor, setBackgroundColor] = useState('#fff');
   const [fontColor, setFontColor] = useState('#000');
   const [invitation] = useRecoilState(InvitationInfo);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [isDateValid, setIsDateValid] = useState(false);
   const [isVisible, setIsVisible] = useState({
@@ -42,7 +43,7 @@ const CreateBack = () => {
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [invitationData, setInvitationData] = useState({
     ownerNickname: invitation.nickname || '',
-    templateKey: '',
+    templateKey: invitation.templateKey || null,
     thumbnailUrl: '',
     title: '',
     schedule: '',
@@ -56,6 +57,7 @@ const CreateBack = () => {
   );
   const { postInvitation } = usePostInvitation();
 
+  // 날짜 값 설정 함수
   useEffect(() => {
     const isInputStarted = date.year || date.month || date.day || date.hour || date.minute;
 
@@ -83,14 +85,13 @@ const CreateBack = () => {
         .join(' '),
     );
 
-    const ISOschedule: string = getISOString(date) || '';
-
     setInvitationData((prev) => ({
       ...prev,
-      schedule: ISOschedule,
+      schedule: getISOString(date) || '',
     }));
   }, [date]);
 
+  // 제목 값 입력 시작시 유효성 검사
   useEffect(() => {
     const isInputStarted = invitationData.title;
 
@@ -102,6 +103,7 @@ const CreateBack = () => {
     }
   }, [invitationData.title]);
 
+  // 장소 값 입력 시작시 유효성 검사
   useEffect(() => {
     const isInputStarted = invitationData.location;
 
@@ -146,24 +148,33 @@ const CreateBack = () => {
   const handleCreateInvitation = async () => {
     if (!invitationData.title || !invitationData.location || !invitationData.schedule) return;
 
-    // presigned URL 요청 & 파일 업로드
-    let presignedUrl = '';
-    if (invitation.isTemplate) {
-      // 템플릿이 있을 경우, uploadCanvasImage() 호출
-      presignedUrl = (await uploadCanvasImage()) || '';
-    } else {
-      // 템플릿이 없을 경우, uploadImage 호출
-      presignedUrl = await uploadImage(invitation.imageFile!);
-    }
-    if (!presignedUrl) return;
+    // 버튼 비활성화
+    setIsDisabled(true);
 
-    // 초대장 생성하기 API 요청
-    const response = await postInvitation({
-      ...invitationData,
-      templateKey: invitation.isTemplate ? invitation.templateKey : null,
-      thumbnailUrl: presignedUrl.slice(0, presignedUrl.indexOf('?')),
-    });
-    navigate(`/result/${response}`, { replace: true });
+    try {
+      // presigned URL 요청 & 파일 업로드
+      let presignedUrl = '';
+      if (invitation.isTemplate) {
+        presignedUrl = (await uploadCanvasImage()) || '';
+      } else {
+        presignedUrl = await uploadImage(invitation.imageFile!);
+      }
+      if (!presignedUrl) return;
+
+      // 초대장 생성하기 API 요청
+      const response = await postInvitation({
+        ...invitationData,
+        templateKey: invitation.isTemplate ? invitation.templateKey : null,
+        thumbnailUrl: presignedUrl.slice(0, presignedUrl.indexOf('?')),
+      });
+
+      navigate(`/result/${response}`, { replace: true });
+    } catch (error) {
+      console.error('Error creating invitation:', error);
+    } finally {
+      // 초대장 생성 후 다시 버튼 활성화 (네비게이션 전에 실행되지 않도록 주의)
+      setIsDisabled(false);
+    }
   };
 
   useResetStepState();
@@ -181,6 +192,7 @@ const CreateBack = () => {
           textColor="#fff"
           fullWidth
           onClick={handleCreateInvitation}
+          disabled={isDisabled}
         >
           초대장 생성하기
         </Button>

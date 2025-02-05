@@ -1,5 +1,5 @@
 import kakaoshare from '../../assets/kakaoshare.svg';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, ButtonImg } from './ShareButtonStyle';
 import { useParams } from 'react-router-dom';
 
@@ -24,7 +24,15 @@ const KakaoShareButton = ({
   size: 'small' | 'big';
 }) => {
   const { invitationId } = useParams<{ invitationId: string }>();
-  const invitationURL = 'https://yourevents.site/' + `invitation/${invitationId}`;
+  const [invitationURL, setInvitationURL] = useState('');
+
+  useEffect(() => {
+    setInvitationURL(`https://yourevents.site/invitation/${invitationId}`);
+  }, [invitationId]);
+
+  useEffect(() => {
+    console.log(invitationURL);
+  }, [invitationURL]);
 
   useEffect(() => {
     if (!window.Kakao) {
@@ -53,6 +61,7 @@ const KakaoShareButton = ({
         imageUrl: thumbnailUrl,
         link: {
           webUrl: invitationURL,
+          mobileWebUrl: invitationURL,
         },
       },
       buttons: [
@@ -60,6 +69,7 @@ const KakaoShareButton = ({
           title: '초대장 확인하기',
           link: {
             webUrl: invitationURL,
+            mobileWebUrl: invitationURL,
           },
         },
       ],
