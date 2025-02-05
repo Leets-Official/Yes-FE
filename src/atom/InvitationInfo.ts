@@ -21,8 +21,8 @@ export interface InvitationState {
   step: number;
   nickname: string;
   isTemplate: boolean;
-  templateKey?: string;
-  imageFile?: File;
+  templateKey: string | null;
+  imageFile: File | null;
   imageUrl?: string;
   contents: string[];
   title: string;
@@ -37,7 +37,7 @@ export const initialInvitation = {
   nickname: '',
   isTemplate: true,
   templateKey: 'ALIEN',
-  imageFile: undefined,
+  imageFile: null,
   imageUrl: '',
   contents: [],
   title: '',

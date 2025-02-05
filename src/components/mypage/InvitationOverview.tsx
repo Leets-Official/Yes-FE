@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../common/Button';
-import { formatDate } from '../../utils/formatDate';
+import dayjs from 'dayjs';
 
 interface InvitationOverviewProps {
   invitation: Invitation;
@@ -28,7 +28,7 @@ const InvitationOverview = ({
       <Content>
         <Texts onClick={() => handleInvitationClick(invitation.invitationId)}>
           <MainText>{invitation.title}</MainText>
-          <SubText>{formatDate(invitation.schedule)}</SubText>
+          <SubText>{dayjs(invitation.createDate).format('YYYY년 M월 D일')}</SubText>
           <SubText>{invitation.location}</SubText>
         </Texts>
         {type === 'sent' && (

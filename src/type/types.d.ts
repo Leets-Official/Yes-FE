@@ -19,6 +19,7 @@ declare global {
     location: string;
     createDate: string;
     remark: string;
+    templateKey: string;
   };
   type Guest = {
     guestId: string;

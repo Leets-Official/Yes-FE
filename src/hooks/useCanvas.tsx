@@ -1,14 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { template } from '../data/Template';
 import { useErrorBoundary } from 'react-error-boundary';
 import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../atom/UserInfo';
 import { privateAxios } from '../utils/customAxios';
 
-const useCanvas = (templateKey: string | undefined, textValues: string[]) => {
+const useCanvas = (templateKey: string | null, textValues: string[]) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const resetUserInfo = useResetRecoilState(UserInfo);
-  const [presignedUrl, setPresignedUrl] = useState<string>('');
   const { showBoundary } = useErrorBoundary();
 
   useEffect(() => {
@@ -49,45 +48,79 @@ const useCanvas = (templateKey: string | undefined, textValues: string[]) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    canvas.toBlob(async (blob) => {
+    return new Promise<string>((resolve, reject) => {
+      canvas.toBlob(async (blob) => {
+        const thisTime = new Date().getTime().toString();
+        if (!blob) return reject('Blob 생성 실패');
+
+        try {
+          // Presigned URL 요청
+          const response = await privateAxios(resetUserInfo).post(`/presignedurl`, {
+            imageName: `${thisTime}.png`,
+          });
+
+          const presignedUrl = response.data.result.preSignedUrl;
+
+          // Presigned URL로 파일 업로드
+          const uploadResponse = await fetch(presignedUrl, {
+            method: 'PUT',
+            body: blob,
+            headers: {
+              'Content-Type': 'image/png',
+            },
+          });
+
+          if (uploadResponse.ok) {
+            console.log('파일 업로드 성공!');
+            resolve(presignedUrl); // 성공적으로 업로드 후 URL 반환
+          } else {
+            console.error('파일 업로드 실패:', uploadResponse.statusText);
+            reject('파일 업로드 실패');
+          }
+        } catch (error: any) {
+          console.error(error);
+          reject(error.message); // 에러 발생 시 reject
+        }
+      }, 'image/png'); // Blob 타입을 'image/png'로 지정
+    });
+  };
+
+  const uploadImage = async (imageFile: File) => {
+    let presignedUrl = '';
+    try {
       const thisTime = new Date().getTime().toString();
-      if (!blob) return;
+      // Presigned URL 요청
+      const response = await privateAxios(resetUserInfo).post(`/presignedurl`, {
+        imageName: `${thisTime}.${imageFile.name.split('.').pop()}`,
+      });
 
-      try {
-        // Presigned URL 요청
-        const response = await privateAxios(resetUserInfo).post(`/presignedurl`, {
-          imageName: `${thisTime}.png`,
-        });
+      presignedUrl = response.data.result.preSignedUrl;
 
-        setPresignedUrl(response.data.result.preSignedUrl);
+      // Presigned URL로 파일 업로드
+      const uploadResponse = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: imageFile,
+        headers: {
+          'Content-Type': imageFile.type,
+        },
+      });
 
-        // Presigned URL로 파일 업로드
-        const uploadResponse = await fetch(presignedUrl, {
-          method: 'PUT',
-          body: blob,
-          headers: {
-            'Content-Type': 'image/png',
-          },
-        });
-
-        if (uploadResponse.ok) {
-          console.log('파일 업로드 성공!');
-        } else {
-          console.error('파일 업로드 실패:', uploadResponse.statusText);
-        }
-      } catch (error: any) {
-        if (error.name !== 'GENERAL') {
-          showBoundary(error);
-        } else {
-          console.log(error.message);
-        }
+      if (uploadResponse.ok) {
+        console.log('파일 업로드 성공!');
+      } else {
+        console.error('파일 업로드 실패:', uploadResponse.statusText);
       }
-    }, 'image/png'); // Blob 타입을 'image/png'로 지정
+    } catch (error: any) {
+      if (error.name !== 'GENERAL') {
+        showBoundary(error);
+      } else {
+        console.log(error.message);
+      }
+    }
 
     return presignedUrl;
   };
-
-  return { canvasRef, uploadCanvasImage };
+  return { canvasRef, uploadCanvasImage, uploadImage };
 };
 
 export default useCanvas;

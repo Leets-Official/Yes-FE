@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { FiChevronLeft } from 'react-icons/fi';
 import { IoIosClose } from 'react-icons/io';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { isAccessToken } from '../../utils/isAccessToken';
 
 export const MyPageHeader = () => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ export const MyPageHeader = () => {
       navigate('/home');
     } else if (location.pathname.startsWith('/result/')) {
       navigate('/home', { replace: true });
+    } else {
+      isAccessToken() ? navigate('/home') : navigate('/');
     }
   };
   return (
