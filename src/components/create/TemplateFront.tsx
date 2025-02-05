@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import TextArea from '../../components/common/TextArea';
 import { template } from '../../data/Template';
@@ -49,16 +49,6 @@ const TemplateFront: React.FC<TemplateFrontProps> = ({
 
     return charsPerLine * linesPerArea;
   };
-
-  useEffect(() => {
-    const newTextValues = initializeTextValues();
-    setTextValues(newTextValues);
-
-    setInvitation((prev) => ({
-      ...prev,
-      contents: newTextValues,
-    }));
-  }, [invitation.templateKey]);
 
   return (
     <>

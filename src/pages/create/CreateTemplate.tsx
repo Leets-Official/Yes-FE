@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { InvitationHeader } from '../../components/layout/InvitationHeader';
 import Button from '../../components/common/Button';
@@ -80,6 +80,13 @@ const CreateTemplate = () => {
     }
     console.log('업데이트 상태:', invitation); // 확인용
   };
+
+  useEffect(() => {
+    setInvitation((prev) => ({
+      ...prev,
+      contents: [],
+    }));
+  }, []);
 
   useResetStepState();
 
