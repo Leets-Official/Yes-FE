@@ -37,7 +37,7 @@ const NotMine = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
-  const [myAttendance, setMyAttendance] = useState<string>(data.attendance ? 'yes!' : '거절');
+  const [myAttendance, setMyAttendance] = useState<string>('');
 
   const [attendanceStatus, setAttendanceStatus] = useState<{
     nickname: string;
@@ -49,14 +49,20 @@ const NotMine = () => {
     attendance: null,
   });
 
+  // console.log('isEdit', isEdit);
+  // console.log('myattendance', myAttendance);
+  // console.log('attendanceStatus', attendanceStatus);
+  // console.log('data', data);
+
   // 초기값 세팅
   useEffect(() => {
     setAttendanceStatus({
       ...attendanceStatus,
+      attendance: data.attendance,
       nickname: data.nickname || '',
     }),
-      setMyAttendance(data.attendance ? 'yes!' : '거절');
-  }, []);
+      setMyAttendance(data.attendance === true ? 'yes!' : data.attendance === false ? '거절' : '');
+  }, [data]);
 
   if (!invitation) return;
 
@@ -121,16 +127,16 @@ const NotMine = () => {
         date={invitation?.schedule || ''}
         location={invitation?.location || ''}
         description={invitation?.remark || ''}
-        // TODO: 컬러 값 수정 필요
         backgroundColor={template[invitation.templateKey]?.bg_color || 'white'}
         fontColor={template[invitation.templateKey]?.bg_text_color || 'black'}
       />
       <TouchMessage>초대장을 터치해보세요</TouchMessage>
 
       {/* 응답이 존재할 경우 */}
-      {data.attendance !== null && (
+      {attendanceStatus.attendance !== null && (
         <ButtonList>
           {isEdit ? (
+            // isEdit: true, 응답 수정 버튼을 누른 상태 -> yes!/거절 버튼이 나타남
             <>
               <RespondButton
                 attendanceStatus={attendanceStatus}
@@ -142,6 +148,7 @@ const NotMine = () => {
               />
             </>
           ) : (
+            // isEdit: false, 응답 수정 버튼을 누르지 않은 상태 -> 내 응답, 응답 수정 버튼이 나타남
             <>
               <MyAnswer key={String(data.attendance)}>내 응답: {myAttendance}</MyAnswer>
               <SelectButton
@@ -160,7 +167,7 @@ const NotMine = () => {
       )}
 
       {/* 응답이 존재하지 않을 경우 */}
-      {data.attendance === null && (
+      {attendanceStatus.attendance === null && (
         <RespondButton
           attendanceStatus={attendanceStatus}
           setAttendanceStatus={setAttendanceStatus}
@@ -247,6 +254,7 @@ const MyAnswer = styled.div`
   height: 3.125rem;
   border: 1px solid #cfcdcd;
   border-radius: 0.5rem;
+  box-sizing: border-box;
   color: #787878;
   font-weight: 600;
 `;
