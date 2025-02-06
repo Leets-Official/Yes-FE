@@ -28,7 +28,7 @@ const InvitationOverview = ({
       <Content>
         <Texts onClick={() => handleInvitationClick(invitation.invitationId)}>
           <MainText>{invitation.title}</MainText>
-          <SubText>{dayjs(invitation.createDate).format('YYYY년 M월 D일')}</SubText>
+          <SubText>{dayjs(invitation.schedule).format('YYYY년 M월 D일')}</SubText>
           <SubText>{invitation.location}</SubText>
         </Texts>
         {type === 'sent' && (
