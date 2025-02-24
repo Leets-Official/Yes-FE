@@ -31,7 +31,7 @@ const Container = styled.div`
   width: 100vw;
   max-width: 480px;
   overflow-y: hidden;
-  background-color: #fff7ec;
+  background-color: #fff0f0;
 `;
 
 const Logo = styled.img`
