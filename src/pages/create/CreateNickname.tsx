@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { InvitationHeader } from '../../components/layout/InvitationHeader';
 import Button from '../../components/common/Button';
 import theme from '../../style/theme';
@@ -8,9 +9,11 @@ import { InvitationInfo, InvitationState } from '../../atom/InvitationInfo';
 import { useResetStepState } from '../../hooks/useResetStepState';
 import ErrorPhrase from '../../components/common/ErrorPhrase';
 import useValidation from '../../hooks/useValidation';
+import { UserInfo } from '../../atom/UserInfo';
 
 const CreateNickName = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
+  const user = useRecoilValue(UserInfo);
   const {
     value: nickname,
     isValid,
@@ -23,6 +26,12 @@ const CreateNickName = () => {
       setInvitation((prev) => ({ ...prev, nickname, step: 1 }));
     }
   };
+
+  useEffect(() => {
+    if (!invitation.nickname && user.nickname) {
+      setInvitation((prev) => ({ ...prev, nickname: user.nickname }));
+    }
+  }, [user.nickname, invitation.nickname, setInvitation]);
 
   useResetStepState();
 
