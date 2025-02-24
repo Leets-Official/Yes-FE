@@ -16,6 +16,7 @@ const InvitationOverview = ({
 }: InvitationOverviewProps) => {
   const navigate = useNavigate();
   const handleInvitationClick = (id: string) => {
+    localStorage.setItem('redirectUrl', location.pathname);
     /**초대장 상세보기 이동 */
     navigate(`/mypage/detail/${id}`);
   };
