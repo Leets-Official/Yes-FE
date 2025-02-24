@@ -5,7 +5,7 @@ import { HomeHeader } from '../components/layout/HomeHeader';
 import Button from '../components/common/Button';
 import theme from '../style/theme';
 
-export const Home = () => {
+const Home = () => {
   const navigate = useNavigate();
 
   const handleMakeInvitation = () => {
@@ -21,6 +21,8 @@ export const Home = () => {
     </Container>
   );
 };
+
+export default Home;
 
 const Container = styled.div`
   display: flex;

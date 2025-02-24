@@ -7,6 +7,7 @@ import { useGetInvitation } from '../../api/useGetInvitation';
 import { template } from './../../data/Template';
 import useGetIsMine from '../../api/useGetIsMine';
 import NotMine from '../../components/reciveInvitation/NotMine';
+import Loading from '../Loading';
 
 const InvitationDetail = () => {
   const { invitationId } = useParams<{ invitationId: string }>();
@@ -41,7 +42,7 @@ const InvitationDetail = () => {
           <NotMine />
         )
       ) : (
-        <div>초대장불러오는중</div>
+        <Loading />
       )}
     </Container>
   );

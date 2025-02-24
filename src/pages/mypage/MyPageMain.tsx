@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { useGetMyPageInfo } from '../../api/useGetMyPageInfo';
 import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../../atom/UserInfo';
+import Loading from '../Loading';
 
 const MyPageMain = () => {
-  const { user } = useGetMyPageInfo();
+  const { user, loading } = useGetMyPageInfo();
   const resetUserInfo = useResetRecoilState(UserInfo);
   const navigate = useNavigate();
 
@@ -17,7 +18,9 @@ const MyPageMain = () => {
     navigate('/', { replace: true });
   };
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <UserBox>
       <UserName>{user.nickname}</UserName>
       <InvitationStats

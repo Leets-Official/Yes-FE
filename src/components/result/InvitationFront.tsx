@@ -4,6 +4,7 @@ const StyledImg = styled.img`
   width: 21.375rem;
   height: 26.6875rem;
   border-radius: 0.5rem;
+  object-fit: cover;
 `;
 
 const InvitationFront = ({ imgURL }: { imgURL: string }) => {

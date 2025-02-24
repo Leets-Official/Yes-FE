@@ -11,6 +11,7 @@ interface UserData {
 }
 
 export const useGetMyPageInfo = () => {
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<UserData>({
     nickname: '',
     receivedInvitationCount: 0,
@@ -22,6 +23,7 @@ export const useGetMyPageInfo = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const result = await privateAxios(resetUserInfo).get('/mypage');
         setUser(result.data.result);
@@ -29,11 +31,13 @@ export const useGetMyPageInfo = () => {
         if (error.name !== 'GENERAL') {
           showBoundary(error);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  return { user };
+  return { user, loading };
 };

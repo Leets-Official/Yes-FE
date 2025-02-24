@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TbPhotoPlus } from 'react-icons/tb';
 import { template } from './../../data/Template';
@@ -22,10 +22,13 @@ const TemplatePreview: React.FC<TemplatePreviewProps> = ({
   handleInputClick,
   handleImageFileChange,
 }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <PreviewContainer>
       <div className="previews">
         <Preview>
+          {isLoading && <Skeleton width="166px" height="207px" />}
           <PreviewFront
             src={
               isTemplate
@@ -33,17 +36,21 @@ const TemplatePreview: React.FC<TemplatePreviewProps> = ({
                 : imageUrl || ''
             }
             alt="템플릿이미지"
+            isLoading={isLoading}
+            onLoad={() => setIsLoading(false)}
           />
-          <p>앞면</p>
+          <Text>앞면</Text>
         </Preview>
         <Preview>
+          {isLoading && <Skeleton width="166px" height="207px" />}
           <PreviewBack
+            isLoading={isLoading}
             isTemplate={isTemplate}
             bgColor={
               isTemplate ? template[selectedTemplate as keyof typeof template]?.bg_color : 'white'
             }
           />
-          <p>뒷면</p>
+          <Text>뒷면</Text>
         </Preview>
       </div>
       <SelectContainer>
@@ -88,9 +95,11 @@ const PreviewContainer = styled.div`
 const Preview = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
-const PreviewFront = styled.img`
+const PreviewFront = styled.img<{ isLoading: boolean }>`
+  display: ${(props) => (props.isLoading ? 'none' : 'block')};
   width: 166px;
   height: 207px;
   border: 1px solid #676767;
@@ -98,13 +107,20 @@ const PreviewFront = styled.img`
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
 `;
 
-const PreviewBack = styled.div<{ isTemplate: boolean; bgColor: string }>`
+const PreviewBack = styled.div<{ isLoading: boolean; isTemplate: boolean; bgColor: string }>`
+  display: ${(props) => (props.isLoading ? 'none' : 'block')};
   width: 166px;
   height: 207px;
   border-radius: 8px;
   border: ${(props) => (props.isTemplate ? '1px solid #676767' : '1px solid #cfcdcd')};
   background-color: ${(props) => props.bgColor};
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
+`;
+
+const Text = styled.p`
+  margin-top: 0.5rem;
+  font-size: 14px;
+  color: #676767;
 `;
 
 const SelectContainer = styled.div`
@@ -144,4 +160,20 @@ const ImageItem = styled.img`
   border-radius: 8px;
   object-fit: cover;
   border: 1px solid #cfcdcd;
+`;
+
+/**
+ * 스켈레톤
+ */
+const Skeleton = styled.div<{ width: string; height: string }>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba(245, 245, 245, 1) 0%,
+    #ffffffae 10%,
+    rgba(245, 245, 245, 1) 20%
+  );
+  animation: loading 1.5s infinite linear;
 `;

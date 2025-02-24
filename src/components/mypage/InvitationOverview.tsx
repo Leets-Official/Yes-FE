@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../common/Button';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 
 interface InvitationOverviewProps {
   invitation: Invitation;
@@ -15,6 +16,8 @@ const InvitationOverview = ({
   type,
 }: InvitationOverviewProps) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleInvitationClick = (id: string) => {
     localStorage.setItem('redirectUrl', location.pathname);
     /**초대장 상세보기 이동 */
@@ -24,7 +27,14 @@ const InvitationOverview = ({
   return (
     <Contents>
       <Content className="img-bg" onClick={() => handleInvitationClick(invitation.invitationId)}>
-        {invitation.thumbnailUrl && <img src={invitation.thumbnailUrl} />}
+        {isLoading && <Skeleton width="100%" height="100%" />}
+        {invitation.thumbnailUrl && (
+          <img
+            src={invitation.thumbnailUrl}
+            style={{ display: isLoading ? 'none' : 'block' }}
+            onLoad={() => setIsLoading(false)}
+          />
+        )}
       </Content>
       <Content>
         <Texts onClick={() => handleInvitationClick(invitation.invitationId)}>
@@ -97,4 +107,20 @@ const DeleteButton = styled(Button)`
   font-size: 11px;
   font-weight: 500;
   margin-top: auto;
+`;
+
+/**
+ * 스켈레톤
+ */
+const Skeleton = styled.div<{ width: string; height: string }>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  border-radius: 8px;
+  background: linear-gradient(
+    120deg,
+    rgba(245, 245, 245, 1) 0%,
+    #ffffffae 10%,
+    rgba(245, 245, 245, 1) 20%
+  );
+  animation: loading 1.5s infinite linear;
 `;
