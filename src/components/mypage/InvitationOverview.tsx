@@ -65,6 +65,7 @@ const Content = styled.div`
     width: 5.688rem;
     height: 7.063rem;
     border-radius: 8px;
+    border: 1px solid #676767;
     > img {
       width: 100%;
       height: 100%;

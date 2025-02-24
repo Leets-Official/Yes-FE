@@ -93,6 +93,7 @@ const Preview = styled.div`
 const PreviewFront = styled.img`
   width: 166px;
   height: 207px;
+  border: 1px solid #676767;
   border-radius: 8px;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
 `;
@@ -101,7 +102,7 @@ const PreviewBack = styled.div<{ isTemplate: boolean; bgColor: string }>`
   width: 166px;
   height: 207px;
   border-radius: 8px;
-  border: ${(props) => (props.isTemplate ? 'none' : '1px solid #cfcdcd')};
+  border: ${(props) => (props.isTemplate ? '1px solid #676767' : '1px solid #cfcdcd')};
   background-color: ${(props) => props.bgColor};
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
 `;
