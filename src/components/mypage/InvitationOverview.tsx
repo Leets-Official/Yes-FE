@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from '../common/Button';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import Skeleton from '../common/Skeleton';
 
 interface InvitationOverviewProps {
   invitation: Invitation;
@@ -107,20 +108,4 @@ const DeleteButton = styled(Button)`
   font-size: 11px;
   font-weight: 500;
   margin-top: auto;
-`;
-
-/**
- * 스켈레톤
- */
-const Skeleton = styled.div<{ width: string; height: string }>`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  border-radius: 8px;
-  background: linear-gradient(
-    120deg,
-    rgba(245, 245, 245, 1) 0%,
-    #ffffffae 10%,
-    rgba(245, 245, 245, 1) 20%
-  );
-  animation: loading 1.5s infinite linear;
 `;

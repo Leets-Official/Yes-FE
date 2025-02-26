@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TbPhotoPlus } from 'react-icons/tb';
 import { template } from './../../data/Template';
+import Skeleton from '../common/Skeleton';
 
 interface TemplatePreviewProps {
   isTemplate: boolean;
@@ -160,20 +161,4 @@ const ImageItem = styled.img`
   border-radius: 8px;
   object-fit: cover;
   border: 1px solid #cfcdcd;
-`;
-
-/**
- * 스켈레톤
- */
-const Skeleton = styled.div<{ width: string; height: string }>`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  border-radius: 8px;
-  background: linear-gradient(
-    90deg,
-    rgba(245, 245, 245, 1) 0%,
-    #ffffffae 10%,
-    rgba(245, 245, 245, 1) 20%
-  );
-  animation: loading 1.5s infinite linear;
 `;
