@@ -5,6 +5,7 @@ import { UserInfo } from '../atom/UserInfo';
 import { privateAxios } from '../utils/customAxios';
 
 export const useGetAttendees = (id: string) => {
+  const [loading, setLoading] = useState(false);
   const [attendingGuests, setAttendingGuests] = useState<Guest[]>([]);
   const [notAttendingGuests, setNotAttendingGuests] = useState<Guest[]>([]);
 
@@ -13,9 +14,9 @@ export const useGetAttendees = (id: string) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const result = await privateAxios(resetUserInfo).get(`/invitation/${id}/guests`);
-        console.log(result);
         const attending = result.data.result.attending || [];
         const notAttending = result.data.result.notAttending || [];
 
@@ -25,11 +26,13 @@ export const useGetAttendees = (id: string) => {
         if (error.name !== 'GENERAL') {
           showBoundary(error);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  return { attendingGuests, notAttendingGuests };
+  return { attendingGuests, notAttendingGuests, loading };
 };

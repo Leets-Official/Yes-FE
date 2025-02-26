@@ -5,6 +5,7 @@ import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../atom/UserInfo';
 
 export const useGetMyAttendance = (invitationId: string) => {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<{
     attendance: boolean | null;
     nickname: string;
@@ -22,6 +23,7 @@ export const useGetMyAttendance = (invitationId: string) => {
     if (!invitationId) return;
 
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await privateAxios(resetUserInfo).get(
           `/invitation/${invitationId}/attendance`,
@@ -34,13 +36,15 @@ export const useGetMyAttendance = (invitationId: string) => {
         } else {
           console.log(error.message);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [invitationId]);
 
-  return { data };
+  return { data, loading };
 };
 
 export default useGetMyAttendance;

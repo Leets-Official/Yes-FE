@@ -5,6 +5,7 @@ import { useResetRecoilState } from 'recoil';
 import { UserInfo } from '../atom/UserInfo';
 
 export const useGetQR = (invitationId: string) => {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string | null>(null);
 
   const { showBoundary } = useErrorBoundary(); // 전역 에러 처리
@@ -14,6 +15,7 @@ export const useGetQR = (invitationId: string) => {
     if (!invitationId) return;
 
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await privateAxios(resetUserInfo).get(`/invitation/qr`, {
           params: { invitationId },
@@ -26,13 +28,15 @@ export const useGetQR = (invitationId: string) => {
         } else {
           console.log(error.message);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [invitationId]);
 
-  return { data };
+  return { data, loading };
 };
 
 export default useGetQR;

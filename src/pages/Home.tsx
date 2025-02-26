@@ -5,7 +5,7 @@ import { HomeHeader } from '../components/layout/HomeHeader';
 import Button from '../components/common/Button';
 import theme from '../style/theme';
 
-export const Home = () => {
+const Home = () => {
   const navigate = useNavigate();
 
   const handleMakeInvitation = () => {
@@ -22,6 +22,8 @@ export const Home = () => {
   );
 };
 
+export default Home;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,7 +33,7 @@ const Container = styled.div`
   width: 100vw;
   max-width: 480px;
   overflow-y: hidden;
-  background-color: #fff7ec;
+  background-color: #fff0f0;
 `;
 
 const Logo = styled.img`

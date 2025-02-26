@@ -1,21 +1,22 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Login } from './pages/login/Login';
-import KakaoRedirectHandler from './pages/login/KakaoRedirectHandler';
-import { Home } from './pages/Home';
-import Result from './pages/Result';
-import InvitationCreate from './pages/create/InvitationCreate';
-import MyPage from './pages/mypage/MyPage';
 import { RecoilRoot } from 'recoil';
-import InvitationList from './pages/mypage/InvitationList';
-import MyPageMain from './pages/mypage/MyPageMain';
-import InvitationDetail from './pages/mypage/InvitationDetail';
-import ErrorPage from './pages/ErrorPage';
-import ReceiveInvitation from './pages/ReceiveInvitation';
-import { PrivateRoutes } from './routes/PrivateRoutes';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './pages/ErrorFallback';
+import ErrorPage from './pages/ErrorPage';
 import CustomToast from './components/common/CustomToast';
+
+import Login from './pages/login/Login';
+import KakaoRedirectHandler from './pages/login/KakaoRedirectHandler';
+import Home from './pages/Home';
+import ReceiveInvitation from './pages/ReceiveInvitation';
+import InvitationCreate from './pages/create/InvitationCreate';
+import Result from './pages/Result';
+import MyPage from './pages/mypage/MyPage';
+import MyPageMain from './pages/mypage/MyPageMain';
+import InvitationList from './pages/mypage/InvitationList';
+import InvitationDetail from './pages/mypage/InvitationDetail';
+import PrivateRoutes from './routes/PrivateRoutes';
 
 function App() {
   return (
