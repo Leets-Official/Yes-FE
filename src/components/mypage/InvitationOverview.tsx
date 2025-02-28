@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../common/Button';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+import Skeleton from '../common/Skeleton';
 
 interface InvitationOverviewProps {
   invitation: Invitation;
@@ -15,7 +17,10 @@ const InvitationOverview = ({
   type,
 }: InvitationOverviewProps) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleInvitationClick = (id: string) => {
+    localStorage.setItem('redirectUrl', location.pathname);
     /**초대장 상세보기 이동 */
     navigate(`/mypage/detail/${id}`);
   };
@@ -23,7 +28,14 @@ const InvitationOverview = ({
   return (
     <Contents>
       <Content className="img-bg" onClick={() => handleInvitationClick(invitation.invitationId)}>
-        {invitation.thumbnailUrl && <img src={invitation.thumbnailUrl} />}
+        {isLoading && <Skeleton width="100%" height="100%" />}
+        {invitation.thumbnailUrl && (
+          <img
+            src={invitation.thumbnailUrl}
+            style={{ display: isLoading ? 'none' : 'block' }}
+            onLoad={() => setIsLoading(false)}
+          />
+        )}
       </Content>
       <Content>
         <Texts onClick={() => handleInvitationClick(invitation.invitationId)}>
@@ -64,6 +76,7 @@ const Content = styled.div`
     width: 5.688rem;
     height: 7.063rem;
     border-radius: 8px;
+    border: 1px solid #676767;
     > img {
       width: 100%;
       height: 100%;

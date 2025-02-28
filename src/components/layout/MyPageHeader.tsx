@@ -10,7 +10,9 @@ export const MyPageHeader = () => {
 
   const handleClose = () => {
     if (location.pathname.startsWith('/mypage/')) {
-      navigate('/mypage');
+      const redirectUrl = localStorage.getItem('redirectUrl');
+      redirectUrl ? navigate(redirectUrl) : navigate('/mypage');
+      localStorage.removeItem('redirectUrl');
     } else if (location.pathname === '/mypage') {
       navigate('/home');
     } else if (location.pathname.startsWith('/result/')) {
@@ -40,18 +42,15 @@ export const MyPageHeader = () => {
           <img src="/image/small_yes.svg" />
         )}
       </HeaderTitle>
-      {!location.pathname.startsWith('/mypage/detail/') && (
-        <CloseIcon
-          className={
-            currentUrl === '/mypage/received' || currentUrl === '/mypage/sent'
-              ? 'hidden'
-              : 'visible'
-          }
-          strokeWidth={1}
-          size={28}
-          onClick={handleClose}
-        />
-      )}
+
+      <CloseIcon
+        className={
+          currentUrl === '/mypage/received' || currentUrl === '/mypage/sent' ? 'hidden' : 'visible'
+        }
+        strokeWidth={1}
+        size={28}
+        onClick={handleClose}
+      />
     </Section>
   );
 };
@@ -86,4 +85,5 @@ const HeaderTitle = styled.div`
 
 const CloseIcon = styled(IoIosClose)`
   cursor: pointer;
+  visibility: ${(props) => (props.className === 'hidden' ? 'hidden' : 'visible')};
 `;

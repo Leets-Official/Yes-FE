@@ -7,9 +7,10 @@ import Button from '../../components/common/Button';
 import { useGetInvitationList } from '../../api/useGetInvitationList';
 import { useDeleteInvitation } from '../../api/useDeleteInvitation';
 import dayjs from 'dayjs';
+import Loading from '../Loading';
 
 const InvitationList = ({ type }: { type: string }) => {
-  const { invitations, isLoading } = useGetInvitationList(type);
+  const { invitations, loading } = useGetInvitationList(type);
   const { deleteInvitation } = useDeleteInvitation();
 
   const [invitationList, setInvitationList] = useState<Invitation[]>([]); // 초대장 리스트
@@ -62,8 +63,8 @@ const InvitationList = ({ type }: { type: string }) => {
 
   return (
     <>
-      {isLoading ? (
-        <Phrase>초대장 불러오는 중...</Phrase>
+      {loading ? (
+        <Loading />
       ) : isEmpty ? (
         <Phrase>초대장이 존재하지 않습니다.</Phrase>
       ) : (

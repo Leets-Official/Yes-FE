@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { isAccessToken } from '../utils/isAccessToken';
 import DefaultError from '../components/error/DefaultError';
 
-export const PrivateRoutes = () => {
+const PrivateRoutes = () => {
   const navigate = useNavigate();
   const isAuth = isAccessToken();
 
@@ -24,3 +24,5 @@ export const PrivateRoutes = () => {
     />
   );
 };
+
+export default PrivateRoutes;

@@ -70,6 +70,7 @@ const DefaultCardStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #676767;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25);
 `;
 

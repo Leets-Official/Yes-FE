@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isAccessToken } from '../../utils/isAccessToken';
 
-export const Login = () => {
+const Login = () => {
   const navigate = useNavigate();
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_REST_API}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}`;
 
@@ -34,6 +34,8 @@ export const Login = () => {
     </Container>
   );
 };
+
+export default Login;
 
 const Container = styled.div`
   position: relative;

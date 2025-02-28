@@ -60,6 +60,7 @@ const AttendeeName = styled.div<{ color: string }>`
   font-size: 14px;
   width: auto;
   padding: 0.875rem 1.563rem;
+  border: 1px solid #676767;
   border-radius: 8px;
   background: ${(props) => props.color || '#FFE6E6'};
 `;
