@@ -23,8 +23,6 @@ const InvitationCard = ({
 }) => {
   const [isTouched, setIsTouched] = useState(false);
 
-  console.log('전달받은 값', date);
-
   return (
     <Card
       onClick={() => {

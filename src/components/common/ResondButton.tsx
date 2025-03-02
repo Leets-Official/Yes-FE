@@ -2,6 +2,7 @@ import theme from '../../style/theme';
 import styled from 'styled-components';
 import Button from './Button';
 import { usePatchRespond } from '../../api/patchRespond';
+import { toast } from 'react-toastify';
 
 const RespondButton = ({
   attendanceStatus,
@@ -32,6 +33,7 @@ const RespondButton = ({
             attendance: false,
           });
           setMyAttendance('거절');
+          toast.info('응답이 정상적으로 수정되었습니다.');
           changeEditMode();
         }}
       >
@@ -49,6 +51,7 @@ const RespondButton = ({
             attendance: true,
           });
           setMyAttendance('yes!');
+          toast.info('응답이 정상적으로 수정되었습니다.');
           changeEditMode();
         }}
       >

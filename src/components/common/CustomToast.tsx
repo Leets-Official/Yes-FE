@@ -1,20 +1,13 @@
 import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import theme from '../../style/theme';
-
-/*
-toast.success()
-toast.error()
-toast.info()
-toast.warning()
-toast() -> default, 현재 디자인 된 부분
-*/
+import customIcon from '../../assets/check.svg';
 
 export const CustomToast = () => {
   return (
     <StyledToastConatiner
-      position="bottom-center" // 토스트 메시지 위치 설정
-      autoClose={500} // 자동 닫힘 시간 (밀리초)
+      position="bottom-center"
+      autoClose={500}
       limit={1}
       hideProgressBar={true}
       theme="colored"
@@ -33,7 +26,6 @@ const StyledToastConatiner = styled(ToastContainer)`
     width: auto;
     height: 1.6875rem;
     min-height: 1.6875rem;
-    max-height: 1.6875rem;
     margin-bottom: 4.87rem;
     padding: 1rem;
 
@@ -61,7 +53,22 @@ const StyledToastConatiner = styled(ToastContainer)`
   }
 
   .Toastify__toast--info {
-    // info 토스트 디자인
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21rem;
+    height: 3.5625rem;
+    min-height: 1.6875rem;
+    max-height: 1.6875rem;
+    margin-bottom: 4.87rem;
+    padding: 1.5rem;
+
+    background: #fff;
+    border-radius: 0.75rem;
+    border: 1px solid #6d6d6d;
+
+    color: #000;
+    font-size: 1rem;
   }
 
   .Toastify__toast--warning {
