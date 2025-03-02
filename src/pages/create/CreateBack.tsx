@@ -150,7 +150,14 @@ const CreateBack = () => {
   };
 
   const handleCreateInvitation = async () => {
-    if (!invitationData.title || !invitationData.location || !invitationData.schedule) return;
+    if (!invitationData.title || !invitationData.location || !invitationData.schedule) {
+      setIsVisible({
+        title: true,
+        date: true,
+        location: true,
+      });
+      return;
+    }
 
     // 버튼 비활성화
     setIsDisabled(true);
