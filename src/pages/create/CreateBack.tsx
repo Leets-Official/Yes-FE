@@ -16,11 +16,14 @@ import DateInput from '../../components/common/DateInput';
 import useCanvas from '../../hooks/useCanvas';
 import { usePostInvitation } from '../../api/usePostInvitation';
 import getISOString from '../../hooks/getISOString';
+import Loading from '../Loading';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 const CreateBack = () => {
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [backgroundColor, setBackgroundColor] = useState('#fff');
   const [fontColor, setFontColor] = useState('#000');
@@ -150,6 +153,7 @@ const CreateBack = () => {
 
     // 버튼 비활성화
     setIsDisabled(true);
+    setLoading(true);
 
     try {
       // presigned URL 요청 & 파일 업로드
@@ -172,8 +176,8 @@ const CreateBack = () => {
     } catch (error) {
       console.error('Error creating invitation:', error);
     } finally {
-      // 초대장 생성 후 다시 버튼 활성화 (네비게이션 전에 실행되지 않도록 주의)
       setIsDisabled(false);
+      setLoading(false);
     }
   };
 
@@ -181,6 +185,7 @@ const CreateBack = () => {
 
   return (
     <Container>
+      {loading && <Loading />}
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       <InvitationHeader />
       <b>
