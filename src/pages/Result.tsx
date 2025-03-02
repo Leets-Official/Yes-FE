@@ -51,6 +51,7 @@ const Result = () => {
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
       <ShareList
+        invitationTitle={invitation?.title || ''}
         ownerNickname={invitation?.ownerNickname || ''}
         thumbnailUrl={invitation?.thumbnailUrl || ''}
         size="big"

@@ -32,6 +32,7 @@ const InvitationDetail = () => {
             />
             {/* 카카오톡 공유(링크, QR) */}
             <ShareList
+              invitationTitle={invitation.title}
               ownerNickname={invitation.ownerNickname}
               thumbnailUrl={invitation.thumbnailUrl}
               size="small"
