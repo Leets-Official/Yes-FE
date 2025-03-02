@@ -214,7 +214,7 @@ const CreateBack = () => {
             <label>
               제목 <span>*</span>
             </label>
-            <Input value={invitationData.title} onChange={onChange('title')} />
+            <Input value={invitationData.title} onChange={onChange('title')} maxLength={10} />
             {!invitationData.title && isVisible.title && (
               <ErrorPhrase message="제목을 입력해주세요" />
             )}
@@ -225,7 +225,7 @@ const CreateBack = () => {
               일정 <span>*</span>
             </label>
             <DateInputWrapper>
-              <DateInput value={date.year} onChange={handleDateChange('year')} inputType="year" />{' '}
+              <DateInput value={date.year} onChange={handleDateChange('year')} inputType="year" />
               년
               <DateInput
                 value={date.month}
@@ -257,7 +257,7 @@ const CreateBack = () => {
             <label>
               장소 <span>*</span>
             </label>
-            <Input value={invitationData.location} onChange={onChange('location')} />
+            <Input value={invitationData.location} onChange={onChange('location')} maxLength={13} />
             {!invitationData.location && isVisible.location && (
               <ErrorPhrase message="장소를 입력해주세요" />
             )}
@@ -265,7 +265,7 @@ const CreateBack = () => {
 
           <DescriptionField>
             <label>문구</label>
-            <TextArea value={invitationData.remark} onChange={onChange('remark')} />
+            <TextArea value={invitationData.remark} onChange={onChange('remark')} maxLength={100} />
           </DescriptionField>
         </Gap>
       </AlignCenter>
