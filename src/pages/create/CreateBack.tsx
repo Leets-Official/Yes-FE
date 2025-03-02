@@ -17,6 +17,7 @@ import useCanvas from '../../hooks/useCanvas';
 import { usePostInvitation } from '../../api/usePostInvitation';
 import getISOString from '../../hooks/getISOString';
 import Loading from '../Loading';
+import ProgressBar from '../../components/common/ProgressBar';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
@@ -186,11 +187,12 @@ const CreateBack = () => {
   return (
     <Container>
       {loading && <Loading />}
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
       <InvitationHeader />
-      <b>
+      <ProgressBar progress={invitation.step} />
+
+      <p>
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
-      </b>
+      </p>
       <ButtonWrapper>
         <Button
           color={theme.color.main}
@@ -274,6 +276,7 @@ const CreateBack = () => {
           </DescriptionField>
         </Gap>
       </AlignCenter>
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
     </Container>
   );
 };
@@ -283,10 +286,9 @@ export default CreateBack;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2.25rem;
   margin-bottom: 12rem;
-  font-weight: 500;
-  height: 100vh;
+  font-size: 18px;
+  font-weight: 600;
   width: 100vw;
   max-width: 480px;
   box-sizing: border-box;
@@ -297,7 +299,8 @@ const Container = styled.div`
     font-weight: 500;
   }
 
-  b {
+  p {
+    margin: 1rem 0 2rem 0;
     text-align: left;
   }
 `;

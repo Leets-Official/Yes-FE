@@ -10,6 +10,7 @@ import { useResetStepState } from '../../hooks/useResetStepState';
 import ErrorPhrase from '../../components/common/ErrorPhrase';
 import useValidation from '../../hooks/useValidation';
 import { UserInfo } from '../../atom/UserInfo';
+import ProgressBar from '../../components/common/ProgressBar';
 
 const CreateNickName = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
@@ -38,6 +39,7 @@ const CreateNickName = () => {
   return (
     <Container>
       <InvitationHeader />
+      <ProgressBar progress={invitation.step} />
       <MainContent>
         <NicknameForm>
           <InputLabel>초대하는 사람의 정보를 입력해주세요</InputLabel>
@@ -94,7 +96,7 @@ const NicknameForm = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  margin-top: 2.25rem;
+  margin-top: 1rem;
   gap: 2.25rem;
 `;
 
