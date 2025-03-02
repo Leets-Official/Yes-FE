@@ -1,7 +1,6 @@
 import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import theme from '../../style/theme';
-import customIcon from '../../assets/check.svg';
 
 export const CustomToast = () => {
   return (
@@ -41,8 +40,8 @@ const StyledToastConatiner = styled(ToastContainer)`
     padding: 0;
   }
 
-  .Toastify__toast--success {
-    // success 토스트 디자인
+  .Toastify__toast--info {
+    // info 토스트 디자인
   }
 
   .Toastify__toast--error {
@@ -52,7 +51,7 @@ const StyledToastConatiner = styled(ToastContainer)`
     font-size: 0.8rem;
   }
 
-  .Toastify__toast--info {
+  .Toastify__toast--success {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,6 +68,10 @@ const StyledToastConatiner = styled(ToastContainer)`
 
     color: #000;
     font-size: 1rem;
+
+    svg {
+      fill: ${theme.color.main} !important;
+    }
   }
 
   .Toastify__toast--warning {

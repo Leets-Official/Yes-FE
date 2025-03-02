@@ -33,7 +33,7 @@ const RespondButton = ({
             attendance: false,
           });
           setMyAttendance('거절');
-          toast.info('응답이 정상적으로 수정되었습니다.');
+          toast.success('응답이 정상적으로 수정되었습니다.');
           changeEditMode();
         }}
       >
@@ -51,7 +51,7 @@ const RespondButton = ({
             attendance: true,
           });
           setMyAttendance('yes!');
-          toast.info('응답이 정상적으로 수정되었습니다.');
+          toast.success('응답이 정상적으로 수정되었습니다.');
           changeEditMode();
         }}
       >
@@ -67,6 +67,7 @@ const ButtonList = styled.div`
   display: flex;
   gap: 0.38rem;
 `;
+
 const SelectButton = styled(Button)`
   width: 10.5rem;
   font-weight: 600;
