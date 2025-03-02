@@ -190,9 +190,9 @@ const CreateBack = () => {
       <InvitationHeader />
       <ProgressBar progress={invitation.step} />
 
-      <p>
+      <AlignLeft>
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
-      </p>
+      </AlignLeft>
       <ButtonWrapper>
         <Button
           color={theme.color.main}
@@ -285,6 +285,7 @@ export default CreateBack;
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: column;
   margin-bottom: 12rem;
   font-size: 18px;
@@ -298,11 +299,12 @@ const Container = styled.div`
   textarea {
     font-weight: 500;
   }
+`;
 
-  p {
-    margin: 1rem 0 2rem 0;
-    text-align: left;
-  }
+const AlignLeft = styled.div`
+  margin: 1rem 0 2rem 1rem;
+  text-align: left;
+  width: 100%;
 `;
 
 const ButtonWrapper = styled.div`
