@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import InvitationFront from '../result/InvitationFront';
 import InvitationBack from '../result/InvitationBack';
-import dayjs from 'dayjs';
 
 const InvitationCard = ({
   title,
