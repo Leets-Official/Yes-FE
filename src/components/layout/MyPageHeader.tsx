@@ -39,7 +39,12 @@ export const MyPageHeader = () => {
             '보낸 초대장'
           )
         ) : (
-          <img src="/image/small_yes.svg" />
+          <img
+            src="/image/small_yes.svg"
+            onClick={() => {
+              navigate('/home', { replace: true });
+            }}
+          />
         )}
       </HeaderTitle>
 
