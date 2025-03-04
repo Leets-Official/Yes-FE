@@ -16,11 +16,15 @@ import DateInput from '../../components/common/DateInput';
 import useCanvas from '../../hooks/useCanvas';
 import { usePostInvitation } from '../../api/usePostInvitation';
 import getISOString from '../../hooks/getISOString';
+import Loading from '../Loading';
+import ProgressBar from '../../components/common/ProgressBar';
 
 type DateField = 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 const CreateBack = () => {
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [backgroundColor, setBackgroundColor] = useState('#fff');
   const [fontColor, setFontColor] = useState('#000');
@@ -146,10 +150,18 @@ const CreateBack = () => {
   };
 
   const handleCreateInvitation = async () => {
-    if (!invitationData.title || !invitationData.location || !invitationData.schedule) return;
+    if (!invitationData.title || !invitationData.location || !invitationData.schedule) {
+      setIsVisible({
+        title: true,
+        date: true,
+        location: true,
+      });
+      return;
+    }
 
     // 버튼 비활성화
     setIsDisabled(true);
+    setLoading(true);
 
     try {
       // presigned URL 요청 & 파일 업로드
@@ -172,8 +184,8 @@ const CreateBack = () => {
     } catch (error) {
       console.error('Error creating invitation:', error);
     } finally {
-      // 초대장 생성 후 다시 버튼 활성화 (네비게이션 전에 실행되지 않도록 주의)
       setIsDisabled(false);
+      setLoading(false);
     }
   };
 
@@ -181,11 +193,13 @@ const CreateBack = () => {
 
   return (
     <Container>
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
+      {loading && <Loading />}
       <InvitationHeader />
-      <b>
+      <ProgressBar progress={invitation.step} />
+
+      <AlignLeft>
         초대장 뒷면에 들어갈 <br /> 상세정보를 입력해주세요!
-      </b>
+      </AlignLeft>
       <ButtonWrapper>
         <Button
           color={theme.color.main}
@@ -214,7 +228,7 @@ const CreateBack = () => {
             <label>
               제목 <span>*</span>
             </label>
-            <Input value={invitationData.title} onChange={onChange('title')} />
+            <Input value={invitationData.title} onChange={onChange('title')} maxLength={10} />
             {!invitationData.title && isVisible.title && (
               <ErrorPhrase message="제목을 입력해주세요" />
             )}
@@ -225,7 +239,7 @@ const CreateBack = () => {
               일정 <span>*</span>
             </label>
             <DateInputWrapper>
-              <DateInput value={date.year} onChange={handleDateChange('year')} inputType="year" />{' '}
+              <DateInput value={date.year} onChange={handleDateChange('year')} inputType="year" />
               년
               <DateInput
                 value={date.month}
@@ -257,7 +271,7 @@ const CreateBack = () => {
             <label>
               장소 <span>*</span>
             </label>
-            <Input value={invitationData.location} onChange={onChange('location')} />
+            <Input value={invitationData.location} onChange={onChange('location')} maxLength={13} />
             {!invitationData.location && isVisible.location && (
               <ErrorPhrase message="장소를 입력해주세요" />
             )}
@@ -265,10 +279,11 @@ const CreateBack = () => {
 
           <DescriptionField>
             <label>문구</label>
-            <TextArea value={invitationData.remark} onChange={onChange('remark')} />
+            <TextArea value={invitationData.remark} onChange={onChange('remark')} maxLength={100} />
           </DescriptionField>
         </Gap>
       </AlignCenter>
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
     </Container>
   );
 };
@@ -277,11 +292,11 @@ export default CreateBack;
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: column;
-  gap: 2.25rem;
   margin-bottom: 12rem;
-  font-weight: 500;
-  height: 100vh;
+  font-size: 18px;
+  font-weight: 600;
   width: 100vw;
   max-width: 480px;
   box-sizing: border-box;
@@ -291,10 +306,12 @@ const Container = styled.div`
   textarea {
     font-weight: 500;
   }
+`;
 
-  b {
-    text-align: left;
-  }
+const AlignLeft = styled.div`
+  margin: 1rem 0 2rem 1rem;
+  text-align: left;
+  width: 100%;
 `;
 
 const ButtonWrapper = styled.div`

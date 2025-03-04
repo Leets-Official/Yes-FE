@@ -4,10 +4,12 @@ import KakoShareButton from './KaKaoShareButton';
 import QRShareButton from './QRShareButton';
 
 const ShareList = ({
+  invitationTitle,
   ownerNickname,
   thumbnailUrl,
   size,
 }: {
+  invitationTitle: string;
   ownerNickname: string;
   thumbnailUrl: string;
   size: 'small' | 'big';
@@ -16,7 +18,7 @@ const ShareList = ({
     <Container size={size}>
       <CopyLinkButton size={size} />
       <KakoShareButton size={size} ownerNickname={ownerNickname} thumbnailUrl={thumbnailUrl} />
-      <QRShareButton size={size} />
+      <QRShareButton size={size} invitationTitle={invitationTitle} />
     </Container>
   );
 };

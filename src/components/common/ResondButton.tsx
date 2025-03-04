@@ -2,6 +2,7 @@ import theme from '../../style/theme';
 import styled from 'styled-components';
 import Button from './Button';
 import { usePatchRespond } from '../../api/patchRespond';
+import { toast } from 'react-toastify';
 
 const RespondButton = ({
   attendanceStatus,
@@ -32,6 +33,7 @@ const RespondButton = ({
             attendance: false,
           });
           setMyAttendance('거절');
+          toast.success('응답이 정상적으로 수정되었습니다.');
           changeEditMode();
         }}
       >
@@ -49,6 +51,7 @@ const RespondButton = ({
             attendance: true,
           });
           setMyAttendance('yes!');
+          toast.success('응답이 정상적으로 수정되었습니다.');
           changeEditMode();
         }}
       >
@@ -64,6 +67,7 @@ const ButtonList = styled.div`
   display: flex;
   gap: 0.38rem;
 `;
+
 const SelectButton = styled(Button)`
   width: 10.5rem;
   font-weight: 600;

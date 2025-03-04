@@ -1,9 +1,9 @@
+import dayjs from 'dayjs'; // Day.js 라이브러리 사용
 import styled from 'styled-components';
 import ShareList from '../components/result/ShareList';
 import { MyPageHeader } from '../components/layout/MyPageHeader';
 import InvitationCard from '../components/common/InvitationCard';
-// import { template } from '../data/Template';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useResetRecoilState } from 'recoil';
 import { InvitationInfo } from '../atom/InvitationInfo';
 import { useParams } from 'react-router-dom';
@@ -12,16 +12,30 @@ import { template } from '../data/Template';
 
 const Result = () => {
   const resetInvitationInfo = useResetRecoilState(InvitationInfo);
-
   const { invitationId } = useParams<{ invitationId: string }>();
   const { invitation } = useGetInvitation(invitationId || '');
+  const [formattedDate, setFormattedDate] = useState('');
 
   useEffect(() => {
     sessionStorage.removeItem('invitationPersist');
     resetInvitationInfo();
   }, []);
 
-  if (!invitation) return;
+  useEffect(() => {
+    if (invitation?.schedule) {
+      const date = dayjs(invitation.schedule);
+      const minutes = date.minute();
+
+      setFormattedDate(
+        minutes === 0 ? date.format('YYYY년 M월 D일 H시') : date.format('YYYY년 M월 D일 H시 m분'),
+      );
+    }
+  }, [invitation]);
+
+  console.log(formattedDate);
+
+  if (!invitation) return null;
+
   return (
     <Container>
       <MyPageHeader />
@@ -29,17 +43,15 @@ const Result = () => {
       <InvitationCard
         imgURL={invitation?.thumbnailUrl || ''}
         title={invitation?.title || ''}
-        date={invitation?.schedule || ''}
+        date={formattedDate}
         location={invitation?.location || ''}
         description={invitation?.remark || ''}
-        // TODO: 템플릿 값으로 수정 필요
-        // backgroundColor={template[data.templateKey].bg_color}
-        // fontColor={template[data.templateKey].bg_text_color}
         backgroundColor={template[invitation?.templateKey]?.bg_color || 'white'}
         fontColor={template[invitation?.templateKey]?.bg_text_color || 'black'}
       />
       <TouchMessage>초대장을 터치해주세요!</TouchMessage>
       <ShareList
+        invitationTitle={invitation?.title || ''}
         ownerNickname={invitation?.ownerNickname || ''}
         thumbnailUrl={invitation?.thumbnailUrl || ''}
         size="big"

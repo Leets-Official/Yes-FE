@@ -38,7 +38,7 @@ const InvitationCard = ({
         <InvitationBack
           size="big"
           title={title}
-          date={dayjs(date).format('YYYY년 M월 D일 H시 m분')}
+          date={date}
           location={location}
           description={description}
           backgroundColor={backgroundColor}

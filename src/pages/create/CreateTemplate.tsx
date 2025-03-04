@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import { InvitationState, InvitationInfo } from './../../atom/InvitationInfo';
 import TemplatePreview from '../../components/create/TemplatePreview';
 import { useResetStepState } from '../../hooks/useResetStepState';
+import ProgressBar from '../../components/common/ProgressBar';
 
 const CreateTemplate = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
@@ -93,6 +94,7 @@ const CreateTemplate = () => {
   return (
     <Container>
       <InvitationHeader />
+      <ProgressBar progress={invitation.step} />
       <MainContent>
         <MainTitle>원하는 템플릿을 선택해주세요.</MainTitle>
         <SelectForm>
@@ -140,8 +142,8 @@ const MainContent = styled.div`
   width: 100%;
   flex-grow: 1;
 
-  margin-top: 2.25rem;
-  gap: 2.25rem;
+  margin-top: 1rem;
+  gap: 1.75rem;
 `;
 
 const MainTitle = styled.div`
@@ -149,7 +151,7 @@ const MainTitle = styled.div`
   font-family: Pretendard;
   font-size: 18px;
   font-weight: 600;
-  margin-left: 1rem;
+  margin-left: 0.25rem;
 `;
 
 const SelectForm = styled.div`

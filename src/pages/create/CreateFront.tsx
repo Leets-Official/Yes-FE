@@ -7,6 +7,7 @@ import { InvitationState, InvitationInfo } from '../../atom/InvitationInfo';
 import { useRecoilState } from 'recoil';
 import { useResetStepState } from '../../hooks/useResetStepState';
 import TemplateFront from '../../components/create/TemplateFront';
+import ProgressBar from '../../components/common/ProgressBar';
 
 const CreateFront = () => {
   const [invitation, setInvitation] = useRecoilState<InvitationState>(InvitationInfo);
@@ -25,6 +26,7 @@ const CreateFront = () => {
   return (
     <Container>
       <InvitationHeader />
+      <ProgressBar progress={invitation.step} />
       <MainContent>
         <MainTitle>초대장 앞면을 꾸며주세요!</MainTitle>
         <TemplateFront
@@ -65,8 +67,8 @@ const MainContent = styled.div`
   width: 100%;
   flex-grow: 1;
 
-  margin-top: 2.25rem;
-  gap: 2.25rem;
+  margin-top: 1rem;
+  gap: 1.75rem;
 `;
 
 const MainTitle = styled.div`
@@ -74,7 +76,7 @@ const MainTitle = styled.div`
   font-family: 'Pretendard';
   font-size: 18px;
   font-weight: 600;
-  margin-left: 2rem;
+  margin-left: 0.25rem;
   margin-right: auto;
 `;
 

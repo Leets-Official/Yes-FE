@@ -114,14 +114,13 @@ const Info = styled.div<{
 }>`
   display: flex;
   align-items: center;
-  max-width: 12rem;
+  // max-width: 12rem;
   font-weight: 500;
   font-size: ${({ size }) => sizeStyles[size].fontSize};
 
   ${({ hasPadding }) =>
     hasPadding &&
     css`
-      // box-sizing: border-box;
       padding-left: 0.2rem;
     `}
 
@@ -145,24 +144,36 @@ const Title = styled.div<{ size: 'small' | 'big'; isInput?: boolean; fontColor: 
   ${({ isInput, fontColor }) =>
     isInput &&
     css`
-      width: 7.75rem;
+      width: 11rem;
       height: 1.9375rem;
       border: 1px solid ${fontColor};
       border-radius: 0.25rem;
     `}
 `;
 
-const Description = styled(Info)<{ isInput?: boolean; fontColor: string }>`
+const Description = styled(Info)<{ size: 'small' | 'big'; isInput?: boolean; fontColor: string }>`
   display: flex;
   justify-content: center;
   white-space: pre-wrap;
   word-break: break-all;
   margin: 0 auto;
 
+  ${({ size }) => {
+    if (size === 'small') {
+      return css`
+        width: 11.1875rem;
+      `;
+    }
+    if (size === 'big') {
+      return css`
+        width: 17.5rem;
+      `;
+    }
+  }}
+
   ${({ isInput, fontColor }) =>
     isInput &&
     css`
-      width: 11.1875rem;
       height: 4rem;
       border: 1px solid ${fontColor};
       border-radius: 0.25rem;

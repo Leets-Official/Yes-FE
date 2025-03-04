@@ -8,13 +8,20 @@ import { useParams } from 'react-router-dom';
 import { ButtonImg, Container } from './ShareButtonStyle';
 import Button from '../common/Button';
 
-const QRShareButton = ({ size }: { size: 'small' | 'big' }) => {
+const QRShareButton = ({
+  size,
+  invitationTitle,
+}: {
+  size: 'small' | 'big';
+  invitationTitle: string;
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { invitationId } = useParams<{ invitationId: string }>();
 
   const { data: QRUrl } = useGetQR(invitationId as string);
 
   const onClickDownload = useCallback((srcUrl: string | null, name: string) => {
+    console.log(name);
     if (!srcUrl) return;
     const a = document.createElement('a');
     a.href = srcUrl;
@@ -34,7 +41,7 @@ const QRShareButton = ({ size }: { size: 'small' | 'big' }) => {
             size="small"
             color={theme.color.main}
             textColor="#fff"
-            onClick={() => onClickDownload(QRUrl, `${invitationId}_QR.png`)}
+            onClick={() => onClickDownload(QRUrl, `${invitationTitle}_QR.png`)}
           >
             저장하기
           </DownloadButton>
