@@ -14,7 +14,6 @@ import useGetMyAttendance from '../../api/useGetMyAttendance';
 import ErrorPhrase from '../common/ErrorPhrase';
 import AttendeeList from '../common/AttendeeList';
 import { template } from '../../data/Template';
-import { toast } from 'react-toastify';
 
 const calculateDDay = (targetDate: string) => {
   const today = dayjs().startOf('day');
