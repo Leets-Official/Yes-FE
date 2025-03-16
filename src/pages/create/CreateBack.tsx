@@ -228,7 +228,7 @@ const CreateBack = () => {
             <label>
               제목 <span>*</span>
             </label>
-            <Input value={invitationData.title} onChange={onChange('title')} maxLength={10} />
+            <Input value={invitationData.title} onChange={onChange('title')} maxLength={12} />
             {!invitationData.title && isVisible.title && (
               <ErrorPhrase message="제목을 입력해주세요" />
             )}
